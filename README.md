@@ -2,36 +2,43 @@
 
 ## APIs
 
-## Account
+### Account
 
 - `/register/`
 - `/signin/`
 - `/logout/`
+- `/follow/`
 
-## Group
+### Group
 
 - `/group/join/`
 - `/group/leave/`
 - `/group/create/`
 - `/group/dismiss/` When #members==0, group is archived
 
-## Displine
+### Displine
 
 - `/displine/create/`
 - `/displine/apply/`
 - `/displine/delete/`
 
 
-## Story
+### Story
 
 - `/story/create/`
 - `/story/delete/`
 - `/story/configure/`
+- `/story/follow/`
+- `/story/unfollow/`
 - `/story/chapter/create/`
 - `/story/chapter/delete/`
+- `/story/chapter/like/`
+- `/story/chapter/unlike/`
 - `/story/plot/create/`
 - `/story/plot/delete/`
 - `/story/plot/edit/`
+- `/story/plot/like/`
+- `/story/plot/unlike/`
 - `/story/character/create/`
 
 
@@ -95,5 +102,5 @@
 - rules - ManyToMany of Discipline
 - style
 - category
-
+- public - private chat between users, story of group or public story
 

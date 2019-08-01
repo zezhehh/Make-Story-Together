@@ -8,6 +8,10 @@ class Group(models.Model):
     description = models.TextField()
     rule = models.ManyToManyField(Discipline)
 
+    def __str__(self):
+        return self.name
+
+
 class GroupMember(models.Model):
     member = models.ForeignKey(Writer, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)

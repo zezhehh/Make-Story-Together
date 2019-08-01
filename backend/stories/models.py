@@ -18,12 +18,18 @@ class Story(models.Model):
     category = models.ManyToManyField(Tag)
     public = models.CharField(choices=PUBLIC_CHOICES)
 
+    def __str__(self):
+        return self.title
+
 
 class Chapter(models.Model):
     title = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
     rule = models.ManyToManyField(Discipline)
+
+    def __str__(self):
+        return self.title
 
 
 class Plot(models.Model):
@@ -40,4 +46,4 @@ class Character(models.Model):
     appear_at = models.ForeignKey(Plot, on_delete=models.SET_NULL)
     updated = models.ForeignKey(Plot, on_delete=models.SET_NULL)
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
-    
+

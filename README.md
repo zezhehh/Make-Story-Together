@@ -30,6 +30,7 @@
 - `/story/configure/`
 - `/story/follow/`
 - `/story/unfollow/`
+- `/story/tag/create/`
 - `/story/chapter/create/`
 - `/story/chapter/delete/`
 - `/story/chapter/like/`

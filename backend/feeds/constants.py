@@ -1,0 +1,13 @@
+NEW_STORY = 'NEW_STORY'
+NEW_CHARACTER = 'NEW_CHARACTER'
+POPULAR_PLOT = 'POPULAR_PLOT'
+NEW_GROUP = 'NEW_GROUP'
+NEW_CHAPTER = 'NEW_CHAPTER'
+
+CONTENT_TYPE_CHOICES = [
+    (NEW_STORY, 'New Story'),
+    (NEW_CHARACTER, 'New Character'),
+    (NEW_CHAPTER, 'New Chapter'),
+    (NEW_GROUP, 'New Group'),
+    (POPULAR_PLOT, 'Popular Plot'),
+]

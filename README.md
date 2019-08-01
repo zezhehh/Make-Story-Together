@@ -48,7 +48,8 @@
 - user
 - screen_name
 - created_at
-- joined - ManyToMany of Story
+- stories - ManyToMany of Story
+- groups - ManyToMany of Group
 
 
 ### Discipline
@@ -59,14 +60,24 @@
 - whitelist - ManyToMany of Writers
 - registration_time - requirement of qualification
 - update_cycle
-- life_cycle
+
+
+### Feed
+
+- writer - ForeinKey of Writer
+- character - ForeinKey of Character
+- plot - ForeinKey of Plot
+- group - ForeinKey of Group
+- story - ForeinKey of Story
+- chapter - ForeinKey of Chapter
+- content_type
 
 
 ### Group
 
 - name
 - Description
-- Rule - ForeignKey of Discipline
+- Rule - ManyToMany of Discipline
 
 ### Character
 

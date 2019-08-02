@@ -1,4 +1,11 @@
+## TODO
 
+- Model
+- UI
+- API
+- Authentification
+- Feed - Celery
+- Cache to speed up / reselect
 
 ## APIs
 

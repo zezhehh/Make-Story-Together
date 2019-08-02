@@ -7,6 +7,7 @@ class Group(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField()
     rule = models.ManyToManyField(Discipline)
+    members = models.ManyToManyField(Writer, related_name='groups', through='GroupMember')
 
     def __str__(self):
         return self.name

@@ -11,12 +11,13 @@ class Tag(models.Model):
 
 class Story(models.Model):
     title = models.CharField(max_length=20)
-    creator = models.ForeignKey(Writer, on_delete=models.SET_NULL)
-    maintainer = models.ForeignKey(Group, on_delete=models.SET_NULL)
+    creator = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
+    maintainer = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True)
     plots_count = models.IntegerField()
     rule = models.ManyToManyField(Discipline)
     category = models.ManyToManyField(Tag)
-    public = models.CharField(choices=PUBLIC_CHOICES)
+    public = models.CharField(choices=PUBLIC_CHOICES, max_length=20)
+    participators = models.ManyToManyField(Writer, related_name='stories', through='Character')
 
     def __str__(self):
         return self.title
@@ -33,7 +34,7 @@ class Chapter(models.Model):
 
 
 class Plot(models.Model):
-    written_by = models.ForeignKey(Writer, on_delete=models.SET_NULL)
+    written_by = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     valid = models.BooleanField()
     content = models.TextField()
@@ -41,9 +42,9 @@ class Plot(models.Model):
 
 
 class Character(models.Model):
-    players = models.ManyToManyField(Writer)
+    players = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
     participation = models.FloatField()
-    appear_at = models.ForeignKey(Plot, on_delete=models.SET_NULL)
-    updated = models.ForeignKey(Plot, on_delete=models.SET_NULL)
+    appear_at = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='appear_characters')
+    updated = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='update_characters')
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
 

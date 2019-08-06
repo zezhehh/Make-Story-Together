@@ -17,12 +17,14 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from rest_framework import routers
-from writers.api import WriterViewSet
 from disciplines.api import DisciplineViewSet
+from groups.api import GroupViewSet
+from writers.api import WriterViewSet
 
 router = routers.SimpleRouter()
 router.register(r'^$', WriterViewSet, 'Writer')
 router.register(r'discipline', DisciplineViewSet, 'Discipline')
+router.register(r'group', GroupViewSet, 'Group')
 router.register(r'', WriterViewSet, 'Writer')
 
 urlpatterns = [

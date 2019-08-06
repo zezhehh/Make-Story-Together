@@ -7,7 +7,7 @@ class Group(models.Model):
     name = models.CharField(max_length=20)
     owner = models.ForeignKey(Writer, on_delete=models.SET_NULL, related_name='owned_groups', null=True)
     description = models.TextField()
-    rule = models.ManyToManyField(Discipline)
+    rule = models.ManyToManyField(Discipline, default=Discipline.objects.filter(id=1))
     members = models.ManyToManyField(Writer, related_name='groups', through='GroupMember')
 
     def __str__(self):

@@ -1,6 +1,5 @@
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout
 from django.contrib.auth.models import User
-from django.dispatch import receiver
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response

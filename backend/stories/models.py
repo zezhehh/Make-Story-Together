@@ -13,10 +13,10 @@ class Story(models.Model):
     title = models.CharField(max_length=20)
     creator = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True, related_name='owned_stories')
     maintainer = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True)
-    plots_count = models.IntegerField()
+    plots_count = models.IntegerField(default=0)
     rule = models.ManyToManyField(Discipline)
     category = models.ManyToManyField(Tag)
-    public = models.CharField(choices=PUBLIC_CHOICES, max_length=20)
+    public = models.CharField(choices=PUBLIC_CHOICES, max_length=20, default=PUBLIC)
     participators = models.ManyToManyField(Writer, related_name='stories', through='Character')
 
     def __str__(self):
@@ -42,6 +42,7 @@ class Plot(models.Model):
 
 
 class Character(models.Model):
+    name = models.CharField(max_length=20, default='person')
     players = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
     participation = models.FloatField()
     appear_at = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='appear_characters')

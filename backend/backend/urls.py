@@ -21,8 +21,8 @@ from writers.api import WriterViewSet
 router = routers.SimpleRouter()
 router.register(r'', WriterViewSet, 'Writer')
 
-urlpatterns = router.urls
-
-urlpatterns += [
+urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+
+urlpatterns += router.urls

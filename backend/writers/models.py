@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class Writer(models.Model):
     user = models.OneToOneField(User, on_delete=True, related_name='account')
-    screen_name = models.CharField(max_length=15)
+    screen_name = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

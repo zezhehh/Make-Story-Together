@@ -1,9 +1,10 @@
-from django.contrib.auth import login as django_login
+from django.contrib.auth import login as django_login, authenticate, logout as django_logout
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import InfoSerializer, SigninSerializer, RegisterSerializer
 from .models import Writer
 
@@ -18,29 +19,37 @@ def create_writer(data):
 # Create your views here.
 class WriterViewSet(viewsets.ModelViewSet):
     serializer_class = InfoSerializer
+    permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         return [self.request.user.account, ]
     
-    @action(detail=False, methods=['POST', ])
+    @action(detail=False, methods=['POST', ], serializer_class=RegisterSerializer, permission_classes=[AllowAny, ])
     def register(self, request):
         serializer = RegisterSerializer(data=request.data)
         
         if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         user, writer = create_writer(serializer.data)
         django_login(request, user)
-        return Response(self.get_serializer(writer).data, status=status.HTTP_201_CREATED)
+        return Response(InfoSerializer(writer).data, status=status.HTTP_201_CREATED)
 
-    # @action(detail=False, methods=['POST', ])
-    # def signin(self, request):
-    #     user = self.get_object()
-    #     serializer = SigninSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         user.set_password(serializer.data['password'])
-    #         user.save()
-    #         return Response({'status': 'password set'})
-    #     else:
-    #         return Response(serializer.errors,
-    #                         status=status.HTTP_400_BAD_REQUEST)
+    @action(detail=False, methods=['POST', ], serializer_class=SigninSerializer, permission_classes=[AllowAny, ])
+    def signin(self, request):
+        serializer = SigninSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'error': 'Username and/or password are not invalid.'}, 
+                status=status.HTTP_400_BAD_REQUEST)
+        data = serializer.data
+        user = authenticate(username=data['username'], password=data['password'])
+        if user is None:
+            return Response({'error': 'Username and/or password are not correct.'}, 
+                status=status.HTTP_400_BAD_REQUEST)
+        django_login(request, user)
+        return Response(InfoSerializer(user.account).data, status=status.HTTP_200_OK)
     
+    @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated, ])
+    def logout(self, request):
+        django_logout(request)
+        # return Response({'next': '/'}, status=status.HTTP_302_FOUND)
+        return Response(status=status.HTTP_200_OK)

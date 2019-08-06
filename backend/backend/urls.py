@@ -14,15 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from rest_framework import routers
 from writers.api import WriterViewSet
+from disciplines.api import DisciplineViewSet
 
 router = routers.SimpleRouter()
+router.register(r'^$', WriterViewSet, 'Writer')
+router.register(r'discipline', DisciplineViewSet, 'Discipline')
 router.register(r'', WriterViewSet, 'Writer')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+] + staticfiles_urlpatterns()
 
 urlpatterns += router.urls

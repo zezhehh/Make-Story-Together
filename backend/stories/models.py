@@ -11,7 +11,7 @@ class Tag(models.Model):
 
 class Story(models.Model):
     title = models.CharField(max_length=20)
-    creator = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
+    creator = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True, related_name='owned_stories')
     maintainer = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True)
     plots_count = models.IntegerField()
     rule = models.ManyToManyField(Discipline)

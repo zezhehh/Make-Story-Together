@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from rest_framework import routers
+from rest_framework_jwt.views import obtain_jwt_token
 from disciplines.api import DisciplineViewSet
 from groups.api import GroupViewSet
 from writers.api import WriterViewSet
@@ -29,6 +30,7 @@ router.register(r'', WriterViewSet, 'Writer')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('token-auth/', obtain_jwt_token)
 ] + staticfiles_urlpatterns()
 
 urlpatterns += router.urls

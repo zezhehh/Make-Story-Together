@@ -30,7 +30,7 @@ class WriterViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         user, writer = create_writer(serializer.data)
-        django_login(request, user)
+        # django_login(request, user)
         return Response(InfoSerializer(writer).data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['POST', ], serializer_class=SigninSerializer, permission_classes=[AllowAny, ])
@@ -44,11 +44,11 @@ class WriterViewSet(viewsets.ModelViewSet):
         if user is None:
             return Response({'error': 'Username and/or password are not correct.'}, 
                 status=status.HTTP_400_BAD_REQUEST)
-        django_login(request, user)
+        # django_login(request, user)
         return Response(InfoSerializer(user.account).data, status=status.HTTP_200_OK)
     
-    @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated, ])
-    def logout(self, request):
-        django_logout(request)
-        # return Response({'next': '/'}, status=status.HTTP_302_FOUND)
-        return Response(status=status.HTTP_200_OK)
+    # @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated, ])
+    # def logout(self, request):
+    #     django_logout(request)
+    #     # return Response({'next': '/'}, status=status.HTTP_302_FOUND)
+    #     return Response(status=status.HTTP_200_OK)

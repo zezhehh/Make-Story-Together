@@ -1,30 +1,30 @@
-const LOG_IN = 'LOG_IN';
-const SIGN_UP = 'SIGN_UP';
-const LOG_OUT = 'LOG_OUT';
+export const LOG_IN = 'LOG_IN';
+export const SIGN_UP = 'SIGN_UP';
+export const LOG_OUT = 'LOG_OUT';
 
 export const STATUS = {
     LOGGED_IN: 'LOGGED_IN',
     ANONYMOUS: 'ANONYMOUS'
 }
 
-export function logIn(username, password) {
-    return {
-        type: LOG_IN,
+export const logIn = (username, screen_name, token) => ({
+    type: LOG_IN,
+    payload: {
         username: username,
-        password: password
+        screen_name: screen_name,
+        token: token
     }
-}
+});
 
-export function signUp(username, password) {
-    return {
-        type: SIGN_UP,
+export const signUp = (username, screen_name, token) => ({
+    type: SIGN_UP,
+    payload: {
         username: username,
-        password: password
+        screen_name: screen_name,
+        token: token
     }
-}
+});
 
-export function logOut() {
-    return {
-        type: LOG_OUT
-    }
-}
+export const logOut = () => ({
+    type: LOG_OUT
+});

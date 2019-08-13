@@ -20,7 +20,6 @@ export function signInPost(username, password) {
             password: password
         }
     ).then(res => {
-        console.log(res.data);
         return {
             success: true,
             username: username,

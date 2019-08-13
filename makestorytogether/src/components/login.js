@@ -118,6 +118,7 @@ class Login extends React.Component {
                         placeholder="Password"
                         value={this.state.password} 
                         onChange={this.handleChangePassword}
+                        onPressEnter={this.state.signup ? this.handleSignUp : this.handleLogin}
                     />
                     {this.state.errorMsg.password}
                 </div>

@@ -9,9 +9,8 @@ const { Header } = Layout;
 class HeaderLayout extends React.Component {
     render() {
         return (
-            <Header className="mst-header" style={{ background: '#fff', padding: 0 }}>
-                header
-                <div style={{ float: "right" }}>
+            <Header className="mst-header" style={{ zIndex: 1, width: '100%', background: '#fff', padding: 0 }}>
+                <div style={{ float: 'right' }}>
                     <span style={{ margin: "2px" }}>{this.props.screen_name}</span>
                     {
                         this.props.status === STATUS.ANONYMOUS ? 
@@ -19,6 +18,7 @@ class HeaderLayout extends React.Component {
                         <Button size='small' onClick={() => this.props.logOut()}>Logout</Button>)
                     }
                 </div>
+                
             </Header>
         );
     }

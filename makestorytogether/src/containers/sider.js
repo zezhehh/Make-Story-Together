@@ -37,7 +37,17 @@ class SiderLayout extends React.Component {
   
     render() {
       return (
-          <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+          <Sider 
+            collapsible 
+            collapsed={this.state.collapsed} 
+            onCollapse={this.onCollapse} 
+            style={{
+              overflow: 'auto',
+              position: 'fixed',
+              left: 0,
+              height: '100%'
+            }}
+          >
             {!this.state.collapsed ? 
             (<div className="logo"><span>Make Story Together</span></div>) :
             (<div className="logo"><Icon type="smile" /></div>)

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { fetchGroupList, fetchGroupDetail } from '../api/groups';
-import { Card, Layout, Icon, Button } from 'antd';
+import { Card, Layout, Icon, Button, Affix } from 'antd';
 import { STATUS, createGroup, doneCreateGroup } from '../actions/groups';
 import WrappedGroupForm from '../components/groupCreationForm';
 import '../styles/group.css';
@@ -59,15 +59,19 @@ class Group extends React.Component {
     render() {  
         return (
             <Layout>
-                <Header className='groupHeader'>
+                <Affix offsetTop={0}>
                     {this.props.token === null ? null : 
-                        <Button onClick={this.handleNewGroup} size='small'>
-                            New Group
-                        </Button>
+                        <Header className='groupHeader' style={{ width: '100%' }}>
+                            <Button onClick={this.handleNewGroup} size='small'>
+                                New Group
+                            </Button>
+                        </Header>
                     }
-                </Header>
-                <Layout>
-                    <Content>
+                </Affix>
+                <Layout 
+                    style={this.props.token === null ? null : { marginTop: 40, width: '100%' }}
+                >
+                    <Content style={{overflow: 'initial'}}>
                         {this.state.groups.map((group) => 
                             <Card 
                                 key={group.id}
@@ -90,6 +94,12 @@ class Group extends React.Component {
                         reverseArrow={true}
                         width="450px"
                         collapsedWidth='0px'
+                        style={{
+                            overflow: 'auto',
+                            position: 'fixed',
+                            right: 0,
+                            height: '100%'
+                        }}
                     >
                         {this.state.collapsed ? null : <Icon onClick={this.toggle} style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '40px' }}  type="menu-unfold" />}
                         {this.state.groupDetail === null ? null :

@@ -18,7 +18,7 @@ class App extends React.Component {
       <Layout style={{ minHeight: '100vh' }}>
         <Router>
           <SiderLayout />
-          <Layout>
+          <Layout style={{ marginLeft: 200 }}>
             <HeaderLayout />
             <Switch>
               <Route exact path="/">

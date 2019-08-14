@@ -10,18 +10,18 @@ export const STATUS = {
 export const logIn = (username, screen_name, token) => ({
     type: LOG_IN,
     payload: {
-        username: username,
-        screen_name: screen_name,
-        token: token
+        username,
+        screen_name,
+        token
     }
 });
 
 export const signUp = (username, screen_name, token) => ({
     type: SIGN_UP,
     payload: {
-        username: username,
-        screen_name: screen_name,
-        token: token
+        username,
+        screen_name,
+        token
     }
 });
 

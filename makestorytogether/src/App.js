@@ -5,7 +5,6 @@ import Explore from './containers/explore';
 import Group from './containers/group';
 import Story from './containers/story';
 import PageNotFound from './containers/notfound'
-import RouteLayout from "./containers/layout";
 import HeaderLayout from './containers/header';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { Layout } from 'antd';
@@ -26,9 +25,9 @@ class App extends React.Component {
                 <Redirect to="/explore" />
               </Route>
               <Route path="/profile" component={Profile} />
-              <RouteLayout path="/explore" component={Explore} />
-              <RouteLayout path="/group" component={Group} />
-              <RouteLayout path="/story" component={Story} />
+              <Route path="/explore" component={Explore} />
+              <Route path="/group" component={Group} />
+              <Route path="/story" component={Story} />
               <Route component={PageNotFound} />
             </Switch>
           </Layout>

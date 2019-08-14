@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from "react-redux";
 import { STATUS, logOut } from '../actions/writers';
 import { Layout, Button } from 'antd';
+import '../styles/layout.css';
 const { Header } = Layout;
 
 
 class HeaderLayout extends React.Component {
     render() {
         return (
-            <Header style={{ background: '#fff', padding: 0 }}>
+            <Header className="mst-header" style={{ background: '#fff', padding: 0 }}>
                 header
                 <div style={{ float: "right" }}>
                     <span style={{ margin: "2px" }}>{this.props.screen_name}</span>

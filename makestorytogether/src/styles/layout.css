@@ -3,3 +3,8 @@
   font-size: 130%;
   margin: 20px 8% 20px 8%
 }
+
+.mst-header.ant-layout-header {
+  line-height: 40px;
+  height: 40px;
+}

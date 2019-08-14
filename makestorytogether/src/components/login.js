@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { Input, Button } from 'antd';
+import { Input, Button, Icon } from 'antd';
 import { logIn, signUp } from "../actions/writers";
 import { signInPost, registerPost } from '../api/writers';
 import '../styles/login.css';
@@ -104,7 +104,8 @@ class Login extends React.Component {
                     ) : (null)
                 }
                 <div>
-                    <Input 
+                    <Input
+                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         className={this.state.errorMsg.username === null && this.state.errorMsg.error === null ? (null) : ("fail")}
                         placeholder="Username" 
                         value={this.state.username} 
@@ -114,6 +115,7 @@ class Login extends React.Component {
                 </div>
                 <div>
                     <Input.Password
+                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         className={this.state.errorMsg.password === null && this.state.errorMsg.error === null ? (null) : ("fail")}
                         placeholder="Password"
                         value={this.state.password} 

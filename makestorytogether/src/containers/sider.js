@@ -6,9 +6,30 @@ const { Sider } = Layout;
 // const { SubMenu } = Menu;
 
 class SiderLayout extends React.Component {
-    state = {
-      collapsed: false,
-    };
+    constructor() {
+      super();
+      let currentKey;
+      
+      switch (window.location.pathname.split('/')[1]) {
+        case 'group':
+          currentKey = '3';
+          break;
+        case 'story':
+          currentKey = '2';
+          break;
+        case 'profile':
+          currentKey = '9';
+          break;
+        default:
+          currentKey = '1';
+          break;
+      }
+
+      this.state = {
+        collapsed: false,
+        currentKey
+      };
+    }
   
     onCollapse = collapsed => {
       this.setState({ collapsed });
@@ -22,7 +43,7 @@ class SiderLayout extends React.Component {
             (<div className="logo"><Icon type="smile" /></div>)
             }
             
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+            <Menu theme="dark" defaultSelectedKeys={[this.state.currentKey]} mode="inline">
               <Menu.Item key="1">
                 <Link to='/explore'>
                   <Icon type="pie-chart" />

@@ -46,7 +46,7 @@ class WriterViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST)
         # django_login(request, user)
         if not Writer.objects.filter(user=user).exists():
-            Writer.objects.create(user=user, screen_name='Anonymous')
+            Writer.objects.create(user=user, screen_name=f'Anonymous_{user.username}')
         return Response(InfoSerializer(user.account).data, status=status.HTTP_200_OK)
     
     # @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated, ])

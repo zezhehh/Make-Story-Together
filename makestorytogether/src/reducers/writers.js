@@ -4,7 +4,7 @@ const initialState = {
     status: STATUS.ANONYMOUS,
     username: undefined,
     screen_name: 'Anonymous',
-    token: undefined
+    token: null
 }
 
 function logIn(state, action) {

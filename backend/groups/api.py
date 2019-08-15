@@ -37,5 +37,14 @@ class GroupViewSet(viewsets.ModelViewSet):
     @action(detail=True, permission_classes=[IsAuthenticated, ], methods=['POST', ])
     def join(self, request, pk=None):
         group = self.get_object()
-        GroupMember.objects.create(member=self.request.user.account, group=group)
+        if not group.members.filter(id=self.request.user.account.id).exists():
+            GroupMember.objects.create(member=self.request.user.account, group=group)
+        return Response(status=status.HTTP_200_OK)
+
+    @action(detail=True, permission_classes=[IsAuthenticated, ], methods=['POST', ])
+    def quit(self, request, pk=None):
+        group = self.get_object()
+        if GroupMember.objects.filter(member=self.request.user.account, group=group).exists():
+            instance = GroupMember.objects.get(member=self.request.user.account, group=group)
+            instance.delete()
         return Response(status=status.HTTP_200_OK)

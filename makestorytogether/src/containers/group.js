@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems } from '../api/items';
+import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems, deleteItem } from '../api/items';
+import { joinGroup, quitGroup } from '../api/groups';
 import { Card, Layout, Icon, Menu } from 'antd';
 import { STATUS, createGroup, doneCreateGroup } from '../actions/groups';
 import WrappedGroupForm from '../components/groupCreationForm';
@@ -25,7 +26,7 @@ class Group extends React.Component {
 
     fetch(that, groupID=null) {
         console.log('fetch group list');
-        let orderBy = this.state.current === 'orderByDate' ? 'date' : 'number';
+        let orderBy = that.state.current === 'orderByDate' ? 'date' : 'number';
         fetchItemList('group', orderBy).then((groups) => {
             that.setState({groups});
         })
@@ -62,6 +63,19 @@ class Group extends React.Component {
         fetchItemDetail(groupID).then((groupDetail) => {
             this.setState({groupDetail});
         });
+    }
+
+    handleJoin = groupID => {
+        joinGroup(this.props.token, groupID).then(() => this.fetchJoined());
+        this.setState({current: 'joined'});
+    }
+
+    handleQuit = groupID => {
+        quitGroup(this.props.token, groupID).then(() => this.fetchJoined());
+    }
+
+    handleDelete = groupID => {
+        deleteItem(this.props.token, groupID).then(() => this.fetchOwned());
     }
 
     toggle = () => {
@@ -117,7 +131,15 @@ class Group extends React.Component {
                             title={group.name} 
                             extra={
                                 <div>
-                                    <Icon type="user-add" />
+                                    {this.state.current === 'joined' ? 
+                                    <Icon onClick={() => this.handleQuit(group.id)} type="user-delete" /> : null
+                                    }
+                                    {this.state.current === 'my' ? 
+                                    <Icon onClick={() => this.handleDelete(group.id)} type="usergroup-delete" /> : null
+                                    }
+                                    {this.state.current !== 'my' && this.state.current != 'joined' ? 
+                                    <Icon onClick={() => this.handleJoin(group.id)} type="user-add" /> : null
+                                    }
                                     <Icon onClick={() => this.handleMore(group.id)} type="more" />
                                 </div>
                             } 

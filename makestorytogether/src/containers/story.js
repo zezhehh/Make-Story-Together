@@ -25,7 +25,7 @@ class Story extends React.Component {
 
     fetch(that, storyID=null) {
         console.log('fetch story list');
-        let orderBy = this.state.current === 'orderByDate' ? 'date' : 'number';
+        let orderBy = that.state.current === 'orderByDate' ? 'date' : 'number';
         fetchItemList('story', orderBy).then((stories) => {
             that.setState({stories});
         })
@@ -37,13 +37,13 @@ class Story extends React.Component {
     }
 
     fetchOwned = () => {
-        fetchOwnedItems(this.props.token, 'stories').then((stories) => {
+        fetchOwnedItems(this.props.token, 'story').then((stories) => {
             this.setState({stories});
         })
     }
 
     fetchJoined = () => {
-        fetchJoinedItems(this.props.token, 'stories').then((stories) => {
+        fetchJoinedItems(this.props.token, 'story').then((stories) => {
             this.setState({stories});
         })
     }

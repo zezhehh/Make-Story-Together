@@ -45,7 +45,7 @@ class HeaderLayout extends React.Component {
                     {
                         this.props.status === STATUS.ANONYMOUS ? 
                         (<Button href='/profile' size='small'>Login</Button>) : (
-                        <Button size='small' onClick={() => this.props.logOut()}>Logout</Button>)
+                        <Button href='/profile' size='small' onClick={() => this.props.logOut()}>Logout</Button>)
                     }
                 </div>
                 

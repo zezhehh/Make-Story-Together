@@ -64,25 +64,25 @@ class SiderLayout extends React.Component {
             >
               <Menu.Item key="/explore">
                 <Link to='/explore'>
-                  <Icon type="pie-chart" />
+                  <Icon type="ellipsis" />
                   <span>Explore</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="/profile">
                 <Link to='/profile'>
-                  <Icon type="file" />
+                  <Icon type="idcard" />
                   <span>Account</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="/story">
                 <Link to='/story'>
-                  <Icon type="desktop" />
+                  <Icon type="profile" />
                   <span>Story</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="/group">
                 <Link to='/group'>
-                  <Icon type="user" />
+                  <Icon type="team" />
                   <span>Group</span>
                 </Link>
               </Menu.Item>

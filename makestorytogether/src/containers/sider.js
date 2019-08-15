@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Layout, Menu, Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import { Affix, Layout, Menu, Icon } from 'antd';
+import { Link, withRouter } from 'react-router-dom';
 const { Sider } = Layout;
 // const { SubMenu } = Menu;
 
@@ -30,47 +30,57 @@ class SiderLayout extends React.Component {
         currentKey
       };
     }
-  
+
     onCollapse = collapsed => {
       this.setState({ collapsed });
     };
   
     render() {
       return (
+        <Affix offsetTop={0}>
+          <Sider 
+            collapsible 
+            collapsed={this.state.collapsed}
+            trigger={null}
+            style={{
+              position: 'fixed',
+              height: '100%'
+            }}
+          ></Sider>
           <Sider 
             collapsible 
             collapsed={this.state.collapsed} 
-            onCollapse={this.onCollapse} 
-            style={{
-              height: 'auto',
-              width: '20em'
-            }}
+            onCollapse={this.onCollapse}
           >
             {!this.state.collapsed ? 
             (<div className="logo"><span>Make Story Together</span></div>) :
             (<div className="logo"><Icon type="smile" /></div>)
             }
             
-            <Menu theme="dark" defaultSelectedKeys={[this.state.currentKey]} mode="inline">
-              <Menu.Item key="1">
+            <Menu 
+              theme="dark" 
+              defaultSelectedKeys={['/explore']}
+              selectedKeys={[this.props.location.pathname]}
+            >
+              <Menu.Item key="/explore">
                 <Link to='/explore'>
                   <Icon type="pie-chart" />
                   <span>Explore</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="9">
+              <Menu.Item key="/profile">
                 <Link to='/profile'>
                   <Icon type="file" />
                   <span>Account</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="2">
+              <Menu.Item key="/story">
                 <Link to='/story'>
                   <Icon type="desktop" />
                   <span>Story</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="3">
+              <Menu.Item key="/group">
                 <Link to='/group'>
                   <Icon type="user" />
                   <span>Group</span>
@@ -91,9 +101,9 @@ class SiderLayout extends React.Component {
               </SubMenu> */}
             </Menu>
           </Sider>
+        </Affix>
       );
     }
   }
-  
-  export default SiderLayout;
-  
+
+export default withRouter(SiderLayout);

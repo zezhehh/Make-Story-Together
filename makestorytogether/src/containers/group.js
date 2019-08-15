@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { fetchGroupList, fetchGroupDetail } from '../api/groups';
-import { Card, Layout, Icon, Button } from 'antd';
+import { fetchItemList, fetchItemDetail } from '../api/items';
+import { Card, Layout, Icon } from 'antd';
 import { STATUS, createGroup, doneCreateGroup } from '../actions/groups';
 import WrappedGroupForm from '../components/groupCreationForm';
 import '../styles/group.css';
@@ -22,11 +22,11 @@ class Group extends React.Component {
 
     fetch(that, groupID=null) {
         console.log('fetch group list');
-        fetchGroupList().then((groups) => {
+        fetchItemList().then((groups) => {
             that.setState({groups});
         })
         if (groupID != null) {
-            fetchGroupDetail(groupID).then((groupDetail) => {
+            fetchItemDetail(groupID).then((groupDetail) => {
                 that.setState({groupDetail});
             });
         }
@@ -43,7 +43,7 @@ class Group extends React.Component {
     }
 
     handleMore = groupID => {
-        fetchGroupDetail(groupID).then((groupDetail) => {
+        fetchItemDetail(groupID).then((groupDetail) => {
             this.setState({groupDetail});
         });
     }

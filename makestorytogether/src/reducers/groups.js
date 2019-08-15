@@ -1,4 +1,4 @@
-import { CREATE_GROUP, DONE_CREATE_GROUP, QUIT_GROUP, JOIN_GROUP, DISMISS_GROUP, STATUS } from '../actions/groups';
+import { CREATE_GROUP, DONE_CREATE_GROUP, STATUS } from '../actions/groups';
 
 const initialState = {
     status: STATUS.NORMAL_VIEW

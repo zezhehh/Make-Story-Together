@@ -19,7 +19,7 @@ class App extends React.Component {
       <Layout style={{ minHeight: '100vh' }}>
         <Router>
           <SiderLayout />
-          <Layout style={{  }}>
+          <Layout>
             <HeaderLayout />
             <Content style={{ marginTop: '40px'}}>
               <Switch>

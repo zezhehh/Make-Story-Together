@@ -2,10 +2,10 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { createItem } from '../api/items';
-import { doneCreateGroup } from '../actions/groups';
+import { doneCreateStory } from '../actions/stories';
 import { Form, Input, Button } from 'antd';
 
-class GroupCreationForm extends React.Component {
+class StoryCreationForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -13,13 +13,13 @@ class GroupCreationForm extends React.Component {
             return
         }
         createItem(this.props.token, {
-            owner: this.props.screen_name,
+            creator: this.props.screen_name,
             ...values
-        }).then((res) => {
+        }, 'story').then((res) => {
             if (!res.success) {
-                console.log('create group fail')
+                console.log('create story fail')
             }
-            this.props.doneCreateGroup();
+            this.props.doneCreateStory();
             this.props.callback(this.props.that, res.id);
         })
     
@@ -31,20 +31,11 @@ class GroupCreationForm extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <Form.Item>
-          {getFieldDecorator('name', {
-            rules: [{ required: true, message: 'Please input the group name!' }],
+          {getFieldDecorator('title', {
+            rules: [{ required: true, message: 'Please input the story title!' }],
           })(
             <Input
-              placeholder="Group name"
-            />,
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('description', {
-            rules: [{ required: true, message: 'Please input the group description!' }],
-          })(
-            <Input
-              placeholder="Description"
+              placeholder="Story title"
             />,
           )}
         </Form.Item>
@@ -58,7 +49,7 @@ class GroupCreationForm extends React.Component {
   }
 }
 
-const WrappedGroupForm = Form.create()(GroupCreationForm);
+const WrappedStoryForm = Form.create()(StoryCreationForm);
 
 const mapStateToProps = (state) => {
     return {
@@ -67,4 +58,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {doneCreateGroup})(WrappedGroupForm);
+export default connect(mapStateToProps, {doneCreateStory})(WrappedStoryForm);

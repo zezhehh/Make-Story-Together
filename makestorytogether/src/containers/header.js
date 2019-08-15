@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { STATUS, logOut } from '../actions/writers';
 import { createGroup } from '../actions/groups';
+import { createStory } from '../actions/stories';
 import { Link } from 'react-router-dom';
 import { Layout, Button } from 'antd';
 import '../styles/layout.css';
@@ -13,6 +14,10 @@ class HeaderLayout extends React.Component {
         this.props.createGroup();
     }
 
+    handleNewStory = () => {
+        this.props.createStory();
+    }
+
     render() {
         return (
             <Header className="mst-header" style={{ position: 'fixed', zIndex: 1, width: '100%', background: '#fff', padding: 0 }}>
@@ -20,11 +25,19 @@ class HeaderLayout extends React.Component {
                     {
                         this.props.status === STATUS.ANONYMOUS ? 
                         null : (
-                        <Link to='/group'>
-                            <Button onClick={this.handleNewGroup} size='small'>
-                                New Group
-                            </Button>
-                        </Link>)
+                        <div>
+                            <Link to='/group'>
+                                <Button onClick={this.handleNewGroup} size='small'>
+                                    New Group
+                                </Button>
+                            </Link>
+                            <Link to='/story'>
+                                <Button onClick={this.handleNewStory} size='small'>
+                                    New Story
+                                </Button>
+                            </Link>
+                        </div>
+                        )
                     }
                 </div>
                 <div className='float-right'>
@@ -49,4 +62,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {logOut, createGroup})(HeaderLayout);
+export default connect(mapStateToProps, {logOut, createGroup, createStory})(HeaderLayout);

@@ -13,8 +13,8 @@ class WriterSrializer(serializers.ModelSerializer):
 
 
 class DisciplineSerializer(serializers.ModelSerializer):
-    blacklist = WriterSrializer(many=True)
-    whitelist = WriterSrializer(many=True)
+    blacklist = WriterSrializer(many=True, required=False)
+    whitelist = WriterSrializer(many=True, required=False)
 
     class Meta:
         model = Discipline
@@ -22,11 +22,13 @@ class DisciplineSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         blacklist_user = []
-        for user in validated_data['blacklist']:
-            blacklist_user.append(Writer.objects.get(screen_name=user['screen_name']))
+        if 'blacklist' in validated_data:
+            for user in validated_data['blacklist']:
+                blacklist_user.append(Writer.objects.get(screen_name=user['screen_name']))
         whitelist_user = []
-        for user in validated_data['whitelist']:
-            whitelist_user.append(Writer.objects.get(screen_name=user['screen_name']))
+        if 'whitelist' in validated_data:
+            for user in validated_data['whitelist']:
+                whitelist_user.append(Writer.objects.get(screen_name=user['screen_name']))
         registration_time = -1 if 'registration_time' not in validated_data else validated_data['registration_time']
         update_cycle = -1 if 'update_cycle' not in validated_data else validated_data['update_cycle']
         discipline = Discipline.objects.create(registration_time=registration_time, update_cycle=update_cycle)

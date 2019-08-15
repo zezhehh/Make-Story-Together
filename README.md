@@ -9,7 +9,21 @@
 - Model Details
 - UI
 - API
-- Authentification
+  - group management
+    - discipline add/delete
+    - member add/delete/join/quit
+  - filter groups
+    - owned
+    - joined
+    - by number of members
+    - by date
+  - filter stories
+    - owned
+    - joined
+    - by number of members
+    - by date
+    - by group
+<!-- - Authentification -->
 - Feed - Celery
 - Cache to speed up / reselect
 

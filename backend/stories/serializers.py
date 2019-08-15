@@ -1,9 +1,16 @@
 from rest_framework import serializers
-from .models import Story
+from .models import Story, Tag
+from writers.models import Writer
 from groups.models import Group
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = '__all__'
+    
+
 class StorySerializer(serializers.ModelSerializer):
-    maintainer = serializers.CharField(source='maintainer.name')
+    maintainer = serializers.CharField(source='maintainer.name', required=False)
     creator = serializers.CharField(source='creator.screen_name')
 
     class Meta:
@@ -27,7 +34,5 @@ class StorySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         creator = Writer.objects.get(screen_name=validated_data['creator']['screen_name'])
-        maintainer = Group.objects.get(name=validated_data['maintainer']['name'])
-        story = Story.objects.create(name=validated_data['title'], creator=creator, maintainer=maintainer)
-        GroupMember.objects.create(member=owner, group=group)
-        return group
+        story = Story.objects.create(title=validated_data['title'], creator=creator)
+        return story

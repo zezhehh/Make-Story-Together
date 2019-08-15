@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import { Layout } from 'antd';
 import './styles/layout.css';
 import 'antd/dist/antd.css';
+const { Content } = Layout;
 
 class App extends React.Component {
 
@@ -18,18 +19,20 @@ class App extends React.Component {
       <Layout style={{ minHeight: '100vh' }}>
         <Router>
           <SiderLayout />
-          <Layout style={{ marginLeft: 200 }}>
+          <Layout style={{  }}>
             <HeaderLayout />
-            <Switch>
-              <Route exact path="/">
-                <Redirect to="/explore" />
-              </Route>
-              <Route path="/profile" component={Profile} />
-              <Route path="/explore" component={Explore} />
-              <Route path="/group" component={Group} />
-              <Route path="/story" component={Story} />
-              <Route component={PageNotFound} />
-            </Switch>
+            <Content style={{ marginTop: '40px'}}>
+              <Switch>
+                <Route exact path="/">
+                  <Redirect to="/explore" />
+                </Route>
+                <Route path="/profile" component={Profile} />
+                <Route path="/explore" component={Explore} />
+                <Route path="/group" component={Group} />
+                <Route path="/story" component={Story} />
+                <Route component={PageNotFound} />
+              </Switch>
+            </Content>
           </Layout>
         </Router>
       </Layout>

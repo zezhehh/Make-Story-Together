@@ -42,10 +42,8 @@ class SiderLayout extends React.Component {
             collapsed={this.state.collapsed} 
             onCollapse={this.onCollapse} 
             style={{
-              overflow: 'auto',
-              position: 'fixed',
-              left: 0,
-              height: '100%'
+              height: 'auto',
+              width: '20em'
             }}
           >
             {!this.state.collapsed ? 

@@ -6,23 +6,15 @@
 
 ## TODO
 
-- Model Details
+- Model Details TBD
+  - group invitation
 - UI
 - API
+  - different user: different detail info
+  - paginate
   - group management
     - discipline add/delete
     - member add/delete/join/quit
-  - filter groups
-    - owned
-    - joined
-    - by number of members
-    - by date
-  - filter stories
-    - owned
-    - joined
-    - by number of members
-    - by date
-    - by group
 <!-- - Authentification -->
 - Feed - Celery
 - Cache to speed up / reselect
@@ -34,26 +26,38 @@
 - `/register/`
 - `/signin/`
 - `/logout/`
-- `/follow/`
+- `/follow/` TODO
 
 ### Group
 
-- `/group/join/`
-- `/group/leave/`
-- `/group/create/`
-- `/group/dismiss/` When #members==0, group is archived
-
-### Displine
-
-- `/displine/create/`
-- `/displine/apply/`
-- `/displine/delete/`
-
+- `/group/{pk}/join/`
+- `/group/(?order=number)`
+  - `GET` groups list
+  - `POST` create group
+- `/group/{pk}/`
+  - `GET` fetch detail
+  - `DELETE` delete group
+- `/group/my/`
+  - owned groups list
+- `/group/joined/`
+  - joined groups list
 
 ### Story
 
-- `/story/create/`
-- `/story/delete/`
+- `/story/(?order=number&&group={group_id})`
+  - `GET` stories list
+  - `POST` create story
+- `/story/{pk}/`
+  - `GET` fetch detail
+  - `DELETE` delete story
+-  `/story/my/`
+  - owned stories list
+- `/story/joined/`
+  - joined stories list
+
+TODO::
+
+
 - `/story/configure/`
 - `/story/follow/`
 - `/story/unfollow/`

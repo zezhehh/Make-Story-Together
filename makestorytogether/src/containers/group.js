@@ -1,18 +1,21 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { fetchItemList, fetchItemDetail } from '../api/items';
-import { Card, Layout, Icon } from 'antd';
+import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems } from '../api/items';
+import { Card, Layout, Icon, Menu } from 'antd';
 import { STATUS, createGroup, doneCreateGroup } from '../actions/groups';
 import WrappedGroupForm from '../components/groupCreationForm';
 import '../styles/group.css';
 const { Sider, Content } = Layout;
+const { SubMenu } = Menu;
+
 
 class Group extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             groups: [], // default collapsed
-            groupDetail: null
+            groupDetail: null,
+            current: 'orderByDate'
         }
     }
 
@@ -22,7 +25,8 @@ class Group extends React.Component {
 
     fetch(that, groupID=null) {
         console.log('fetch group list');
-        fetchItemList().then((groups) => {
+        let orderBy = this.state.current === 'orderByDate' ? 'date' : 'number';
+        fetchItemList('group', orderBy).then((groups) => {
             that.setState({groups});
         })
         if (groupID != null) {
@@ -30,6 +34,18 @@ class Group extends React.Component {
                 that.setState({groupDetail});
             });
         }
+    }
+
+    fetchOwned = () => {
+        fetchOwnedItems(this.props.token).then((groups) => {
+            this.setState({groups});
+        })
+    }
+
+    fetchJoined = () => {
+        fetchJoinedItems(this.props.token).then((groups) => {
+            this.setState({groups});
+        })
     }
 
     collaspedState = () => {
@@ -53,10 +69,47 @@ class Group extends React.Component {
         this.props.doneCreateGroup();
     }
 
+    handleClick = e => {
+        this.setState({
+          current: e.key,
+        });
+        switch (e.key) {
+            case 'my':
+                this.fetchOwned();
+                break;
+            case 'joined':
+                this.fetchJoined();
+                break;
+            default:
+                this.fetch(this);
+        }
+    };
+
     render() {  
         return (
             <Layout>
                 <Content style={{overflow: 'initial'}}>
+                    <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
+                        <SubMenu
+                            title='All Groups'
+                        >
+                            <Menu.Item key="orderByDate">Order By Date</Menu.Item>
+                            <Menu.Item key="orderByNumber">Order By #Member</Menu.Item>
+                        </SubMenu>
+                        {
+                            this.props.token === null ? null :
+                            (<Menu.Item key="my">
+                                Owned Groups
+                            </Menu.Item>)
+                        }
+                        {
+                            this.props.token === null ? null :
+                            (<Menu.Item key="joined">
+                                Joined Groups
+                            </Menu.Item>)
+                        }
+                        
+                    </Menu>
                     {this.state.groups.map((group) => 
                         <Card 
                             className='groupCard'

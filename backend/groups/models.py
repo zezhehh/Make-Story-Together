@@ -9,6 +9,7 @@ class Group(models.Model):
     description = models.TextField()
     rule = models.ManyToManyField(Discipline)
     members = models.ManyToManyField(Writer, related_name='groups', through='GroupMember')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

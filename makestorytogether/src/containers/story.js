@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { fetchItemList, fetchItemDetail } from '../api/items';
-import { Card, Layout, Icon } from 'antd';
+import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems } from '../api/items';
+import { Card, Layout, Icon, Menu } from 'antd';
 import { STATUS, createStory, doneCreateStory } from '../actions/stories';
 import WrappedStoryForm from '../components/storyCreationForm';
 import '../styles/story.css';
 const { Sider, Content } = Layout;
-
+const { SubMenu } = Menu;
 
 
 class Story extends React.Component {
@@ -14,7 +14,8 @@ class Story extends React.Component {
         super(props);
         this.state = {
             stories: [], // default collapsed
-            storyDetail: null
+            storyDetail: null,
+            current: 'orderByDate'
         }
     }
 
@@ -24,7 +25,8 @@ class Story extends React.Component {
 
     fetch(that, storyID=null) {
         console.log('fetch story list');
-        fetchItemList('story').then((stories) => {
+        let orderBy = this.state.current === 'orderByDate' ? 'date' : 'number';
+        fetchItemList('story', orderBy).then((stories) => {
             that.setState({stories});
         })
         if (storyID != null) {
@@ -32,6 +34,18 @@ class Story extends React.Component {
                 that.setState({storyDetail});
             });
         }
+    }
+
+    fetchOwned = () => {
+        fetchOwnedItems(this.props.token, 'stories').then((stories) => {
+            this.setState({stories});
+        })
+    }
+
+    fetchJoined = () => {
+        fetchJoinedItems(this.props.token, 'stories').then((stories) => {
+            this.setState({stories});
+        })
     }
 
     collaspedState = () => {
@@ -55,10 +69,46 @@ class Story extends React.Component {
         this.props.doneCreateStory();
     }
 
+    handleClick = e => {
+        this.setState({
+          current: e.key,
+        });
+        switch (e.key) {
+            case 'my':
+                this.fetchOwned();
+                break;
+            case 'joined':
+                this.fetchJoined();
+                break;
+            default:
+                this.fetch(this);
+        }
+    };
+
     render() {  
         return (
             <Layout>
                 <Content style={{overflow: 'initial'}}>
+                <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
+                    <SubMenu
+                        title='All Stories'
+                    >
+                        <Menu.Item key="orderByDate">Order By Date</Menu.Item>
+                        <Menu.Item key="orderByNumber">Order By #Member</Menu.Item>
+                    </SubMenu>
+                    {
+                            this.props.token === null ? null :
+                            (<Menu.Item key="my">
+                                Owned Stories
+                            </Menu.Item>)
+                        }
+                        {
+                            this.props.token === null ? null :
+                            (<Menu.Item key="joined">
+                                Joined Stories
+                            </Menu.Item>)
+                        }
+                </Menu>
                     {this.state.stories.map((story) => 
                         <Card 
                             className='storyCard'

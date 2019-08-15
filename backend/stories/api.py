@@ -25,10 +25,10 @@ class StoryViewSet(viewsets.ModelViewSet):
         if 'order' in params:
             if params['order'] == 'number':
                 qs = qs.order_by('-member_count')
-        if 'group' in params:
+        if 'group' in params and params['group'] != '':
             group = Group.objects.get(id=int(params['group']))
             qs = qs.filter(maintainer=group)
-        return qs
+        return qs.order_by('-created_at')
 
     @action(detail=False, permission_classes=[IsAuthenticated, ])
     def my(self, request):

@@ -28,9 +28,47 @@ function getURL(itemType) {
     return API_URL;
 }
 
-export function fetchItemList(itemType='group') {
+export function fetchItemList(itemType='group', orderBy='date', groupID='') {
     const API_URL = getURL(itemType);
-    return axios.get(`${API_URL}/`)
+    return axios.get(`${API_URL}/?order=${orderBy}&group=${groupID}`)
+        .then((res) => {
+            return res.data
+        })
+        .catch((error) => {
+            return {
+                message: error.response.data,
+                success: false
+            }
+        });
+};
+
+export function fetchOwnedItems(token, itemType='group') {
+    const API_URL = getURL(itemType);
+    return axios.get(`${API_URL}/my/`,
+        {
+            'headers': {
+                Authorization: `JWT ${token}`
+            }
+        })
+        .then((res) => {
+            return res.data
+        })
+        .catch((error) => {
+            return {
+                message: error.response.data,
+                success: false
+            }
+        });
+};
+
+export function fetchJoinedItems(token, itemType='group') {
+    const API_URL = getURL(itemType);
+    return axios.get(`${API_URL}/joined/`,
+        {
+            'headers': {
+                Authorization: `JWT ${token}`
+            }
+        })
         .then((res) => {
             return res.data
         })

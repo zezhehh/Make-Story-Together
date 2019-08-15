@@ -19,8 +19,8 @@ class GroupViewSet(viewsets.ModelViewSet):
         params = self.request.query_params
         if 'order' in params:
             if params['order'] == 'number':
-                return Group.objects.annotate(member_count=Count('members')).order_by('-member_count')
-        return Group.objects.all()
+                return Group.objects.annotate(member_count=Count('members')).order_by('-member_count').order_by('-created_at')
+        return Group.objects.all().order_by('-created_at')
 
     @action(detail=False, permission_classes=[IsAuthenticated, ])
     def my(self, request):

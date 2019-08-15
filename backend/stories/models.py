@@ -21,6 +21,7 @@ class Story(models.Model):
     category = models.ManyToManyField(Tag, blank=True)
     public = models.CharField(choices=PUBLIC_CHOICES, max_length=20, default=PUBLIC)
     participators = models.ManyToManyField(Writer, related_name='stories', through='Character', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title

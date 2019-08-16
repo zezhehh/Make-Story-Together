@@ -10,6 +10,7 @@ import HeaderLayout from './containers/header';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { Layout, BackTop } from 'antd';
 import { retrieveInfo } from "./actions/writers";
+import { verifyToken } from './api/writers';
 import { connect } from 'react-redux';
 import ScrollToTop from './containers/scrollToTop';
 import './styles/layout.css';
@@ -28,11 +29,16 @@ class App extends React.Component {
     if (token === null) {
       return
     }
-    this.props.retrieveInfo({
-      username,
-      screen_name,
-      token
-    })
+    verifyToken(token)
+    .then((newToken) => {
+      if (newToken === null) return;
+      this.props.retrieveInfo({
+        username,
+        screen_name,
+        newToken
+      })
+    });
+    
   }
 
   render() {

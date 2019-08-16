@@ -71,3 +71,16 @@ export function searchByScreenName(screenName) {
         console.log('search fail')
     })
 }
+
+export function verifyToken(token) {
+    return axios.post(`${WRITER_API}/token-verify/`,
+    {
+        token
+    })
+    .then((res) => {
+        return res.data.token
+    })
+    .catch(() => {
+        return null
+    })
+}

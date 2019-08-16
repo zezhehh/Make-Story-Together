@@ -35,6 +35,7 @@ export function fetchItemList(itemType='group', orderBy='date', groupID='') {
             return res.data
         })
         .catch((error) => {
+            console.log(error);
             return {
                 message: error.response.data,
                 success: false

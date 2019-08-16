@@ -1,10 +1,26 @@
-import { LOG_IN, LOG_OUT, SIGN_UP, STATUS } from '../actions/writers';
+import { LOG_IN, LOG_OUT, SIGN_UP, STATUS, RETRIEVE_INFO } from '../actions/writers';
 
 const initialState = {
     status: STATUS.ANONYMOUS,
     username: undefined,
     screen_name: 'Anonymous',
     token: null
+}
+
+function retrieveInfo(state, action) {
+    switch (state.status) {
+        case STATUS.ANONYMOUS: {
+            return {
+                status: STATUS.LOGGED_IN,
+                ...action.payload
+            }
+        }
+        case STATUS.LOGGED_IN: {
+            return state
+        }
+        default:
+            return state;
+    }
 }
 
 function logIn(state, action) {
@@ -75,6 +91,9 @@ export default function(state = initialState, action) {
         }
         case SIGN_UP: {
             return signUp(state, action)
+        }
+        case RETRIEVE_INFO: {
+            return retrieveInfo(state, action)
         }
         default:
             return state

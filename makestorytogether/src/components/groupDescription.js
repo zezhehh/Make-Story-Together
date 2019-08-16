@@ -61,35 +61,45 @@ class GroupDescription extends React.Component {
                     }
                 </Descriptions.Item>
                 <Descriptions.Item label='Blacklist' span={3}>
-                    {this.state.groupDetail.rule.length === 0 ? null :
+                    {this.state.groupDetail.rule.length !== 0 ? 
                         (
-                            this.state.groupDetail.rule.map((discipline) => 
-                            <div key={discipline.id}>
-                                <strong>In discipline {discipline.id}:</strong>
-                                {
-                                    discipline.blacklist.map((user) => 
-                                        <div key={user}>{user}</div>
+                            this.state.groupDetail.rule.map((discipline) => {
+                                if (discipline.blacklist.length !== 0) {
+                                    return (
+                                        <div key={discipline.id}>
+                                            <strong>In discipline {discipline.id}:</strong>
+                                            {
+                                                discipline.blacklist.map((user) => 
+                                                    <div key={user}>{user}</div>
+                                                )
+                                            }
+                                        </div>
                                     )
                                 }
-                            </div>
+                            }
                             )
-                        )
+                        ) : null
                     }
                 </Descriptions.Item>
                 <Descriptions.Item label='Whitelist' span={3}>
-                    {this.state.groupDetail.rule.length === 0 ? null :
+                    {this.state.groupDetail.rule.length !== 0 ? 
                         (
-                            this.state.groupDetail.rule.map((discipline) => 
-                            <div key={discipline.id}>
-                                <strong>In discipline {discipline.id}:</strong>
-                                {
-                                    discipline.whitelist.map((user) => 
-                                        <div key={user}>{user}</div>
+                            this.state.groupDetail.rule.map((discipline) => {
+                                if (discipline.whitelist.length !== 0) {
+                                    return (
+                                        <div key={discipline.id}>
+                                            <strong>In discipline {discipline.id}:</strong>
+                                            {
+                                                discipline.whitelist.map((user) => 
+                                                    <div key={user}>{user}</div>
+                                                )
+                                            }
+                                        </div>
                                     )
                                 }
-                            </div>
+                            }
                             )
-                        )
+                        ) : null
                     }
                 </Descriptions.Item>
             </Descriptions>

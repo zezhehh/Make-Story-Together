@@ -4,7 +4,7 @@ import { API_HOST } from './constants';
 
 const STORY_API = `${API_HOST}/story`;
 const GROUP_API = `${API_HOST}/group`;
-// const DISCIPLINE_API = `${API_HOST}/discipline`;
+const DISCIPLINE_API = `${API_HOST}/discipline`;
 const TAG_API = `${API_HOST}/tag`;
 
 function getURL(itemType) {
@@ -16,9 +16,9 @@ function getURL(itemType) {
         case 'story':
             API_URL = STORY_API;
             break;
-        // case 'discipline':
-        //     API_URL = DISCIPLINE_API;
-        //     break;
+        case 'discipline':
+            API_URL = DISCIPLINE_API;
+            break;
         case 'tag':
             API_URL = TAG_API;
             break;

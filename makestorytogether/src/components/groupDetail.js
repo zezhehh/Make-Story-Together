@@ -17,16 +17,15 @@ class GroupDetail extends React.Component {
     }
 
     componentDidMount() {
-        this.fetch();
+        this.fetch(this);
     }
 
-    fetch = () => {
-        fetchItemDetail(this.state.groupId, 'group', this.props.token)
+    fetch = (that) => {
+        fetchItemDetail(that.state.groupId, 'group', that.props.token)
         .then((groupDetail) => {
-            this.setState({
+            that.setState({
                 groupDetail
             });
-            console.log(groupDetail);
         });
     }
 
@@ -58,7 +57,12 @@ class GroupDetail extends React.Component {
                     }
                     {
                         !this.state.manage ? null : 
-                        <GroupManage match={this.props.match} groupDetail={this.state.groupDetail} />
+                        <GroupManage 
+                            match={this.props.match} 
+                            groupDetail={this.state.groupDetail}
+                            callback={this.fetch}
+                            that={this}
+                        />
                     }
                 </Card>
             </div>

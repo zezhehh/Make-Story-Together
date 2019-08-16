@@ -35,7 +35,7 @@ class NakedManage extends React.Component {
             }
             if (patchContent === {}) return;
             patchItem(this.props.token, this.state.groupId, patchContent).then(() => 
-                this.fetch()
+                this.fetch(this)
             )
         });
     };
@@ -46,17 +46,18 @@ class NakedManage extends React.Component {
         })
     }
 
-    fetch = () => {
-        fetchItemDetail(this.state.groupDetail.id, 'group', this.props.token)
+    fetch = (that) => {
+        fetchItemDetail(that.state.groupDetail.id, 'group', that.props.token)
         .then(( groupDetail ) =>{
-            this.setState({ groupDetail })
+            that.setState({ groupDetail })
         })
+        that.props.callback(that.props.that);
     }
 
     handleRemove = () => {
         removeMembers(this.props.token, this.state.groupDetail.id, this.state.selected)
         .then(() => {
-            this.fetch()
+            this.fetch(this)
         })
         this.setState({
             selected: []
@@ -66,7 +67,7 @@ class NakedManage extends React.Component {
     handleRemoveDiscipline = (e) => {
         removeDiscipline(this.props.token, this.state.groupDetail.id, e.target.id)
         .then(() => {
-            this.fetch()
+            this.fetch(this)
         })
     }
 
@@ -182,8 +183,11 @@ class NakedManage extends React.Component {
                     this.state.newItem ? 
                         <div className='popForm'>
                             <div className='popInner'>
-                                {/* judge item type */}
-                                <DisciplineForm callback={this.fetch} that={this} />
+                                <DisciplineForm 
+                                    callback={this.fetch} 
+                                    that={this} 
+                                    groupId={this.state.groupDetail.id}
+                                />
                                 <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
                             </div>
                         </div> : null

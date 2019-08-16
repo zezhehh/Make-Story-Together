@@ -12,6 +12,8 @@ class DisciplineViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         public_discipline = Discipline.objects.filter(ptype=PUBLIC)
+        if self.request.user.is_anonymous:
+            return public_discipline
         stories_discipline = Discipline.objects.none()
         for story in self.request.user.account.stories.all():
             stories_discipline |= story.rule.all()

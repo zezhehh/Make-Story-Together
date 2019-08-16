@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Form, Button, InputNumber } from 'antd';
 import UserSearchSelect from './userSearch';
+import { createItem } from '../api/items';
+import { applyDiscipline } from '../api/groups';
 import '../styles/disciplineForm.css';
 
 
@@ -11,7 +14,26 @@ class NakedDisciplineForm extends React.Component {
             if (err) {
                 return
             }
-            console.log(values)
+            let postData = {
+                registration_time: values.registration_time,
+                update_cycle: values.update_cycle,
+                whitelist: [],
+                blacklist: []
+            };
+            if (values.whitelist.value !== null)
+            for (let i = 0; i < values.whitelist.length; i++) {
+                postData.whitelist.push({ "screen_name": values.whitelist[i] });
+            }
+            for (let i = 0; i < values.blacklist.length; i++) {
+                postData.blacklist.push({ "screen_name": values.blacklist[i] });
+            }
+            createItem(this.props.token, postData, 'discipline').then((discipline) => {
+                console.log(discipline)
+                applyDiscipline(this.props.token, this.props.groupId, discipline.id)
+                .then(() => {
+                    this.props.callback(this.props.that)
+                })
+            })
         });
     };
 
@@ -28,9 +50,14 @@ class NakedDisciplineForm extends React.Component {
                     <span className="ant-form-text"> days</span>
                 </Form.Item>
                 <Form.Item label="Whitelist">
-                    {getFieldDecorator('whitelist', {
-                        initialValue: {data: []}
-                    })(<UserSearchSelect />)}
+                    {getFieldDecorator('whitelist')(
+                        <UserSearchSelect />
+                    )}
+                </Form.Item>
+                <Form.Item label="Blacklist">
+                    {getFieldDecorator('blacklist')(
+                        <UserSearchSelect />
+                    )}
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
@@ -41,4 +68,11 @@ class NakedDisciplineForm extends React.Component {
     )}
 }
 const DisciplineForm = Form.create()(NakedDisciplineForm);
-export default DisciplineForm;
+
+const mapStateToProps = (state) => {
+    return {
+        token: state.writers.token
+    }
+}
+
+export default connect(mapStateToProps)(DisciplineForm);

@@ -1,9 +1,11 @@
-from rest_framework import permissions
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 from .constants import PUBLIC
 
-class DisciplinePermission(permissions.BasePermission):
+class DisciplinePermission(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
+            return True
+        if request.method in SAFE_METHODS:
             return True
         return False
 

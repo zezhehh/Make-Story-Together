@@ -60,11 +60,18 @@ class Login extends React.Component {
         })
     }
 
+    saveToLocal = (info) => {
+        localStorage.setItem('token', info.token);
+        localStorage.setItem('username', info.username);
+        localStorage.setItem('screen_name', info.screen_name);
+    }
+
     handleLogin = () => {
         signInPost(this.state.username, this.state.password).then(
             (response) => {
                 this.clearErrorMsg();
                 if (response.success) {
+                    this.saveToLocal(response);
                     this.props.logIn(response.username, response.screen_name, response.token);
                 } else {
                     this.setErrorMsg(response.message);
@@ -78,7 +85,7 @@ class Login extends React.Component {
             (response) => {
                 this.clearErrorMsg();
                 if (response.success) {
-                    this.props.signUp(this.state.username, this.state.password);
+                    this.props.signUp(response.username, response.screen_name, response.token);
                 } else {
                     this.setErrorMsg(response.message);
                 }

@@ -16,6 +16,7 @@ class UserSearchSelect extends React.Component {
         this.state = {
             data: value.data || []
         };
+        this.triggerChange( [] );
     }
 
     handleSearch = value => {
@@ -27,21 +28,26 @@ class UserSearchSelect extends React.Component {
     };
     
     handleChange = value => {
-        console.log('selected');
-        console.log(value);
         this.setState({ value });
-        // this.triggerChange({ value });
+        this.triggerChange( value );
     };
     
-    triggerChange = changedValue => {
+    triggerChange = value => {
         const { onChange } = this.props;
         if (onChange) {
-          onChange(Object.assign({}, this.state, changedValue));
+            onChange( value );
         }
     };
 
     render() {
-        const options = this.state.data.map(user => <Option key={user.username}>{user.screen_name}</Option>);
+        const options = this.state.data.map(user => 
+            <Option 
+                key={user.username} 
+                value={user.screen_name}
+            >
+                {user.screen_name}
+            </Option>
+        );
         return (
             <Select
                 showSearch

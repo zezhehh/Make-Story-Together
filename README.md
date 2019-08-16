@@ -1,5 +1,6 @@
 - Requirements: `node.js` `yarn` `python3`
 - In directory `/backend`, run `python3 manage.py runserver 0.0.0.0:8000` to start backend
+    - `requirements.txt` contains modules used in my virtual environment
 - In directory `makestorytogether`, `yarn start` to start development mode of frontend
     - For first use, run `yarn` to add dependencies
 

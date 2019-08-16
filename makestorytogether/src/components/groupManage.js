@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button, Divider, Select, Popover, Icon } from 'antd';
+import { removeDiscipline, removeMembers } from '../api/groups';
+import { fetchItemDetail, patchItem } from '../api/items';
 import '../styles/disciplineForm.css';
+import DisciplineForm from './disciplineForm';
 
 const { Option } = Select;
 
@@ -23,18 +26,17 @@ class NakedManage extends React.Component {
             if (err) {
                 return
             }
-            console.log(values)
-            // createItem(this.props.token, {
-            //     creator: this.props.screen_name,
-            //     ...values
-            // }, 'story').then((res) => {
-            //     if (!res.success) {
-            //         console.log('create story fail')
-            //     }
-            //     this.props.doneCreateStory();
-            //     this.props.callback(this.props.that, res.id);
-            // })
-        
+            let patchContent = {};
+            if (values.name !== '') {
+                patchContent.name = values.name;
+            }
+            if (values.description !== '') {
+                patchContent.description = values.description;
+            }
+            if (patchContent === {}) return;
+            patchItem(this.props.token, this.state.groupId, patchContent).then(() => 
+                this.fetch()
+            )
         });
     };
 
@@ -44,12 +46,28 @@ class NakedManage extends React.Component {
         })
     }
 
+    fetch = () => {
+        fetchItemDetail(this.state.groupDetail.id, 'group', this.props.token)
+        .then(( groupDetail ) =>{
+            this.setState({ groupDetail })
+        })
+    }
+
     handleRemove = () => {
-        
+        removeMembers(this.props.token, this.state.groupDetail.id, this.state.selected)
+        .then(() => {
+            this.fetch()
+        })
+        this.setState({
+            selected: []
+        })
     }
 
     handleRemoveDiscipline = (e) => {
-        console.log(e.target.id)
+        removeDiscipline(this.props.token, this.state.groupDetail.id, e.target.id)
+        .then(() => {
+            this.fetch()
+        })
     }
 
     handleAddDiscipline = () => {
@@ -165,7 +183,7 @@ class NakedManage extends React.Component {
                         <div className='popForm'>
                             <div className='popInner'>
                                 {/* judge item type */}
-                                {/* <WrappedGroupForm callback={this.fetch} that={this} /> */}
+                                <DisciplineForm callback={this.fetch} that={this} />
                                 <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
                             </div>
                         </div> : null

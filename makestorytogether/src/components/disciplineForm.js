@@ -1,38 +1,44 @@
 import React from 'react';
-import { Form } from 'antd';
+import { Form, Button, InputNumber } from 'antd';
+import UserSearchSelect from './userSearch';
 import '../styles/disciplineForm.css';
 
 
-class disciplineForm extends React.Component {
+class NakedDisciplineForm extends React.Component {
+    handleSubmit = e => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+                return
+            }
+            console.log(values)
+        });
+    };
+
     render() {
+        const { getFieldDecorator } = this.props.form;
         return (
-            <div>form</div>
-            // <Form onSubmit={this.handleSubmit}>
-            //     <Form.Item>
-            //         {getFieldDecorator('registration_time', {
-            //         rules: [{ required: true, message: 'Please input the required registration time!' }],
-            //         })(
-            //         <Input
-            //             placeholder="Required registration time"
-            //         />,
-            //         )}
-            //     </Form.Item>
-            //     <Form.Item>
-            //         {getFieldDecorator('update_cycle', {
-            //         rules: [{ required: true, message: 'Please input the required update cycle!' }],
-            //         })(
-            //         <Input
-            //             placeholder="Required update cycle"
-            //         />,
-            //         )}
-            //     </Form.Item>
-            //     <Form.Item>
-            //         <Button type="primary" htmlType="submit">
-            //         Create
-            //         </Button>
-            //     </Form.Item>
-            // </Form>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Item label='Required Registration Time'>
+                    {getFieldDecorator('registration_time', { initialValue: -1 })(<InputNumber />)}
+                    <span className="ant-form-text"> days</span>
+                </Form.Item>
+                <Form.Item label='Required Update Cycle'>
+                    {getFieldDecorator('update_cycle', { initialValue: -1 })(<InputNumber />)}
+                    <span className="ant-form-text"> days</span>
+                </Form.Item>
+                <Form.Item label="Whitelist">
+                    {getFieldDecorator('whitelist', {
+                        initialValue: {data: []}
+                    })(<UserSearchSelect />)}
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                    Create
+                    </Button>
+                </Form.Item>
+            </Form>
     )}
 }
-
-export default disciplineForm;
+const DisciplineForm = Form.create()(NakedDisciplineForm);
+export default DisciplineForm;

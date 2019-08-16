@@ -61,3 +61,13 @@ export function registerPost(screen_name, username, password) {
         }
     });
 };
+
+export function searchByScreenName(screenName) {
+    return axios.get(`${WRITER_API}/?screen_name=${screenName}`)
+    .then((res) => {
+        return res.data
+    })
+    .catch((error) => {
+        console.log('search fail')
+    })
+}

@@ -19,7 +19,7 @@ class DisciplineViewSet(viewsets.ModelViewSet):
         groups_discipline = Discipline.objects.none()
         for group in self.request.user.account.groups.all():
             groups_discipline |= group.rule.all()
-        return public_discipline | stories_discipline | groups_discipline
+        return (public_discipline | stories_discipline | groups_discipline).distinct()
     
     def destroy(self, request, pk=None):
         discipline = self.get_object()

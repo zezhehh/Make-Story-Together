@@ -8,6 +8,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from .models import Group, GroupMember
 from .serializers import GroupSerializer, GroupDetailSerializer
 from .permissions import GroupPermission
+from disciplines.models import Discipline
 # Create your views here.
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -57,4 +58,36 @@ class GroupViewSet(viewsets.ModelViewSet):
         if GroupMember.objects.filter(member=self.request.user.account, group=group).exists():
             instance = GroupMember.objects.get(member=self.request.user.account, group=group)
             instance.delete()
+        return Response(status=status.HTTP_200_OK)
+
+        
+    @action(detail=True, permission_classes=[IsAuthenticated, GroupPermission], methods=['POST', ])
+    def remove_members(self, request, pk=None):
+        group = self.get_object()
+        if 'usernames' not in request.data:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        member_usernames = request.data['usernames']
+        for username in member_usernames:
+            instance = GroupMember.objects.get(member__user__username=username, group=group)
+            instance.delete()
+        return Response(status=status.HTTP_200_OK)
+    
+    @action(detail=True, permission_classes=[IsAuthenticated, GroupPermission], methods=['POST', ])
+    def remove_discipline(self, request, pk=None):
+        group = self.get_object()
+        if 'discipline_id' not in request.data:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        discipline_id = request.data['discipline_id']
+        instance = Discipline.objects.get(id=discipline_id)
+        group.rule.remove(instance)
+        return Response(status=status.HTTP_200_OK)
+
+    @action(detail=True, permission_classes=[IsAuthenticated, GroupPermission], methods=['POST', ])
+    def apply_discipline(self, request, pk=None):
+        group = self.get_object()
+        if 'discipline_id' not in request.data:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        discipline_id = request.data['discipline_id']
+        instance = Discipline.objects.get(id=discipline_id)
+        group.rule.add(instance)
         return Response(status=status.HTTP_200_OK)

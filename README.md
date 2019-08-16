@@ -23,12 +23,12 @@
 
 ### Account
 
+- `/?screen_name=`
+  - search writer by screen_name
 - `/register/`
 - `/signin/`
 - `/logout/`
 - `/follow/` TODO
-- TODO
-  - search writer by screen_name
 
 ### Group
 
@@ -44,9 +44,14 @@
   - owned groups list
 - `/group/joined/`
   - joined groups list
-- TODO
+- `/group/remove_members/`
+  - `{"usernames": []}`
   - remove members given list of usernames
+- `/group/remove_discipline/`
+  - `{"discipline_id": }`
   - remove discipline from rule
+- `/group/apply_discipline/`
+  - `{"discipline_id": }`
   - add discipline to rule
 
 

@@ -25,7 +25,7 @@ from writers.api import WriterViewSet
 
 router = routers.SimpleRouter()
 router.register(r'^$', WriterViewSet, 'Writer')
-# router.register(r'discipline', DisciplineViewSet, 'Discipline')
+router.register(r'discipline', DisciplineViewSet, 'Discipline')
 router.register(r'group', GroupViewSet, 'Group')
 router.register(r'story', StoryViewSet, 'Story')
 router.register(r'tag', TagViewSet, 'Tag')

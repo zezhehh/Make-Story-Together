@@ -149,3 +149,20 @@ export function deleteItem(token, itemID, itemType='group') {
         }
     });
 };
+
+export function patchItem(token, itemID, patchContent, itemType='group') {
+    const API_URL = getURL(itemType);
+    return axios.patch(`${API_URL}/${itemID}/`,
+    {
+        ...patchContent
+    },
+    {
+        'headers': {
+            Authorization: `JWT ${token}`
+        }
+    })
+    .then((res) => res.data)
+    .catch((error) => {
+        console.log('patch error')
+    })
+}

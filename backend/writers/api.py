@@ -18,10 +18,19 @@ def create_writer(data):
 # Create your views here.
 class WriterViewSet(viewsets.ModelViewSet):
     serializer_class = InfoSerializer
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [AllowAny, ]
 
     def get_queryset(self):
-        return [self.request.user.account, ]
+        if 'screen_name' not in self.request.query_params:
+            if self.request.user.is_anonymous:
+                return []
+            return [self.request.user.account, ]
+        search_content = self.request.query_params['screen_name']
+        if len(search_content) < 3:
+            if self.request.user.is_anonymous:
+                return []
+            return [self.request.user.account, ]
+        return Writer.objects.filter(screen_name__contains=search_content)
     
     @action(detail=False, methods=['POST', ], serializer_class=RegisterSerializer, permission_classes=[AllowAny, ])
     def register(self, request):

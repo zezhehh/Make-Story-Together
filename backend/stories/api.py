@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from .permissions import StoryPermission
-from .serializers import StorySerializer, TagSerializer
+from .serializers import StorySerializer, TagSerializer, StoryDetailSerializer, StoryMoreDetailSerializer
 from groups.models import Group
 from .models import Story, Tag
 from .constants import PUBLIC
@@ -16,6 +16,17 @@ class StoryViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication]
     serializer_class = StorySerializer
     permission_classes = [StoryPermission, ]
+
+    def get_serializer_class(self):
+        if self.action != 'retrieve' or self.request.method == 'post':
+            return StorySerializer
+
+        if self.request.user.is_anonymous:
+            return StoryDetailSerializer
+        story = self.get_object()
+        if self.request.user.account in story.participators.all():
+            return StoryMoreDetailSerializer
+        return StoryDetailSerializer
 
     def get_queryset(self):
         params = self.request.query_params
@@ -34,12 +45,16 @@ class StoryViewSet(viewsets.ModelViewSet):
     @action(detail=False, permission_classes=[IsAuthenticated, ])
     def my(self, request):
         stories = Story.objects.filter(creator__screen_name=request.user.account.screen_name)
+        if not stories.exists:
+            return Response([], status.HTTP_200_OK)
         serializer = self.get_serializer(stories, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, permission_classes=[IsAuthenticated, ])
     def joined(self, request):
         stories = Story.objects.filter(participators__screen_name__icontains=request.user.account.screen_name)
+        if not stories.exists:
+            return Response([], status.HTTP_200_OK)
         serializer = self.get_serializer(stories, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

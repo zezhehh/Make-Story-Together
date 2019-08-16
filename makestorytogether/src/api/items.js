@@ -80,16 +80,32 @@ export function fetchJoinedItems(token, itemType='group') {
         });
 };
 
-export function fetchItemDetail(itemID, itemType='group') {
+export function fetchItemDetail(itemID, itemType='group', token=null) {
     const API_URL = getURL(itemType);
-    return axios.get(`${API_URL}/${itemID}/`)
-        .then((res) => res.data)
-        .catch((error) => {
-        return {
-            message: error.response.data,
-            success: false
-        }
-    });
+    if (token !== null) {
+        return axios.get(`${API_URL}/${itemID}/`,
+            {
+                'headers': {
+                    Authorization: `JWT ${token}`
+                }
+            })
+            .then((res) => res.data)
+            .catch((error) => {
+            return {
+                message: error.response.data,
+                success: false
+            }
+        });
+    } else {
+        return axios.get(`${API_URL}/${itemID}/`)
+            .then((res) => res.data)
+            .catch((error) => {
+            return {
+                message: error.response.data,
+                success: false
+            }
+        });
+    }
 }
 
 export function createItem(token, itemInfo, itemType='group') {

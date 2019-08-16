@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from .models import Group, GroupMember
-from .serializers import GroupSerializer
+from .serializers import GroupSerializer, GroupDetailSerializer
 from .permissions import GroupPermission
 # Create your views here.
 
@@ -14,6 +14,12 @@ class GroupViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication]
     serializer_class = GroupSerializer
     permission_classes = [GroupPermission, ]
+
+    def get_serializer_class(self):
+        if self.action != 'retrieve' or self.request.method == 'post':
+            return GroupSerializer
+        
+        return GroupDetailSerializer
 
     def get_queryset(self):
         params = self.request.query_params
@@ -25,12 +31,16 @@ class GroupViewSet(viewsets.ModelViewSet):
     @action(detail=False, permission_classes=[IsAuthenticated, ])
     def my(self, request):
         groups = Group.objects.filter(owner__screen_name=request.user.account.screen_name)
+        if not groups.exists:
+            return Response([], status.HTTP_200_OK)
         serializer = self.get_serializer(groups, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, permission_classes=[IsAuthenticated, ])
     def joined(self, request):
         groups = Group.objects.filter(members__screen_name__icontains=request.user.account.screen_name)
+        if not groups.exists:
+            return Response([], status.HTTP_200_OK)
         serializer = self.get_serializer(groups, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

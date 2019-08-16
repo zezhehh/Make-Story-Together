@@ -27,10 +27,13 @@
 - `/signin/`
 - `/logout/`
 - `/follow/` TODO
+- TODO
+  - search writer by screen_name
 
 ### Group
 
 - `/group/{pk}/join/`
+- `/group/{pk}/quit/`
 - `/group/(?order=number)`
   - `GET` groups list
   - `POST` create group
@@ -41,6 +44,12 @@
   - owned groups list
 - `/group/joined/`
   - joined groups list
+- TODO
+  - remove members given list of usernames
+  - remove discipline from rule
+  - add discipline to rule
+
+
 
 ### Story
 
@@ -49,6 +58,7 @@
   - `POST` create story
 - `/story/{pk}/`
   - `GET` fetch detail
+    - different serializers: story participator and normal user
   - `DELETE` delete story
 -  `/story/my/`
   - owned stories list

@@ -49,8 +49,8 @@ class WriterViewSet(viewsets.ModelViewSet):
             Writer.objects.create(user=user, screen_name=f'Anonymous_{user.username}')
         return Response(InfoSerializer(user.account).data, status=status.HTTP_200_OK)
     
-    # @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated, ])
-    # def logout(self, request):
-    #     django_logout(request)
-    #     # return Response({'next': '/'}, status=status.HTTP_302_FOUND)
-    #     return Response(status=status.HTTP_200_OK)
+    @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated, ])
+    def logout(self, request):
+        django_logout(request)
+        # return Response({'next': '/'}, status=status.HTTP_302_FOUND)
+        return Response(status=status.HTTP_200_OK)

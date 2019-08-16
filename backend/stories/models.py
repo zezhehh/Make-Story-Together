@@ -15,7 +15,7 @@ class Tag(models.Model):
 class Story(models.Model):
     title = models.CharField(max_length=20)
     creator = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True, related_name='owned_stories')
-    maintainer = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
+    maintainer = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True, related_name='stories')
     plots_count = models.IntegerField(default=0)
     rule = models.ManyToManyField(Discipline, blank=True)
     category = models.ManyToManyField(Tag, blank=True)
@@ -53,3 +53,5 @@ class Character(models.Model):
     updated = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='update_characters')
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name

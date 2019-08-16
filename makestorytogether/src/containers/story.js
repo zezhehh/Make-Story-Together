@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems } from '../api/items';
-import { Card, Layout, Icon, Menu } from 'antd';
+import { Card, Layout, Icon, Menu, Divider, Empty } from 'antd';
 import { STATUS, createStory, doneCreateStory } from '../actions/stories';
 import WrappedStoryForm from '../components/storyCreationForm';
 import '../styles/story.css';
-const { Sider, Content } = Layout;
+const { Content } = Layout;
 const { SubMenu } = Menu;
 
 
@@ -15,6 +15,7 @@ class Story extends React.Component {
         this.state = {
             stories: [], // default collapsed
             storyDetail: null,
+            detailID: null,
             current: 'orderByDate'
         }
     }
@@ -60,12 +61,12 @@ class Story extends React.Component {
 
     handleMore = storyID => {
         fetchItemDetail(storyID, 'story').then((storyDetail) => {
-            this.setState({storyDetail});
+            this.setState({storyDetail, detailID: storyID});
         });
     }
 
     toggle = () => {
-        this.setState({storyDetail: null});
+        this.setState({storyDetail: null, detailID: null});
         this.props.doneCreateStory();
     }
 
@@ -109,6 +110,7 @@ class Story extends React.Component {
                             </Menu.Item>)
                         }
                 </Menu>
+                    {this.state.stories.length === 0 ? <Empty /> : null}
                     {this.state.stories.map((story) => 
                         <Card 
                             className='storyCard'
@@ -123,34 +125,27 @@ class Story extends React.Component {
                             style={{ width: 300 }}
                         >
                             <p>Creator {story.creator}</p>
+                            {
+                                this.state.detailID !== story.id || this.collaspedState() ? null :
+                                <div>
+                                    <Divider />
+                                    <p>More detail of {story.title}</p>
+                                    <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="up" />
+                                </div>
+                            }
                         </Card>
                         
                     )}
                 </Content>
-                <Sider
-                    className='storySider'
-                    trigger={null}
-                    collapsible 
-                    collapsed={this.collaspedState()}
-                    reverseArrow={true}
-                    width="450px"
-                    collapsedWidth='0px'
-                    style={{
-                        overflow: 'auto',
-                        position: 'fixed',
-                        right: 0,
-                        height: '100%'
-                    }}
-                >
-                    {this.collaspedState() ? null : <Icon onClick={this.toggle} style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '40px' }}  type="menu-unfold" />}
-                    {this.state.storyDetail === null || this.collaspedState() ? null :
-                        <div style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                            <p>{this.state.storyDetail.title}</p>
-                            <p>Creator {this.state.storyDetail.creator}</p>
+                {
+                    this.props.status === STATUS.CREATING_STORY && !this.collaspedState() ? 
+                    <div className='popForm'>
+                        <div className='popInner'>
+                            <WrappedStoryForm callback={this.fetch} that={this} />
+                            <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
                         </div>
-                    }
-                    {this.props.status === STATUS.CREATING_STORY && !this.collaspedState() ? <WrappedStoryForm callback={this.fetch} that={this} /> : null}
-                </Sider>
+                    </div>: null
+                }
             </Layout>
         )
     }

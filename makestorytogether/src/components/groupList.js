@@ -1,20 +1,21 @@
 import React from 'react';
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom';
 import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems, deleteItem } from '../api/items';
 import { joinGroup, quitGroup } from '../api/groups';
-import { Card, Layout, Icon, Menu } from 'antd';
+import { Card, Layout, Icon, Menu, Divider, Empty } from 'antd';
 import { STATUS, createGroup, doneCreateGroup } from '../actions/groups';
-import WrappedGroupForm from '../components/groupCreationForm';
+import WrappedGroupForm from './groupCreationForm';
 import '../styles/group.css';
-const { Sider, Content } = Layout;
+const { Content, Header } = Layout;
 const { SubMenu } = Menu;
 
-
-class Group extends React.Component {
+class GroupList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             groups: [], // default collapsed
+            detailID: null,
             groupDetail: null,
             current: 'orderByDate'
         }
@@ -61,7 +62,10 @@ class Group extends React.Component {
 
     handleMore = groupID => {
         fetchItemDetail(groupID).then((groupDetail) => {
-            this.setState({groupDetail});
+            this.setState({groupDetail,
+                detailID: groupID
+            });
+            console.log(groupDetail);
         });
     }
 
@@ -79,8 +83,20 @@ class Group extends React.Component {
     }
 
     toggle = () => {
-        this.setState({groupDetail: null});
+        this.setState({groupDetail: null, detailID: null});
         this.props.doneCreateGroup();
+    }
+
+    groupIcon = (groupID) => {
+        if (this.state.current === 'joined') {
+            return <Icon onClick={() => this.handleQuit(groupID)} type="user-delete" />
+        } 
+        else if (this.state.current === 'my') {
+            return <Icon onClick={() => this.handleDelete(groupID)} type="usergroup-delete" />
+        }
+        else if (this.state.current !== 'my' && this.state.current !== 'joined') {
+            return  <Icon onClick={() => this.handleJoin(groupID)} type="user-add" />
+        }
     }
 
     handleClick = e => {
@@ -102,7 +118,7 @@ class Group extends React.Component {
     render() {  
         return (
             <Layout>
-                <Content style={{overflow: 'initial'}}>
+                <Header className='groupHeader' style={{padding: 0, zIndex: 1 }}>
                     <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
                         <SubMenu
                             title='All Groups'
@@ -124,21 +140,26 @@ class Group extends React.Component {
                         }
                         
                     </Menu>
+                </Header>
+                <Layout style={{ marginTop: '40px' }}>
+                    
+                    <Content className="groupContent">
+                        <div style={{ height: '10px' }}></div>
+                    {this.state.groups.length === 0 ? <Empty /> : null}
                     {this.state.groups.map((group) => 
                         <Card 
                             className='groupCard'
                             key={group.id}
-                            title={group.name} 
+                            title={
+                                <Link to={`/group/${group.id}`} style={{ color: 'initial' }}>
+                                    {group.name}
+                                </Link>
+                            } 
                             extra={
                                 <div>
-                                    {this.state.current === 'joined' ? 
-                                    <Icon onClick={() => this.handleQuit(group.id)} type="user-delete" /> : null
-                                    }
-                                    {this.state.current === 'my' ? 
-                                    <Icon onClick={() => this.handleDelete(group.id)} type="usergroup-delete" /> : null
-                                    }
-                                    {this.state.current !== 'my' && this.state.current != 'joined' ? 
-                                    <Icon onClick={() => this.handleJoin(group.id)} type="user-add" /> : null
+                                    {
+                                        this.props.token === null ? null :
+                                        this.groupIcon(group.id)
                                     }
                                     <Icon onClick={() => this.handleMore(group.id)} type="more" />
                                 </div>
@@ -147,35 +168,28 @@ class Group extends React.Component {
                         >
                             <p>Owner {group.owner}</p>
                             <p>{group.description}</p>
+                            {
+                                this.state.detailID !== group.id || this.collaspedState() ? null :
+                                <div>
+                                    <Divider />
+                                    <p>More detail of {group.name}</p>
+                                    <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="up" />
+                                </div>
+                            }
                         </Card>
                         
                     )}
                 </Content>
-                <Sider
-                    className='groupSider'
-                    trigger={null}
-                    collapsible 
-                    collapsed={this.collaspedState()}
-                    reverseArrow={true}
-                    width="450px"
-                    collapsedWidth='0px'
-                    style={{
-                        overflow: 'auto',
-                        position: 'fixed',
-                        right: 0,
-                        height: '100%'
-                    }}
-                >
-                    {this.collaspedState() ? null : <Icon onClick={this.toggle} style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '40px' }}  type="menu-unfold" />}
-                    {this.state.groupDetail === null || this.collaspedState() ? null :
-                        <div style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                            <p>{this.state.groupDetail.name}</p>
-                            <p>Owner {this.state.groupDetail.owner}</p>
-                            <p>{this.state.groupDetail.description}</p>
+                </Layout>
+                {
+                    this.props.status === STATUS.CREATING_GROUP && !this.collaspedState() ? 
+                    <div className='popForm'>
+                        <div className='popInner'>
+                            <WrappedGroupForm callback={this.fetch} that={this} />
+                            <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
                         </div>
-                    }
-                    {this.props.status === STATUS.CREATING_GROUP && !this.collaspedState() ? <WrappedGroupForm callback={this.fetch} that={this} /> : null}
-                </Sider>
+                    </div>: null
+                }
             </Layout>
         )
     }
@@ -189,5 +203,5 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {createGroup, doneCreateGroup})(Group);
+export default connect(mapStateToProps, {createGroup, doneCreateGroup})(GroupList);
 

@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from writers.models import Writer
 from .models import Group, GroupMember
+from stories.serializers import StorySerializer
+from writers.serializers import InfoSerializer
+from disciplines.serializers import DisciplineSerializer
 
 class GroupSerializer(serializers.ModelSerializer):
     owner = serializers.CharField(source='owner.screen_name')
@@ -23,3 +26,13 @@ class GroupSerializer(serializers.ModelSerializer):
         group = Group.objects.create(name=validated_data['name'], owner=owner, description=validated_data['description'])
         GroupMember.objects.create(member=owner, group=group)
         return group
+
+class GroupDetailSerializer(serializers.ModelSerializer):
+    stories = StorySerializer(many=True)
+    members = InfoSerializer(many=True)
+    owner = serializers.CharField(source='owner.screen_name')
+    rule = DisciplineSerializer(many=True)
+
+    class Meta:
+        model = Group
+        fields = ('id', 'name', 'owner', 'description', 'rule', 'members', 'created_at', 'stories')

@@ -31,6 +31,10 @@ class SiderLayout extends React.Component {
       };
     }
 
+    // componentDidUpdate() {
+    //   console.log(this.props.location.pathname)
+    // }
+
     onCollapse = collapsed => {
       this.setState({ collapsed });
     };
@@ -59,28 +63,28 @@ class SiderLayout extends React.Component {
             
             <Menu 
               theme="dark" 
-              defaultSelectedKeys={['/explore']}
-              selectedKeys={[this.props.location.pathname]}
+              defaultSelectedKeys={['explore']}
+              selectedKeys={[this.props.location.pathname.split('/')[1]]}
             >
-              <Menu.Item key="/explore">
+              <Menu.Item key="explore">
                 <Link to='/explore'>
                   <Icon type="ellipsis" />
                   <span>Explore</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="/profile">
+              <Menu.Item key="profile">
                 <Link to='/profile'>
                   <Icon type="idcard" />
                   <span>Account</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="/story">
+              <Menu.Item key="story">
                 <Link to='/story'>
                   <Icon type="profile" />
                   <span>Story</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="/group">
+              <Menu.Item key="group">
                 <Link to='/group'>
                   <Icon type="team" />
                   <span>Group</span>

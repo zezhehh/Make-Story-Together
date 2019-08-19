@@ -18,6 +18,11 @@ class HeaderLayout extends React.Component {
         this.props.createStory();
     }
 
+    handleLogOut = () => {
+        this.props.logOut()
+        localStorage.clear();
+    }
+
     render() {
         return (
             <Header className="mst-header" style={{ position: 'fixed', zIndex: 1, width: '100%', background: '#fff', padding: 0 }}>
@@ -45,7 +50,7 @@ class HeaderLayout extends React.Component {
                     {
                         this.props.status === STATUS.ANONYMOUS ? 
                         (<Button href='/profile' size='small'>Login</Button>) : (
-                        <Button href='/profile' size='small' onClick={() => this.props.logOut()}>Logout</Button>)
+                        <Button href='/profile' size='small' onClick={this.handleLogOut}>Logout</Button>)
                     }
                 </div>
                 

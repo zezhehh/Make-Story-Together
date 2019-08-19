@@ -1,15 +1,16 @@
 import React from 'react';
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom';
 import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems } from '../api/items';
 import { Card, Layout, Icon, Menu, Divider, Empty } from 'antd';
 import { STATUS, createStory, doneCreateStory } from '../actions/stories';
-import WrappedStoryForm from '../components/storyCreationForm';
+import WrappedStoryForm from './storyCreationForm';
 import '../styles/story.css';
 const { Content } = Layout;
 const { SubMenu } = Menu;
 
 
-class Story extends React.Component {
+class StoryList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -115,9 +116,14 @@ class Story extends React.Component {
                         <Card 
                             className='storyCard'
                             key={story.id}
-                            title={story.title} 
+                            title={
+                                <Link to={`/story/${story.id}`} style={{ color: 'initial' }}>
+                                    {story.title}
+                                </Link>
+                            } 
                             extra={
                                 <div>
+                                    <Link to='/just-writing!'><Icon style={{ color: 'initial' }} type="edit" /></Link>
                                     <Icon type="user-add" />
                                     <Icon onClick={() => this.handleMore(story.id)} type="more" />
                                 </div>
@@ -129,7 +135,7 @@ class Story extends React.Component {
                                 this.state.detailID !== story.id || this.collaspedState() ? null :
                                 <div>
                                     <Divider />
-                                    <p>More detail of {story.title}</p>
+                                    <p>{story.description}</p>
                                     <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="up" />
                                 </div>
                             }
@@ -159,5 +165,5 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {createStory, doneCreateStory})(Story);
+export default connect(mapStateToProps, {createStory, doneCreateStory})(StoryList);
 

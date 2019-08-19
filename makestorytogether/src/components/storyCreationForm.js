@@ -40,6 +40,13 @@ class StoryCreationForm extends React.Component {
           )}
         </Form.Item>
         <Form.Item>
+          {getFieldDecorator('description')(
+            <Input
+              placeholder="Story description"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item>
           <Button type="primary" htmlType="submit">
             Create
           </Button>

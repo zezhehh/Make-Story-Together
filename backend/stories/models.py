@@ -22,6 +22,7 @@ class Story(models.Model):
     public = models.CharField(choices=PUBLIC_CHOICES, max_length=20, default=PUBLIC)
     participators = models.ManyToManyField(Writer, related_name='stories', through='Character', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(blank=True, default='Describe the story now!')
 
     def __str__(self):
         return self.title
@@ -47,7 +48,7 @@ class Plot(models.Model):
 
 class Character(models.Model):
     name = models.CharField(max_length=20, default='person')
-    players = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
+    player = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
     participation = models.FloatField()
     appear_at = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='appear_characters')
     updated = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='update_characters')

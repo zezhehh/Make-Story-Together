@@ -10,6 +10,8 @@ const initialState = {
 function retrieveInfo(state, action) {
     switch (state.status) {
         case STATUS.ANONYMOUS: {
+            if (action.payload.token === null)
+                return state;
             return {
                 status: STATUS.LOGGED_IN,
                 ...action.payload

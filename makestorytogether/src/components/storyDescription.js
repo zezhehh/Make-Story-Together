@@ -1,23 +1,35 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { Descriptions, Popover } from 'antd';
+import { Descriptions, Popover, Tag } from 'antd';
 
-class GroupDescription extends React.Component {
+class StoryDescription extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            groupId: this.props.match.params.groupID,
-            groupDetail: this.props.groupDetail
+            storyId: this.props.match.params.storyID,
+            storyDetail: this.props.storyDetail
         }
     }
 
     render() {
         return (
             <Descriptions column={3} bordered>
-                <Descriptions.Item label='Name' span={2}>{this.state.groupDetail.name}</Descriptions.Item>
-                <Descriptions.Item label='Owner'>{this.state.groupDetail.owner}</Descriptions.Item>
-                <Descriptions.Item label='Created At' span={3}>{this.state.groupDetail.created_at}</Descriptions.Item>
-                <Descriptions.Item label='Descriptions' span={3}>{this.state.groupDetail.description}</Descriptions.Item>
+                <Descriptions.Item label='Title'>{this.state.storyDetail.title}</Descriptions.Item>
+                <Descriptions.Item label='Creator'>{this.state.storyDetail.creator}</Descriptions.Item>
+                <Descriptions.Item label='Maintainer'>{this.state.storyDetail.mantainer}</Descriptions.Item>
+                <Descriptions.Item label='Public?'>{this.state.storyDetail.public}</Descriptions.Item>
+                <Descriptions.Item label='#Plots'>{this.state.storyDetail.plots_count}</Descriptions.Item>
+                <Descriptions.Item label='Created At'>{this.state.storyDetail.created_at}</Descriptions.Item>
+                <Descriptions.Item label='Category' span={3}>
+                    {this.state.storyDetail.category.length === 0 ? null :
+                        (
+                            this.state.storyDetail.category.map((tag) => 
+                                <Tag key={tag.id}>{tag.name}</Tag>
+                            )
+                        )
+                    }
+                </Descriptions.Item>
+                <Descriptions.Item label='Descriptions' span={3}>{this.state.storyDetail.description}</Descriptions.Item>
                 <Descriptions.Item 
                     label={
                         <Popover content='from first discipline'>
@@ -26,8 +38,8 @@ class GroupDescription extends React.Component {
                     } 
                     span={3}
                 >
-                    {this.state.groupDetail.rule.length === 0 ? null :
-                        this.state.groupDetail.rule[0].registration_time
+                    {this.state.storyDetail.rule.length === 0 ? null :
+                        this.state.storyDetail.rule[0].registration_time
                     }
                 </Descriptions.Item>
                 <Descriptions.Item 
@@ -38,32 +50,23 @@ class GroupDescription extends React.Component {
                     } 
                     span={3}
                 >
-                    {this.state.groupDetail.rule.length === 0 ? null :
-                        this.state.groupDetail.rule[0].update_cycle
+                    {this.state.storyDetail.rule.length === 0 ? null :
+                        this.state.storyDetail.rule[0].update_cycle
                     }
                 </Descriptions.Item>
-                <Descriptions.Item label='Members' span={3}>
-                    {this.state.groupDetail.members.length === 0 ? null :
+                <Descriptions.Item label='Participators' span={3}>
+                    {this.state.storyDetail.participators.length === 0 ? null :
                         (
-                            this.state.groupDetail.members.map((member) => 
-                                <div key={member.username}>{member.screen_name}</div>
-                            )
-                        )
-                    }
-                </Descriptions.Item>
-                <Descriptions.Item label='Stories' span={3}>
-                    {this.state.groupDetail.stories.length === 0 ? null :
-                        (
-                            this.state.groupDetail.stories.map((story) => 
-                                <div key={story.id}>{story.title}</div>
+                            this.state.storyDetail.participators.map((participator) => 
+                                <div key={participator.username}>{participator.screen_name}</div>
                             )
                         )
                     }
                 </Descriptions.Item>
                 <Descriptions.Item label='Blacklist' span={3}>
-                    {this.state.groupDetail.rule.length !== 0 ? 
+                    {this.state.storyDetail.rule.length !== 0 ? 
                         (
-                            this.state.groupDetail.rule.map((discipline) => {
+                            this.state.storyDetail.rule.map((discipline) => {
                                 if (discipline.blacklist.length === 0) {
                                     return null
                                 }
@@ -83,9 +86,9 @@ class GroupDescription extends React.Component {
                     }
                 </Descriptions.Item>
                 <Descriptions.Item label='Whitelist' span={3}>
-                    {this.state.groupDetail.rule.length !== 0 ? 
+                    {this.state.storyDetail.rule.length !== 0 ? 
                         (
-                            this.state.groupDetail.rule.map((discipline) => {
+                            this.state.storyDetail.rule.map((discipline) => {
                                 if (discipline.whitelist.length === 0) {
                                     return null
                                 }
@@ -117,4 +120,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps)(GroupDescription);
+export default connect(mapStateToProps)(StoryDescription);

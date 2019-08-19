@@ -4,7 +4,9 @@ import Profile from './containers/profile';
 import Explore from './containers/explore';
 import GroupList from './components/groupList';
 import GroupDetail from './components/groupDetail';
-import Story from './containers/story';
+import StoryList from './components/storyList';
+import StoryDetail from './components/storyDetail';
+import Writing from './containers/writing';
 import PageNotFound from './containers/notfound'
 import HeaderLayout from './containers/header';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
@@ -31,14 +33,13 @@ class App extends React.Component {
     }
     verifyToken(token)
     .then((newToken) => {
-      if (newToken === null) return;
+      if (newToken === null) localStorage.clear();
       this.props.retrieveInfo({
         username,
         screen_name,
-        newToken
+        token: newToken
       })
     });
-    
   }
 
   render() {
@@ -58,7 +59,9 @@ class App extends React.Component {
                   <Route path="/explore" component={Explore} />
                   <Route exact path="/group" component={GroupList} />
                   <Route exact path='/group/:groupID' component={GroupDetail} />
-                  <Route path="/story" component={Story} />
+                  <Route exact path="/story" component={StoryList} />
+                  <Route exact path="/story/:storyID" component={StoryDetail} />
+                  <Route exact path="/just-writing!" component={Writing} />
                   <Route component={PageNotFound} />
                 </Switch>
               </Content>

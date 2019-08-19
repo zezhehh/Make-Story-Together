@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Form, Button, InputNumber } from 'antd';
 import UserSearchSelect from './userSearch';
 import { createItem } from '../api/items';
-import { applyDiscipline } from '../api/groups';
+import { applyDiscipline as groupApplyDiscipline } from '../api/groups';
+import { applyDiscipline as storyApplyDiscipline } from '../api/stories';
 import '../styles/disciplineForm.css';
 
 
@@ -29,10 +30,17 @@ class NakedDisciplineForm extends React.Component {
             }
             createItem(this.props.token, postData, 'discipline').then((discipline) => {
                 console.log(discipline)
-                applyDiscipline(this.props.token, this.props.groupId, discipline.id)
-                .then(() => {
-                    this.props.callback(this.props.that)
-                })
+                if (this.props.groupId !== undefined) {
+                    groupApplyDiscipline(this.props.token, this.props.groupId, discipline.id)
+                    .then(() => {
+                        this.props.callback(this.props.that)
+                    })
+                } else {
+                    storyApplyDiscipline(this.props.token, this.props.storyId, discipline.id)
+                    .then(() => {
+                        this.props.callback(this.props.that)
+                    })
+                }
             })
         });
     };

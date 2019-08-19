@@ -6,7 +6,7 @@ from writers.models import Writer
 class Group(models.Model):
     name = models.CharField(max_length=20)
     owner = models.ForeignKey(Writer, on_delete=models.SET_NULL, related_name='owned_groups', null=True)
-    description = models.TextField()
+    description = models.TextField(blank=True, default='Describe your group now!')
     rule = models.ManyToManyField(Discipline)
     members = models.ManyToManyField(Writer, related_name='groups', through='GroupMember')
     created_at = models.DateTimeField(auto_now_add=True)

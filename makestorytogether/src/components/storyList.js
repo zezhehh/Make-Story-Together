@@ -123,7 +123,7 @@ class StoryList extends React.Component {
                             } 
                             extra={
                                 <div>
-                                    <Link to='/just-writing!'><Icon style={{ color: 'initial' }} type="edit" /></Link>
+                                    <Link to={{ pathname: '/just-writing!', state: { storyId: story.id} }}><Icon style={{ color: 'initial' }} type="edit" /></Link>
                                     <Icon type="user-add" />
                                     <Icon onClick={() => this.handleMore(story.id)} type="more" />
                                 </div>

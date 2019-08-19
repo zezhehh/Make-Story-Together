@@ -9,7 +9,7 @@ from .permissions import StoryPermission
 from .serializers import StorySerializer, TagSerializer, StoryDetailSerializer, StoryMoreDetailSerializer
 from groups.models import Group
 from disciplines.models import Discipline
-from .models import Story, Tag, Character
+from .models import Story, Tag, Character, Chapter, Plot
 from .constants import PUBLIC
 # Create your views here.
 
@@ -125,6 +125,21 @@ class StoryViewSet(viewsets.ModelViewSet):
         else:
             instance = Tag.objects.get(id=tag_id)
             story.category.add(instance)
+        return Response(status=status.HTTP_200_OK)
+    
+    @action(detail=True, permission_classes=[IsAuthenticated, ], methods=['POST', ])
+    def new_chapter(self, request, pk=None):
+        story = self.get_object()
+        title = request.data['title']
+        Chapter.objects.create(story=story, title=title)
+        return Response(status=status.HTTP_200_OK)
+
+    @action(detail=True, permission_classes=[IsAuthenticated, ], methods=['POST', ])
+    def new_plot(self, request, pk=None):
+        content = request.data['content']
+        chapter_id = request.data['chapter_id']
+        chapter = Chapter.objects.get(id=chapter_id)
+        Plot.objects.create(written_by=request.user.account, chapter=chapter, content=content)
         return Response(status=status.HTTP_200_OK)
 
 

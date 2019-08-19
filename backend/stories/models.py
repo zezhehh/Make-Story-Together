@@ -1,5 +1,6 @@
 from django.db import models
 from disciplines.models import Discipline
+from django.contrib.postgres.fields import ArrayField
 from groups.models import Group
 from stories.constants import *
 from writers.models import Writer
@@ -25,14 +26,14 @@ class Story(models.Model):
     description = models.TextField(blank=True, default='Describe the story now!')
 
     def __str__(self):
-        return self.title
+        return f'{self.title}:{self.plots_count}'
 
 
 class Chapter(models.Model):
     title = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
-    rule = models.ManyToManyField(Discipline)
+    # rule = models.ManyToManyField(Discipline)
 
     def __str__(self):
         return self.title
@@ -41,7 +42,7 @@ class Chapter(models.Model):
 class Plot(models.Model):
     written_by = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    valid = models.BooleanField()
+    valid = models.BooleanField(default=False)
     content = models.TextField()
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
 

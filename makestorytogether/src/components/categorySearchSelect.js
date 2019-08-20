@@ -10,7 +10,6 @@ class CategorySearchSelect extends React.Component {
     
     constructor(props) {
         super(props);
-        const value = props.value || {};
         this.state = {
             storyDetail: this.props.storyDetail,
             data: [],

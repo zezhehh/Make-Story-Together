@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Story, Tag
+from .models import Story, Tag, Plot, Chapter, Character
 from disciplines.serializers import DisciplineSerializer
 from writers.serializers import InfoSerializer
 from writers.models import Writer
@@ -58,3 +58,18 @@ class StoryMoreDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
         fields = ['id', 'title', 'creator', 'maintainer', 'category', 'public', 'plots_count', 'rule', 'created_at', 'participators', 'description']
+
+
+class PlotSerializer(serializers.ModelSerializer):
+    chapter = serializers.IntegerField(source='chapter.id')
+    written_by = serializers.CharField(source='written_by.screen_name')
+    class Meta:
+        model = Plot
+        fields = ['id', 'written_by', 'created_at', 'valid', 'content', 'chapter']
+
+
+class ChapterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chapter
+        fields = ['id', 'title', 'created_at']
+

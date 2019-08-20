@@ -7,6 +7,7 @@
 
 ## TODO
 
+- 重构react post函数
 - Model Details TBD
   - group invitation
 - UI
@@ -70,19 +71,21 @@
   - owned stories list
 - `/story/joined/`
   - joined stories list
+- `/story/{pk}/plots/?chapter_id=`
+- `/story/{pk}/chapters/`
+- `/story/{pk}/new_chapter/`
+  - POST DATA: `{"title": }`
+- `/story/{pk}/new_plot/`
+  - POST DATA: `{"content": , "chapter_id": }`
 
 TODO::
 
 
-- `/story/configure/`
 - `/story/follow/`
 - `/story/unfollow/`
-- `/story/tag/create/`
-- `/story/chapter/create/`
 - `/story/chapter/delete/`
 - `/story/chapter/like/`
 - `/story/chapter/unlike/`
-- `/story/plot/create/`
 - `/story/plot/delete/`
 - `/story/plot/edit/`
 - `/story/plot/like/`

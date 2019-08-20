@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_HOST } from './constants';
-
+import { postURLWithContent, getURL } from './common';
 
 const STORY_API = `${API_HOST}/story`;
 const TAG_API = `${API_HOST}/tag`
@@ -172,3 +172,29 @@ export function applyTag(token, storyID, tagId) {
     })
 }
 
+
+export function newChapter(token, storyID, postContent) {
+    return postURLWithContent(
+        token, 
+        `${STORY_API}/${storyID}/new_chapter/`, 
+        postContent
+    )
+}
+
+
+export function newPlot(token, storyID, postContent) {
+    return postURLWithContent(
+        token, 
+        `${STORY_API}/${storyID}/new_plot/`, 
+        postContent
+    )
+}
+
+
+export function getChapters(token, storyID) {
+    return getURL(token, `${STORY_API}/${storyID}/chapters/`)
+}
+
+export function getPlots(token, storyID, chapterID) {
+    return getURL(token, `${STORY_API}/${storyID}/plots/?chapter_id=${chapterID}`)
+}

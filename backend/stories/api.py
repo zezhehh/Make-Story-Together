@@ -6,7 +6,14 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from .permissions import StoryPermission
-from .serializers import StorySerializer, TagSerializer, StoryDetailSerializer, StoryMoreDetailSerializer
+from .serializers import (
+    ChapterSerializer, 
+    PlotSerializer,
+    StoryDetailSerializer, 
+    StoryMoreDetailSerializer, 
+    StorySerializer, 
+    TagSerializer, 
+)
 from groups.models import Group
 from disciplines.models import Discipline
 from .models import Story, Tag, Character, Chapter, Plot
@@ -127,6 +134,22 @@ class StoryViewSet(viewsets.ModelViewSet):
             story.category.add(instance)
         return Response(status=status.HTTP_200_OK)
     
+    @action(detail=True)
+    def plots(self, request, pk=None):
+        story = self.get_object()
+        if 'chapter_id' not in request.query_params:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        chapter_id = request.query_params['chapter_id']
+        chapter = story.chapters.get(id=chapter_id)
+        plots = PlotSerializer(chapter.plots, many=True)
+        return Response(plots.data, status=status.HTTP_200_OK)
+    
+    @action(detail=True)
+    def chapters(self, request, pk=None):
+        story = self.get_object()
+        chapters = ChapterSerializer(story.chapters, many=True)
+        return Response(chapters.data, status=status.HTTP_200_OK)
+
     @action(detail=True, permission_classes=[IsAuthenticated, ], methods=['POST', ])
     def new_chapter(self, request, pk=None):
         story = self.get_object()
@@ -136,10 +159,15 @@ class StoryViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, permission_classes=[IsAuthenticated, ], methods=['POST', ])
     def new_plot(self, request, pk=None):
+        story = self.get_object()
         content = request.data['content']
         chapter_id = request.data['chapter_id']
         chapter = Chapter.objects.get(id=chapter_id)
-        Plot.objects.create(written_by=request.user.account, chapter=chapter, content=content)
+        plot = Plot.objects.create(written_by=request.user.account, chapter=chapter, content=content)
+        if not Character.objects.filter(player=request.user.account, story=story).exists():
+            Character.objects.create(player=request.user.account, story=story, appear_at=plot, updated=plot)
+        else:
+            Character.objects.filter(player=request.user.account, story=story).update(updated=plot)
         return Response(status=status.HTTP_200_OK)
 
 

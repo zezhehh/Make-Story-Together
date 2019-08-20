@@ -32,7 +32,7 @@ class Story(models.Model):
 class Chapter(models.Model):
     title = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
-    story = models.ForeignKey(Story, on_delete=models.CASCADE)
+    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='chapters')
     # rule = models.ManyToManyField(Discipline)
 
     def __str__(self):
@@ -44,13 +44,16 @@ class Plot(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     valid = models.BooleanField(default=False)
     content = models.TextField()
-    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='plots')
+
+    def __str__(self):
+        return f'{self.written_by.screen_name}:{self.content}:{self.chapter.title}:{self.chapter.story.title}'
 
 
 class Character(models.Model):
     name = models.CharField(max_length=20, default='person')
     player = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
-    participation = models.FloatField()
+    participation = models.FloatField(default=0)
     appear_at = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='appear_characters')
     updated = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='update_characters')
     story = models.ForeignKey(Story, on_delete=models.CASCADE)

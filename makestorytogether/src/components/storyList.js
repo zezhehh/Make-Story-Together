@@ -6,7 +6,7 @@ import { Card, Layout, Icon, Menu, Divider, Empty } from 'antd';
 import { STATUS, createStory, doneCreateStory } from '../actions/stories';
 import WrappedStoryForm from './storyCreationForm';
 import '../styles/story.css';
-const { Content } = Layout;
+const { Content, Header } = Layout;
 const { SubMenu } = Menu;
 
 
@@ -90,27 +90,31 @@ class StoryList extends React.Component {
     render() {  
         return (
             <Layout>
-                <Content style={{overflow: 'initial'}}>
-                <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
-                    <SubMenu
-                        title='All Stories'
-                    >
-                        <Menu.Item key="orderByDate">Order By Date</Menu.Item>
-                        <Menu.Item key="orderByNumber">Order By #Member</Menu.Item>
-                    </SubMenu>
-                    {
-                            this.props.token === null ? null :
-                            (<Menu.Item key="my">
-                                Owned Stories
-                            </Menu.Item>)
-                        }
+                <Header className='storyHeader' style={{padding: 0, zIndex: 1 }}>
+                    <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
+                        <SubMenu
+                            title='All Stories'
+                        >
+                            <Menu.Item key="orderByDate">Order By Date</Menu.Item>
+                            <Menu.Item key="orderByNumber">Order By #Member</Menu.Item>
+                        </SubMenu>
                         {
                             this.props.token === null ? null :
-                            (<Menu.Item key="joined">
-                                Joined Stories
-                            </Menu.Item>)
-                        }
-                </Menu>
+                                (<Menu.Item key="my">
+                                    Owned Stories
+                                </Menu.Item>)
+                            }
+                            {
+                                this.props.token === null ? null :
+                                (<Menu.Item key="joined">
+                                    Joined Stories
+                                </Menu.Item>)
+                            }
+                    </Menu>
+                </Header>
+                <Layout style={{ marginTop: '40px' }}>
+                <Content style={{overflow: 'initial'}}>
+                    <div style={{ height: '10px' }}></div>
                     {this.state.stories.length === 0 ? <Empty /> : null}
                     {this.state.stories.map((story) => 
                         <Card 
@@ -143,6 +147,7 @@ class StoryList extends React.Component {
                         
                     )}
                 </Content>
+                </Layout>
                 {
                     this.props.status === STATUS.CREATING_STORY && !this.collaspedState() ? 
                     <div className='popForm'>

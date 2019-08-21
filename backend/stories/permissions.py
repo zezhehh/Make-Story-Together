@@ -14,3 +14,41 @@ class StoryPermission(BasePermission):
         if is_maintainer_owner:
             is_maintainer_owner = writer.owned_groups.filter(id=obj.maintainer.id).exists()
         return is_creator or is_maintainer_owner
+
+class ChapterPermission(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return False
+        return True
+    
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_anonymous:
+            return False
+        writer = request.user.account
+        is_creator = obj.story.creator
+        if is_creator:
+            is_creator = writer == obj.story.creator
+        is_maintainer_owner = obj.story.maintainer
+        if is_maintainer_owner:
+            is_maintainer_owner = writer.owned_groups.filter(id=obj.story.maintainer.id).exists()
+        return is_creator or is_maintainer_owner
+
+
+class PlotPermission(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return False
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_anonymous:
+            return False
+        writer = request.user.account
+        is_creator = obj.chapter.story.creator
+        if is_creator:
+            is_creator = writer == obj.chapter.story.creator
+        is_maintainer_owner = obj.chapter.story.maintainer
+        if is_maintainer_owner:
+            is_maintainer_owner = writer.owned_groups.filter(id=obj.chapter.story.maintainer.id).exists()
+        return is_creator or is_maintainer_owner
+

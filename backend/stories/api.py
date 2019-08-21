@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from .permissions import StoryPermission
+from .permissions import StoryPermission, ChapterPermission, PlotPermission
 from .serializers import (
     ChapterSerializer, 
     PlotSerializer,
@@ -185,3 +185,17 @@ class TagViewSet(viewsets.ModelViewSet):
         #     return Tag.objects.all()
         return Tag.objects.filter(name__contains=search_content)
 
+
+class ChapterViewSet(viewsets.ModelViewSet):
+    serializer_class = ChapterSerializer
+    permission_classes = [ChapterPermission, ]
+
+    def get_queryset(self):
+        return Chapter.objects.all()
+
+class PlotViewSet(viewsets.ModelViewSet):
+    serializer_class = PlotSerializer
+    permission_classes = [PlotPermission, ]
+
+    def get_queryset(self):
+        return Plot.objects.all()

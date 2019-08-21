@@ -1,11 +1,14 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
 import { Anchor, Typography, Button, Icon, Input, Tooltip, Popover } from 'antd';
 import { fetchItemDetail } from '../api/items';
 import { emptyStoryDetail } from '../api/emptyStructure';
 import Moment from 'react-moment';
 import { getChapters, getPlots, newChapter, newPlot } from '../api/stories';
+import { returnPlots } from '../components/writingElement';
+import ChapterNode from '../components/chapterNode';
 import '../styles/writing.css';
 const { Title } = Typography;
 
@@ -24,16 +27,19 @@ class Writing extends React.Component {
             chapterTitle: '',
             plots: {},
             chapters: [],
-            currentChapterId: null
+            currentChapterId: null,
+            editMode: false
         }
     }
 
     handleClick = (e, link) => {
         e.preventDefault();
-        let title = e.target.title;
+        let title = link.href;
         let chapter = this.state.chapters.find(obj => {return obj.title===title});
+        if (this.state.editMode) setTimeout(function(){}, 500);
+        if (chapter === undefined) return
         this.setState({ currentChapterId: chapter.id }, () => {
-            this.fetchPlots(this.state.currentChapterId)
+            this.fetchPlots(this.state.currentChapterId, this)
         });
     };
 
@@ -47,32 +53,31 @@ class Writing extends React.Component {
         .then((storyDetail) => {
             this.setState({ storyDetail });
         })
-        this.fetchChapters()
+        this.fetchChapters(this)
     }
 
-    fetchChapters = () => {
-        getChapters(this.props.token, this.state.storyId)
+    fetchChapters = (that) => {
+        getChapters(that.props.token, that.state.storyId)
         .then((chapters) => {
-            this.setState({ 
+            that.setState({ 
                 chapters,
             });
             if (chapters.length !== 0) {
-                this.setState({
+                that.setState({
                     currentChapterId: chapters[0].id
                 }, () => {
-                    this.fetchPlots(this.state.currentChapterId)
+                    that.fetchPlots(that.state.currentChapterId, that);
                 })
             }
         })
     }
 
-    fetchPlots = (chapterId) => {
-        getPlots(this.props.token, this.state.storyId, chapterId)
+    fetchPlots = (chapterId, that) => {
+        getPlots(that.props.token, that.state.storyId, chapterId)
         .then((chapter_plots) => {
-            this.setState({ plots: {
-                [chapterId]: chapter_plots,
-                ...this.state.plots
-            } })
+            let newPlots = that.state.plots;
+            newPlots[chapterId] = chapter_plots;
+            that.setState({ plots: newPlots })
         })
     }
 
@@ -119,7 +124,8 @@ class Writing extends React.Component {
             this.setState({
                 chapters: [...this.state.chapters, chapter],
                 inputChapterVisible: false, 
-                chapterTitle: ''
+                chapterTitle: '',
+                currentChapterId: chapter.id
             })
         })
     }
@@ -142,39 +148,13 @@ class Writing extends React.Component {
                         value={this.state.value} 
                         onChange={(e) => this.setState({value: e.target.value})} 
                         onPressEnter={this.handleNewPlot} 
+                        onBlur={this.handleNewPlot} 
                     />
                 }
             </div>
         )
     }
 
-    getPlotDetail = (plot) => {
-        console.log(plot)
-        return (
-            <div>
-                <span>BY {plot.written_by}</span>
-                <br />
-                <span>Updated at <Moment format="HH:mm YYYY-MM-DD">{plot.updated_at}</Moment></span>
-            </div>
-        )
-    }
-
-    returnPlots = (plots) => {
-        let plotsElements = [];
-        if (plots[this.state.currentChapterId] !== undefined) {
-            plots[this.state.currentChapterId].map((plot) => 
-                plotsElements.push(
-                    <Popover placement="topLeft" key={plot.id} content={this.getPlotDetail(plot)}>
-                        <div className='plot'>
-                            {plot.valid ? <Icon type="check-circle" /> : <Icon type="info-circle" />}
-                            <span style={{ marginLeft: "1em" }}>{plot.content}</span>
-                        </div>
-                    </Popover>
-                )
-            )
-        }
-        return plotsElements
-    }
 
     newChapter = () => {
         return (
@@ -197,11 +177,16 @@ class Writing extends React.Component {
                         value={this.state.chapterTitle} 
                         onChange={(e) => this.setState({chapterTitle: e.target.value})} 
                         onPressEnter={this.handleNewChapter} 
+                        onBlur={this.handleNewChapter} 
                     />
                 </Tooltip>
                 }
             </div>
         )
+    }
+
+    chapterNode = () => {
+
     }
 
     render() {
@@ -214,17 +199,47 @@ class Writing extends React.Component {
                     }}
                 /> : null
             }
-            <Title style={{ textAlign: "center", padding: '20px' }}>{this.state.storyDetail.title}</Title>
+            <Title style={{ textAlign: "center", padding: '20px' }}>
+                <RouterLink to={`/story/${this.state.storyDetail.id}`} style={{ color: 'initial' }}>{this.state.storyDetail.title}</RouterLink>
+                {this.props.screen_name === this.state.storyDetail.creator && !this.state.editMode ? 
+                    <Icon style={{ paddingLeft: '20px', fontSize: 'initial' }} type='form' onClick={() => this.setState({ editMode: true })} /> : null
+                }
+                {this.props.screen_name === this.state.storyDetail.creator && this.state.editMode ? 
+                    <Icon style={{ paddingLeft: '20px', fontSize: 'initial' }} type='check' onClick={() => this.setState({ editMode: false })} /> : null
+                }
+                <br />
+                <div style={{ fontSize: 'initial' }}>{this.state.storyDetail.creator}</div>
+            </Title>
+            {this.state.editMode ? 
+            <div className='storyToolBar'>
+                <Button type='primary' style={{ marginRight: '15px' }}>Clear empty contents</Button>
+                <Button type='danger'>Remove all invalid plots</Button>
+            </div>
+            : null}
             <div className='writingPage'>
-                <Anchor affix={false} offsetTop={40} offsetBottom={80} onClick={this.handleClick} className='storyTOC'>
+                <Anchor affix={false} onClick={this.handleClick} className='storyTOC'>
                     {this.state.chapters.map((chapter) => 
-                        <Link key={chapter.id} href={`#${chapter.title}`} title={chapter.title} />
+                        <Link 
+                            key={chapter.id}
+                            href={chapter.title}
+                            title={
+                                <ChapterNode chapter={chapter} callback={this.fetchChapters} that={this} editMode={this.state.editMode} />
+                            }
+                        />
                     )}
                     {this.newChapter()}
                 </Anchor>
                 
                 <div className='storyEditor'>
-                    {this.returnPlots(this.state.plots).map((plot) => plot)}
+                    {returnPlots(
+                        this.state.plots, 
+                        this.state.currentChapterId, 
+                        this.state.editMode, 
+                        this.props.token, 
+                        this.fetchPlots, 
+                        this
+                    )
+                    .map((plot) => plot)}
                     {this.state.chapters.length !== 0 && 
                         this.state.currentChapterId === this.state.chapters[this.state.chapters.length - 1].id ? 
                         this.newPlot() : null  
@@ -237,7 +252,8 @@ class Writing extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        token: state.writers.token
+        token: state.writers.token,
+        screen_name: state.writers.screen_name
     }
 }
 

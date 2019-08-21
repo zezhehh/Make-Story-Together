@@ -143,7 +143,7 @@ class GroupList extends React.Component {
                 </Header>
                 <Layout style={{ marginTop: '40px' }}>
                     
-                    <Content className="groupContent">
+                    <Content className="groupContent" >
                         <div style={{ height: '10px' }}></div>
                     {this.state.groups.length === 0 ? <Empty /> : null}
                     {this.state.groups.map((group) => 

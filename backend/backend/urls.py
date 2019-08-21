@@ -20,7 +20,7 @@ from rest_framework import routers
 from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token
 from disciplines.api import DisciplineViewSet
 from groups.api import GroupViewSet
-from stories.api import StoryViewSet, TagViewSet
+from stories.api import StoryViewSet, TagViewSet, ChapterViewSet, PlotViewSet
 from writers.api import WriterViewSet
 
 router = routers.SimpleRouter()
@@ -29,6 +29,8 @@ router.register(r'discipline', DisciplineViewSet, 'Discipline')
 router.register(r'group', GroupViewSet, 'Group')
 router.register(r'story', StoryViewSet, 'Story')
 router.register(r'tag', TagViewSet, 'Tag')
+router.register(r'chapter', ChapterViewSet, 'Chapter')
+router.register(r'plot', PlotViewSet, 'Plot')
 router.register(r'', WriterViewSet, 'Writer')
 
 urlpatterns = [

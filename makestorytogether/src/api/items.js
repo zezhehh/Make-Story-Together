@@ -6,6 +6,9 @@ const STORY_API = `${API_HOST}/story`;
 const GROUP_API = `${API_HOST}/group`;
 const DISCIPLINE_API = `${API_HOST}/discipline`;
 const TAG_API = `${API_HOST}/tag`;
+const CHAPTER_API = `${API_HOST}/chapter`;
+const PLOT_API = `${API_HOST}/plot`;
+
 
 function getURL(itemType) {
     let API_URL;
@@ -21,6 +24,12 @@ function getURL(itemType) {
             break;
         case 'tag':
             API_URL = TAG_API;
+            break;
+        case 'chapter':
+            API_URL = CHAPTER_API;
+            break;
+        case 'plot':
+            API_URL = PLOT_API;
             break;
         default:
             API_URL = GROUP_API;

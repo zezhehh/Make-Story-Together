@@ -35,7 +35,8 @@
     margin-bottom: 50px;
     -webkit-box-shadow: rgba(0, 0, 0, 0.71) 2px 1px 9px -3px;
 	-moz-box-shadow: rgba(0, 0, 0, 0.71) 2px 1px 9px -3px;
-	box-shadow: rgba(0, 0, 0, 0.71) 2px 1px 9px -3px;
+    box-shadow: rgba(0, 0, 0, 0.71) 2px 1px 9px -3px;
+    height: fit-content;
 }
 
 .plot {
@@ -62,6 +63,12 @@
 	-moz-box-shadow: none !important;
     box-shadow: none !important;
     border: none !important;
-    margin: 10px 5px;
+    margin: 0px 5px;
     padding: 0 !important;
 }
+
+.storyToolBar {
+    text-align: center;
+    margin-bottom: 20px
+}
+

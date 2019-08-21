@@ -1,3 +1,10 @@
+.storyHeader.ant-layout-header {
+    line-height: 40px;
+    height: 40px;
+    position: fixed;
+    width: 100%;
+}
+
 .storyCard .anticon {
     margin: 0 5px
 }

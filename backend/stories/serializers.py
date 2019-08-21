@@ -65,7 +65,7 @@ class PlotSerializer(serializers.ModelSerializer):
     written_by = serializers.CharField(source='written_by.screen_name')
     class Meta:
         model = Plot
-        fields = ['id', 'written_by', 'created_at', 'valid', 'content', 'chapter']
+        fields = ['id', 'written_by', 'created_at', 'valid', 'content', 'chapter', 'updated_at']
 
 
 class ChapterSerializer(serializers.ModelSerializer):

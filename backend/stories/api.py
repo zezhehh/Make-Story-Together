@@ -154,8 +154,10 @@ class StoryViewSet(viewsets.ModelViewSet):
     def new_chapter(self, request, pk=None):
         story = self.get_object()
         title = request.data['title']
-        Chapter.objects.create(story=story, title=title)
-        return Response(status=status.HTTP_200_OK)
+        if Chapter.objects.filter(story=story, title=title).exists():
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        chapter = Chapter.objects.create(story=story, title=title)
+        return Response(ChapterSerializer(chapter).data, status=status.HTTP_200_OK)
 
     @action(detail=True, permission_classes=[IsAuthenticated, ], methods=['POST', ])
     def new_plot(self, request, pk=None):
@@ -168,7 +170,7 @@ class StoryViewSet(viewsets.ModelViewSet):
             Character.objects.create(player=request.user.account, story=story, appear_at=plot, updated=plot)
         else:
             Character.objects.filter(player=request.user.account, story=story).update(updated=plot)
-        return Response(status=status.HTTP_200_OK)
+        return Response(PlotSerializer(plot).data, status=status.HTTP_200_OK)
 
 
 class TagViewSet(viewsets.ModelViewSet):

@@ -42,6 +42,7 @@ class Chapter(models.Model):
 class Plot(models.Model):
     written_by = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     valid = models.BooleanField(default=False)
     content = models.TextField()
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='plots')

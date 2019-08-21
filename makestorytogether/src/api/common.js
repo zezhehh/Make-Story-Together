@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export function postURLWithContent(token, url, postContent) {
     return axios.post(url, {
         ...postContent
@@ -8,10 +10,7 @@ export function postURLWithContent(token, url, postContent) {
         }
     })
     .then((res) => {
-        return {
-            success: true,
-            ...res.data
-        }
+        return res.data
     })
     .catch((error) => {
         console.log(error)
@@ -29,10 +28,7 @@ export function getURL(token, url) {
         }
     })
     .then((res) => {
-        return {
-            success: true,
-            ...res.data
-        }
+        return res.data
     })
     .catch((error) => {
         console.log(error)

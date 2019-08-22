@@ -57,7 +57,7 @@ class StoryMoreDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Story
-        fields = ['id', 'title', 'creator', 'maintainer', 'category', 'public', 'plots_count', 'rule', 'created_at', 'participators', 'description']
+        fields = ['id', 'title', 'creator', 'maintainer', 'category', 'public', 'plots_count', 'chapters_count', 'rule', 'created_at', 'participators', 'description']
 
 
 class PlotSerializer(serializers.ModelSerializer):

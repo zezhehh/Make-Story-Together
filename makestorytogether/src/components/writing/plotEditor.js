@@ -21,7 +21,10 @@ class PlotEditor extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.currentChapterId !== this.props.currentChapterId) {
+        if (this.props.storyPlotsCount !== prevProps.storyPlotsCount) {
+            this.fetchPlots(this)
+        }
+        if (prevProps.currentChapterId !== this.props.currentChapterId && this.props.currentChapterId !== undefined) {
             this.fetchPlots(this)
         }
     }
@@ -32,7 +35,7 @@ class PlotEditor extends React.Component {
         getPlots(me.props.token, that.state.storyId, that.state.currentChapterId)
         .then((plots) => {
             me.setState({ plots });
-            console.log(plots);
+            console.log('plots', plots);
         })
     }
 

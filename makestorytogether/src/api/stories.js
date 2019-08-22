@@ -198,3 +198,17 @@ export function getChapters(token, storyID) {
 export function getPlots(token, storyID, chapterID) {
     return getURL(token, `${STORY_API}/${storyID}/plots/?chapter_id=${chapterID}`)
 }
+
+export function removeInvalidPlots(token, storyID) {
+    return postURLWithContent(
+        token,
+        `${STORY_API}/${storyID}/remove_invalid_plots/`
+    )
+}
+
+export function clearEmptyContent(token, storyID) {
+    return postURLWithContent(
+        token,
+        `${STORY_API}/${storyID}/clear_empty_content/`
+    )
+}

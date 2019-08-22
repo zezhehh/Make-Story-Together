@@ -26,8 +26,12 @@ class ChapterEditor extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.storyId === this.props.storyId) return
-        this.fetchChapters(this)
+        if (prevProps.storyChaptersCount !== this.props.storyChaptersCount) {
+            this.fetchChapters(this)
+        }
+        if (prevProps.storyId !== this.props.storyId) {
+            this.fetchChapters(this)
+        }
     }
 
     fetchChapters = (me) => {
@@ -38,11 +42,16 @@ class ChapterEditor extends React.Component {
             me.setState({ 
                 chapters,
             });
-            console.log(chapters)
+            console.log('chapters', chapters)
             if (chapters.length !== 0) {
                 that.setState({
                     currentChapterId: chapters[0].id,
                     lastChapterId: chapters[chapters.length - 1].id
+                })
+            } else {
+                that.setState({
+                    currentChapterId: null,
+                    lastChapterId: null
                 })
             }
         })

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export function postURLWithContent(token, url, postContent) {
+export function postURLWithContent(token, url, postContent={}) {
     return axios.post(url, {
         ...postContent
     },

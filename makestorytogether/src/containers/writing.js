@@ -5,6 +5,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Typography, Button } from 'antd';
 import { fetchItemDetail } from '../api/items';
 import { emptyStoryDetail } from '../api/emptyStructure';
+
+import StoryToolBar from '../components/writing/storyToolBar';
 import { storyEditIcon } from '../components/writing/writingElement';
 import PlotEditor from '../components/writing/plotEditor';
 import '../styles/writing.css';
@@ -26,13 +28,14 @@ class Writing extends React.Component {
 
     componentDidMount() {
         this.setState({storyId: this.props.location.state.storyId},
-            () => this.fetch())
+            () => this.fetch(this))
     }
 
-    fetch = () => {
-        fetchItemDetail(this.state.storyId, 'story', this.props.token)
+    fetch = (that) => {
+        fetchItemDetail(that.state.storyId, 'story', that.props.token)
         .then((storyDetail) => {
-            this.setState({ storyDetail });
+            that.setState({ storyDetail });
+            console.log('storyDetail', storyDetail)
         })
     }
 
@@ -56,23 +59,22 @@ class Writing extends React.Component {
             </Title>
 
             {this.state.editMode ? 
-            <div className='storyToolBar'>
-                <Button type='primary' style={{ marginRight: '15px' }}>Clear empty contents</Button>
-                <Button type='danger'>Remove all invalid plots</Button>
-            </div>
+            <StoryToolBar that={this} />
             : null}
 
             <div className='writingPage'>
                 <ChapterEditor 
                     that={this}
                     editMode={this.state.editMode}
-                    storyId={this.state.storyDetail}
+                    storyId={this.state.storyId}
+                    storyChaptersCount={this.state.storyDetail.chapters_count}
                 />
                 
                 <PlotEditor 
                     that={this}
                     currentChapterId={this.state.currentChapterId}
                     editMode={this.state.editMode}
+                    storyPlotsCount={this.state.storyDetail.plots_count}
                 />
             </div>
         </div>)

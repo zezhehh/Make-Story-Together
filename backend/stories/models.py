@@ -17,7 +17,6 @@ class Story(models.Model):
     title = models.CharField(max_length=20)
     creator = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True, related_name='owned_stories')
     maintainer = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True, related_name='stories')
-    plots_count = models.IntegerField(default=0)
     rule = models.ManyToManyField(Discipline, blank=True)
     category = models.ManyToManyField(Tag, blank=True)
     public = models.CharField(choices=PUBLIC_CHOICES, max_length=20, default=PUBLIC)
@@ -27,7 +26,15 @@ class Story(models.Model):
 
     def __str__(self):
         return f'{self.title}:{self.plots_count}'
+    
+    @property
+    def plots_count(self):
+        return Plot.objects.filter(chapter__story=self).count()
 
+    @property
+    def chapters_count(self):
+        return self.chapters.count()
+         
 
 class Chapter(models.Model):
     title = models.CharField(max_length=20)
@@ -37,6 +44,10 @@ class Chapter(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def plots_count(self):
+        return Plot.objects.filter(chapter=self).count()
 
 
 class Plot(models.Model):
@@ -49,6 +60,10 @@ class Plot(models.Model):
 
     def __str__(self):
         return f'{self.written_by.screen_name}:{self.content}:{self.chapter.title}:{self.chapter.story.title}'
+
+    def save(self, *args, **kwargs):
+        self.content = self.content.strip()
+        super(Plot, self).save(*args, **kwargs)
 
 
 class Character(models.Model):

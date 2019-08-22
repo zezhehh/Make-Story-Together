@@ -1,4 +1,5 @@
 from django.db.models import Count
+from django.db.models.functions import Length
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -140,6 +141,8 @@ class StoryViewSet(viewsets.ModelViewSet):
         if 'chapter_id' not in request.query_params:
             return Response(status=status.HTTP_404_NOT_FOUND)
         chapter_id = request.query_params['chapter_id']
+        if not story.chapters.filter(id=chapter_id).exists():
+            return Response(status=status.HTTP_404_NOT_FOUND)
         chapter = story.chapters.get(id=chapter_id)
         plots = PlotSerializer(chapter.plots.order_by('created_at'), many=True)
         return Response(plots.data, status=status.HTTP_200_OK)
@@ -171,6 +174,19 @@ class StoryViewSet(viewsets.ModelViewSet):
         else:
             Character.objects.filter(player=request.user.account, story=story).update(updated=plot)
         return Response(PlotSerializer(plot).data, status=status.HTTP_200_OK)
+
+    @action(detail=True, permission_classes=[IsAuthenticated, StoryPermission], methods=['POST', ])
+    def clear_empty_content(self, request, pk=None):
+        story = self.get_object()
+        Plot.objects.filter(chapter__story=story).annotate(empty_content=Length('content')).filter(empty_content=0).delete()
+        Chapter.objects.filter(story=story).annotate(plot_count=Count('plots')).filter(plot_count=0).delete()
+        return Response(status=status.HTTP_200_OK)
+    
+    @action(detail=True, permission_classes=[IsAuthenticated, StoryPermission], methods=['POST', ])
+    def remove_invalid_plots(self, request, pk=None):
+        story = self.get_object()
+        Plot.objects.filter(chapter__story=story, valid=False).delete()
+        return Response(status=status.HTTP_200_OK)
 
 
 class TagViewSet(viewsets.ModelViewSet):

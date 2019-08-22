@@ -25,6 +25,11 @@ class ChapterEditor extends React.Component {
         this.fetchChapters(this)
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.storyId === this.props.storyId) return
+        this.fetchChapters(this)
+    }
+
     fetchChapters = (me) => {
         const { that } = me.props;
         if (me.props.token === null) return

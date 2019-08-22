@@ -24,7 +24,7 @@ class Writing extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({storyId: this.props.location.state.storyId},
             () => this.fetch())
     }
@@ -66,6 +66,7 @@ class Writing extends React.Component {
                 <ChapterEditor 
                     that={this}
                     editMode={this.state.editMode}
+                    storyId={this.state.storyDetail}
                 />
                 
                 <PlotEditor 

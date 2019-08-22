@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
-import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems, deleteItem } from '../api/items';
-import { joinGroup, quitGroup } from '../api/groups';
+import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems, deleteItem } from '../../api/items';
+import { joinGroup, quitGroup } from '../../api/groups';
 import { Card, Layout, Icon, Menu, Divider, Empty } from 'antd';
-import { STATUS, createGroup, doneCreateGroup } from '../actions/groups';
+import { STATUS, createGroup, doneCreateGroup } from '../../actions/groups';
 import WrappedGroupForm from './groupCreationForm';
-import '../styles/group.css';
+import '../../styles/group.css';
 const { Content, Header } = Layout;
 const { SubMenu } = Menu;
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Select, Tag, Input, Icon, Button } from 'antd';
-import { searchTagByName, applyTag, removeTag } from '../api/stories';
-import { createItem, fetchItemDetail } from '../api/items';
+import { searchTagByName, applyTag, removeTag } from '../../api/stories';
+import { createItem, fetchItemDetail } from '../../api/items';
 
 const { Option } = Select;
 

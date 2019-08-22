@@ -141,7 +141,7 @@ class StoryViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         chapter_id = request.query_params['chapter_id']
         chapter = story.chapters.get(id=chapter_id)
-        plots = PlotSerializer(chapter.plots, many=True)
+        plots = PlotSerializer(chapter.plots.order_by('created_at'), many=True)
         return Response(plots.data, status=status.HTTP_200_OK)
     
     @action(detail=True)
@@ -199,3 +199,20 @@ class PlotViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Plot.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        data = request.data
+        if 'content' in data:
+            data['valid'] = False
+        serializer = self.get_serializer(instance, data=data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)

@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
-import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems } from '../api/items';
+import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems } from '../../api/items';
 import { Card, Layout, Icon, Menu, Divider, Empty } from 'antd';
-import { STATUS, createStory, doneCreateStory } from '../actions/stories';
+import { STATUS, createStory, doneCreateStory } from '../../actions/stories';
 import WrappedStoryForm from './storyCreationForm';
-import '../styles/story.css';
+import '../../styles/story.css';
 const { Content, Header } = Layout;
 const { SubMenu } = Menu;
 
@@ -26,7 +26,6 @@ class StoryList extends React.Component {
     }
 
     fetch(that, storyID=null) {
-        console.log('fetch story list');
         let orderBy = that.state.current === 'orderByDate' ? 'date' : 'number';
         fetchItemList('story', orderBy).then((stories) => {
             that.setState({stories});

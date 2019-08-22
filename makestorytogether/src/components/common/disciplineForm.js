@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Button, InputNumber } from 'antd';
 import UserSearchSelect from './userSearch';
-import { createItem } from '../api/items';
-import { applyDiscipline as groupApplyDiscipline } from '../api/groups';
-import { applyDiscipline as storyApplyDiscipline } from '../api/stories';
-import '../styles/disciplineForm.css';
+import { createItem } from '../../api/items';
+import { applyDiscipline as groupApplyDiscipline } from '../../api/groups';
+import { applyDiscipline as storyApplyDiscipline } from '../../api/stories';
+import '../../styles/disciplineForm.css';
 
 
 class NakedDisciplineForm extends React.Component {

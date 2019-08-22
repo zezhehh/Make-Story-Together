@@ -1,17 +1,17 @@
 import React from 'react';
 import { Card, Icon } from 'antd';
 import { connect } from "react-redux";
-import { fetchItemDetail } from '../api/items';
-import GroupDescription from './groupDescription';
-import GroupManage from './groupManage';
-import '../styles/groupDetail.css';
+import { fetchItemDetail } from '../../api/items';
+import StoryDescription from './storyDescription';
+import StoryManage from './storyManage';
+import '../../styles/storyDetail.css';
 
-class GroupDetail extends React.Component {
+class StoryDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            groupId: this.props.match.params.groupID,
-            groupDetail: null,
+            storyId: this.props.match.params.storyID,
+            storyDetail: null,
             manage: false
         }
     }
@@ -21,10 +21,10 @@ class GroupDetail extends React.Component {
     }
 
     fetch = (that) => {
-        fetchItemDetail(that.state.groupId, 'group', that.props.token)
-        .then((groupDetail) => {
+        fetchItemDetail(that.state.storyId, 'story', that.props.token)
+        .then((storyDetail) => {
             that.setState({
-                groupDetail
+                storyDetail
             });
         });
     }
@@ -46,20 +46,20 @@ class GroupDetail extends React.Component {
     render() {
         return (
             <div>
-                <Card className='groupDetailCard'>
+                <Card className='storyDetailCard'>
                     {
-                        this.state.groupDetail !== null && this.props.screen_name === this.state.groupDetail.owner ? 
+                        this.state.storyDetail !== null && this.props.screen_name === this.state.storyDetail.creator ? 
                         this.manageIcon() : null
                     }
                     {
-                        this.state.groupDetail === null || this.state.manage ? null : 
-                        <GroupDescription match={this.props.match} groupDetail={this.state.groupDetail} />
+                        this.state.storyDetail === null || this.state.manage ? null : 
+                        <StoryDescription match={this.props.match} storyDetail={this.state.storyDetail} />
                     }
                     {
                         !this.state.manage ? null : 
-                        <GroupManage 
+                        <StoryManage 
                             match={this.props.match} 
-                            groupDetail={this.state.groupDetail}
+                            storyDetail={this.state.storyDetail}
                             callback={this.fetch}
                             that={this}
                         />
@@ -77,4 +77,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(GroupDetail);
+export default connect(mapStateToProps)(StoryDetail);

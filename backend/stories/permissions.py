@@ -50,5 +50,8 @@ class PlotPermission(BasePermission):
         is_maintainer_owner = obj.chapter.story.maintainer
         if is_maintainer_owner:
             is_maintainer_owner = writer.owned_groups.filter(id=obj.chapter.story.maintainer.id).exists()
-        return is_creator or is_maintainer_owner
+        is_written = obj.written_by
+        if is_written:
+            is_written = obj.written_by == writer
+        return is_creator or is_maintainer_owner or is_written
 

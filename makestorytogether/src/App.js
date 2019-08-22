@@ -2,10 +2,10 @@ import React from 'react';
 import SiderLayout from './containers/sider';
 import Profile from './containers/profile';
 import Explore from './containers/explore';
-import GroupList from './components/groupList';
-import GroupDetail from './components/groupDetail';
-import StoryList from './components/storyList';
-import StoryDetail from './components/storyDetail';
+import GroupList from './components/group/groupList';
+import GroupDetail from './components/group/groupDetail';
+import StoryList from './components/story/storyList';
+import StoryDetail from './components/story/storyDetail';
 import Writing from './containers/writing';
 import PageNotFound from './containers/notfound'
 import HeaderLayout from './containers/header';

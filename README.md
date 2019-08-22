@@ -7,6 +7,7 @@
 
 ## TODO
 
+- 多点几次 plots 才被 fetch????
 - 重构react post函数
 - Model Details TBD
   - group invitation
@@ -83,14 +84,11 @@ TODO::
 
 - `/story/follow/`
 - `/story/unfollow/`
-- `/story/chapter/delete/`
 - `/story/chapter/like/`
 - `/story/chapter/unlike/`
-- `/story/plot/delete/`
 - `/story/plot/edit/`
 - `/story/plot/like/`
 - `/story/plot/unlike/`
-- `/story/character/create/`
 
 
 

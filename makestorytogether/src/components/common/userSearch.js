@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select } from 'antd';
-import { searchByScreenName } from '../api/writers';
+import { searchByScreenName } from '../../api/writers';
 
 const { Option } = Select;
 

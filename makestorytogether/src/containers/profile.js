@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { STATUS } from '../actions/writers';
-import Login from '../components/login';
+import Login from '../components/account/login';
 
 class Profile extends React.Component {
 

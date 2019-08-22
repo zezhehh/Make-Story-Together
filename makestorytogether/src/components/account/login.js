@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Input, Button, Icon } from 'antd';
-import { logIn, signUp } from "../actions/writers";
-import { signInPost, registerPost } from '../api/writers';
-import '../styles/login.css';
+import { logIn, signUp } from "../../actions/writers";
+import { signInPost, registerPost } from '../../api/writers';
+import '../../styles/login.css';
 
 class Login extends React.Component {
     constructor(props) {

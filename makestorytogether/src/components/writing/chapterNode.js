@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'antd';
-import { deleteItem } from '../api/items';
+import { deleteItem } from '../../api/items';
 import { connect } from 'react-redux';
 
 class ChapterNode extends React.Component {

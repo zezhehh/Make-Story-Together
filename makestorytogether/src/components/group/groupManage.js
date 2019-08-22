@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button, Divider, Select, Popover, Icon } from 'antd';
-import { removeDiscipline, removeMembers } from '../api/groups';
-import { fetchItemDetail, patchItem } from '../api/items';
-import '../styles/disciplineForm.css';
-import DisciplineForm from './disciplineForm';
+import { removeDiscipline, removeMembers } from '../../api/groups';
+import { fetchItemDetail, patchItem } from '../../api/items';
+import '../../styles/disciplineForm.css';
+import DisciplineForm from '../common/disciplineForm';
 
 const { Option } = Select;
 

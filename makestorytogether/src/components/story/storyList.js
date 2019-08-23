@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
-import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems } from '../../api/items';
+import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems, deleteItem } from '../../api/items';
 import { Card, Layout, Icon, Menu, Empty, Popover, Select } from 'antd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { STATUS, createStory, doneCreateStory } from '../../actions/stories';
@@ -91,6 +91,11 @@ class StoryList extends React.Component {
         this.setState({ filteredStories })
     }
 
+    handleDelete = (storyId) => {
+        deleteItem(this.props.token, storyId, 'story')
+        .then(() => this.fetch(this));
+    }
+
     render() {
         let stories = this.state.searchValue === '' ? this.state.stories : this.state.filteredStories;
         let options = stories.map((story) => 
@@ -114,6 +119,7 @@ class StoryList extends React.Component {
                     extra={
                         <div>
                             <Link to={{ pathname: '/just-writing!', state: { storyId: story.id} }}><Icon style={{ color: 'initial' }} type="edit" /></Link>
+                            {this.props.screen_name === story.creator ? <Icon onClick={() => this.handleDelete(story.id)} type='delete' style={{ marginLeft: '10px' }} /> : null}
                         </div>
                     }
                 >
@@ -184,7 +190,8 @@ class StoryList extends React.Component {
 const mapStateToProps = (state) => {
     return {
         token: state.writers.token,
-        status: state.stories.status
+        status: state.stories.status,
+        screen_name: state.writers.screen_name
     }
 }
 

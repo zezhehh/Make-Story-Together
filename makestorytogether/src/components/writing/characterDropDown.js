@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Menu, Dropdown, Icon, Button } from 'antd';
 import { fetchItemList } from '../../api/items';
-import { createCharacter, WRITING_STATUS } from '../../actions/stories';
-import WrappedCharacterForm from './characterCreationForm';
+import { createCharacter } from '../../actions/stories';
 import '../../styles/characterForm.css';
 
 class CharacterDropDown extends React.Component {
@@ -27,7 +26,7 @@ class CharacterDropDown extends React.Component {
         .then((characters) => {
             that.setState({ characters });
             if (that.props.selectedCharacter !== null) {
-                let selectedCharacter = characters.find((character) => character.id == that.props.selectedCharacter);
+                let selectedCharacter = characters.find((character) => character.id === that.props.selectedCharacter);
                 that.setState({ selectedCharacter });
             }
         })

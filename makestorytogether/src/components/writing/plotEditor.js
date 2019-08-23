@@ -79,7 +79,8 @@ class PlotEditor extends React.Component {
         }
         newPlot(this.props.token, that.state.storyId, {
             content: this.state.value,
-            chapter_id: that.state.currentChapterId
+            chapter_id: that.state.currentChapterId,
+            character_id: this.state.selectedCharacter
         })
         .then((plot) => {
             this.setState({
@@ -128,10 +129,6 @@ class PlotEditor extends React.Component {
             </div>
             </CSSTransition>
         )
-    }
-
-    componentDidUpdate(prevProps) {
-        console.log(prevProps.writing_status, this.props.writing_status)
     }
 
     render() {

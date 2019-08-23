@@ -67,6 +67,7 @@ class ChapterEditor extends React.Component {
         that.setState({ 
             currentChapterId: chapter.id
         });
+        console.log('click', chapter.id)
     };
     
     handleNewChapter = () => {

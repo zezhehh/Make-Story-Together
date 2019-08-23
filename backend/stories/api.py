@@ -168,13 +168,23 @@ class StoryViewSet(viewsets.ModelViewSet):
         story = self.get_object()
         content = request.data['content']
         chapter_id = request.data['chapter_id']
-        # character_id = request.data['character_id']
+        character_id = request.data['character_id']
+        if character_id != 'null':
+            character = Character.objects.filter(player=request.user.account, story=story, id=character_id)
+        else:
+            character = None
         chapter = Chapter.objects.get(id=chapter_id)
         plot = Plot.objects.create(written_by=request.user.account, chapter=chapter, content=content)
-        if not Character.objects.filter(player=request.user.account, story=story).exists():
-            Character.objects.create(player=request.user.account, story=story, appear_at=plot, updated=plot, default=True)
+        if not character:
+            if Character.objects.filter(player=request.user.account, story=story, default=True).exists():
+                character = Character.objects.get(player=request.user.account, story=story, default=True)
+                character.updated = plot
+                character.save()
+            else:
+                Character.objects.create(player=request.user.account, story=story, appear_at=plot, updated=plot, default=True)
         else:
-            Character.objects.filter(player=request.user.account, story=story).update(updated=plot)
+            character.updated = plot
+            character.save()
         return Response(PlotSerializer(plot).data, status=status.HTTP_200_OK)
 
     @action(detail=True, permission_classes=[IsAuthenticated, StoryPermission], methods=['POST', ])

@@ -14,7 +14,7 @@ class Tag(models.Model):
 
 
 class Story(models.Model):
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=100)
     creator = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True, related_name='owned_stories')
     maintainer = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True, related_name='stories')
     rule = models.ManyToManyField(Discipline, blank=True)
@@ -37,7 +37,7 @@ class Story(models.Model):
          
 
 class Chapter(models.Model):
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='chapters')
     # rule = models.ManyToManyField(Discipline)

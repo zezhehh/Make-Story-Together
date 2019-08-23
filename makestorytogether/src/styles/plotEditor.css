@@ -4,3 +4,19 @@
     background-color: transparent !important;
     border: none !important;
 }
+
+.plot-textarea {
+    position: relative;
+}
+
+.plot-textarea textarea {
+    width: 100%;
+    /* height: 100%; */
+    box-sizing: border-box;
+}
+
+.plot-textarea .ant-dropdown-trigger {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+}

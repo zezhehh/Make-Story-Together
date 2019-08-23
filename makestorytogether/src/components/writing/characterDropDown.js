@@ -28,7 +28,7 @@ class CharacterDropDown extends React.Component {
         fetchItemList('character', '', '', that.props.storyId, that.props.token)
         .then((characters) => {
             that.setState({ characters }, () => {
-                if(that.state.selectedCharacter === null && characters !== []) {
+                if(that.state.selectedCharacter === null && characters.length !== 0) {
                     that.props.that.setState({ selectedCharacter: characters[0].id });
                 }
             });

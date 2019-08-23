@@ -22,7 +22,7 @@ class PlotEditor extends React.Component {
             editPlotVisible: false,
             plotContent: '',
             currentPlotId: null,
-            selectedCharacter: null //id
+            selectedCharacter: null, //id
         }
     }
 
@@ -114,15 +114,18 @@ class PlotEditor extends React.Component {
 
                 {this.state.inputPlotVisible && 
                     (
-                    <Input
+                    <div className='plot-textarea'>
+                    <Input.TextArea
                         ref={this.saveInputRef}
                         placeholder="Input nothing to quit"
                         value={this.state.value} 
                         onChange={(e) => this.setState({value: e.target.value})} 
                         onPressEnter={this.handleNewPlot}
                         // onBlur={this.handleNewPlot}
-                        suffix={<CharacterDropDown storyId={this.props.that.state.storyId} that={this} selectedCharacter={this.state.selectedCharacter} />}
+                        autosize={true}
                     />
+                    <CharacterDropDown placement="bottomRight" className='character-drop-down' storyId={this.props.that.state.storyId} that={this} selectedCharacter={this.state.selectedCharacter} />
+                    </div>
                     )
                 }
                 

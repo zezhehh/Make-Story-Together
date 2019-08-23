@@ -8,7 +8,7 @@ import '../../styles/writingElement.scss';
 export const getPlotDetail = (plot) => {
     return (
         <div>
-            <span>BY {plot.written_by}</span>
+            <span>BY {plot.written_by} AS {plot.written_as.name}</span>
             <br />
             <span>Updated at <Moment format="HH:mm YYYY-MM-DD">{plot.updated_at}</Moment></span>
         </div>

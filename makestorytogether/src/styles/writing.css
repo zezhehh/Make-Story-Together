@@ -19,7 +19,8 @@
     
 }
 
-.storyTOC {
+/* .storyTOC { */
+.writingPage .ant-anchor-wrapper {
     /* flex-grow: 1; */
     width: fit-content;
     padding-right: 20px;

@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from .permissions import StoryPermission, ChapterPermission, PlotPermission
+from .permissions import StoryPermission, ChapterPermission, PlotPermission, CharacterPermission
 from .serializers import (
+    CharacterSerializer,
     ChapterSerializer, 
     PlotSerializer,
     StoryDetailSerializer, 
@@ -167,10 +168,11 @@ class StoryViewSet(viewsets.ModelViewSet):
         story = self.get_object()
         content = request.data['content']
         chapter_id = request.data['chapter_id']
+        character_id = request.data['character_id']
         chapter = Chapter.objects.get(id=chapter_id)
         plot = Plot.objects.create(written_by=request.user.account, chapter=chapter, content=content)
         if not Character.objects.filter(player=request.user.account, story=story).exists():
-            Character.objects.create(player=request.user.account, story=story, appear_at=plot, updated=plot)
+            Character.objects.create(player=request.user.account, story=story, appear_at=plot, updated=plot, default=True)
         else:
             Character.objects.filter(player=request.user.account, story=story).update(updated=plot)
         return Response(PlotSerializer(plot).data, status=status.HTTP_200_OK)
@@ -187,6 +189,12 @@ class StoryViewSet(viewsets.ModelViewSet):
         story = self.get_object()
         Plot.objects.filter(chapter__story=story, valid=False).delete()
         return Response(status=status.HTTP_200_OK)
+    
+    @action(detail=True, permission_classes=[AllowAny, ], methods=['GET', ])
+    def get_characters(self, request, pk=None):
+        story = self.get_object()
+        chacaters = CharacterSerializer(Character.objects.filter(story=story), many=True)
+        return Response(chacaters.data, status=status.HTTP_200_OK)
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -232,3 +240,18 @@ class PlotViewSet(viewsets.ModelViewSet):
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
+
+
+class CharacterViewSet(viewsets.ModelViewSet):
+    serializer_class = CharacterSerializer
+    permission_classes = [CharacterPermission, ]
+
+    def get_queryset(self):
+        if self.request.user.is_anonymous:
+            return []
+        qs = Character.objects.filter(player=self.request.user.account)
+        params = self.request.query_params
+        if 'story_id' in params:
+            story_id = int(params['story_id'])
+            qs = qs.filter(story__id=story_id)
+        return qs

@@ -7,6 +7,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { patchItem } from '../../api/items';
 import { returnPlots } from './writingElement';
+import '../../styles/plotEditor.css'
 
 
 class PlotEditor extends React.Component {
@@ -86,6 +87,12 @@ class PlotEditor extends React.Component {
         })
     }
 
+    newChapter = () => {
+        return (
+            <Button>New Character</Button>
+        )
+    }
+
     newPlot = () => {
         return (
             <CSSTransition
@@ -108,7 +115,8 @@ class PlotEditor extends React.Component {
                         value={this.state.value} 
                         onChange={(e) => this.setState({value: e.target.value})} 
                         onPressEnter={this.handleNewPlot} 
-                        onBlur={this.handleNewPlot} 
+                        // onBlur={this.handleNewPlot}
+                        suffix={<Button className='new-character-btn'>New Character</Button>}
                     />
                 }
             </div>

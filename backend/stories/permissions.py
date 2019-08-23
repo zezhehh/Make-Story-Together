@@ -55,3 +55,19 @@ class PlotPermission(BasePermission):
             is_written = obj.written_by == writer
         return is_creator or is_maintainer_owner or is_written
 
+
+class CharacterPermission(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_anonymous:
+            return False
+        writer = request.user.account
+        is_creator = obj.story.creator
+        if is_creator:
+            is_creator = writer == obj.story.creator
+        is_maintainer_owner = obj.story.maintainer
+        if is_maintainer_owner:
+            is_maintainer_owner = writer.owned_groups.filter(id=obj.story.maintainer.id).exists()
+        is_written = obj.player
+        if is_written:
+            is_written = obj.player == writer
+        return is_creator or is_maintainer_owner or is_written

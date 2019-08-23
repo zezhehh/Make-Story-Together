@@ -65,6 +65,7 @@ class Plot(models.Model):
         self.content = self.content.strip()
         super(Plot, self).save(*args, **kwargs)
 
+from django.contrib.postgres.fields import ArrayField
 
 class Character(models.Model):
     name = models.CharField(max_length=20, default='Narration')
@@ -73,6 +74,18 @@ class Character(models.Model):
     appear_at = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='appear_characters')
     updated = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='update_characters')
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
+    description = models.TextField(default='introduce the character')
+    alis = ArrayField(
+        models.CharField(max_length=20), default=list, blank=True
+    )
+    default = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return f'{self.name}:{self.story.title}:{self.player.screen_name}'
+
+    def save(self, *args, **kwargs):
+        if self.name not in self.alis:
+            self.alis = self.alis.append(self.name)
+        if not self.alis:
+            self.alis = [self.name, ]
+        super(Character, self).save(*args, **kwargs)

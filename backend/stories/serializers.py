@@ -73,3 +73,24 @@ class ChapterSerializer(serializers.ModelSerializer):
         model = Chapter
         fields = ['id', 'title', 'created_at']
 
+
+class CharacterSerializer(serializers.ModelSerializer):
+    player = serializers.CharField(source='player.screen_name')
+    story = serializers.IntegerField(source='story.id')
+
+    class Meta:
+        model = Character
+        fields = ['id', 'description', 'name', 'player', 'story']
+
+    def validate_player(self, value):
+        user =  self.context['request'].user
+        if user.account.screen_name == value:
+            return value
+        raise serializers.ValidationError(f"Invalid operation.")
+
+    def create(self, validated_data):
+        player = Writer.objects.get(screen_name=validated_data['player']['screen_name'])
+        story = Story.objects.get(id=validated_data['story']['id'])
+        character = Character.objects.create(player=player, name=validated_data['name'], story=story, description=validated_data['description'])
+        return character
+

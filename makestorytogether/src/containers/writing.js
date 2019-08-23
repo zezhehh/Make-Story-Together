@@ -64,11 +64,6 @@ class Writing extends React.Component {
             {this.state.editMode ? 
             <StoryToolBar that={this} />
             : null}
-            {/* <Animate
-                transitionName="fade"
-                transitionAppear
-            > */}
-            {/* <CSSTransition timeout={200} classNames="writing-page-transition-node"> */}
             <div className='writingPage'>
                 <ChapterEditor 
                     that={this}
@@ -83,8 +78,6 @@ class Writing extends React.Component {
                     storyPlotsCount={this.state.storyDetail.plots_count}
                 />
             </div>
-            {/* </CSSTransition> */}
-            {/* </Animate> */}
         </div>)
     }
 }

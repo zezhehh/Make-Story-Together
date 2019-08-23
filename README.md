@@ -7,6 +7,7 @@
 
 ## TODO
 
+- websocket to inform update
 - like character/plot/story
 - 重构react post函数
 - Model Details TBD
@@ -76,6 +77,21 @@
   - POST DATA: `{"content": , "chapter_id": }`
 - `/story/{pk}/clear_empty_content/`
 - `/story/{pk}/remove_invalid_plots/`
+- `/story/{pk}/get_characters/`
+
+
+### Character
+
+- `/character/?story_id=`
+
+```
+{
+    "description": "",
+    "name": "",
+    "player": screen_name,
+    "story": id
+}
+```
 
 TODO::
 

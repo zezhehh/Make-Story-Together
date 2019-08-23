@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems, deleteItem } from '../../api/items';
 import { joinGroup, quitGroup } from '../../api/groups';
-import { Card, Layout, Icon, Menu, Popover, Empty } from 'antd';
+import { Card, Layout, Icon, Menu, Popover, Empty, Select } from 'antd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { STATUS, createGroup, doneCreateGroup } from '../../actions/groups';
 import WrappedGroupForm from './groupCreationForm';
@@ -17,7 +17,9 @@ class GroupList extends React.Component {
         this.state = {
             groups: [], // default collapsed
             detailID: null,
-            current: 'orderByDate'
+            current: 'orderByDate',
+            searchValue: '',
+            filteredGroups: []
         }
     }
 
@@ -84,15 +86,19 @@ class GroupList extends React.Component {
     }
 
     handleClick = e => {
-        this.setState({
-          current: e.key,
-        });
+        if (e.key !== 'search') {
+            this.setState({
+              current: e.key,
+            });
+        }
         switch (e.key) {
             case 'my':
                 this.fetchOwned(this);
                 break;
             case 'joined':
                 this.fetchJoined(this);
+                break;
+            case 'search':
                 break;
             default:
                 this.fetch(this);
@@ -104,8 +110,15 @@ class GroupList extends React.Component {
         return <p>{group.description}</p>
     }
 
-    render() {  
-        const groups = this.state.groups.map((group) => 
+    handleSearch = (name) => {
+        this.setState({ searchValue: name });
+        let filteredGroups = this.state.groups.filter((group) => group.name.includes(name));
+        this.setState({ filteredGroups })
+    }
+
+    render() {
+        let groups = this.state.searchValue === '' ? this.state.groups : this.state.filteredGroups;
+        let options = groups.map((group) => 
             <CSSTransition
                 key={group.id}
                 timeout={500}
@@ -158,7 +171,18 @@ class GroupList extends React.Component {
                                 Joined Groups
                             </Menu.Item>)
                         }
-                        
+                        <Menu.Item key="search">
+                        <Select
+                            className='groupSearch'
+                            showSearch
+                            placeholder="Search by the group name"
+                            defaultActiveFirstOption={false}
+                            showArrow={false}
+                            filterOption={false}
+                            onSearch={this.handleSearch}
+                            notFoundContent={null}
+                        />
+                        </Menu.Item>
                     </Menu>
                 </Header>
                 <Layout style={{ marginTop: '40px' }} className="groupList">
@@ -167,7 +191,7 @@ class GroupList extends React.Component {
                         <div style={{ height: '10px' }}></div>
                     {this.state.groups.length === 0 ? <Empty /> : null}
                     <TransitionGroup>
-                    {groups}
+                    {options}
                     </TransitionGroup>
                     
                 </Content>

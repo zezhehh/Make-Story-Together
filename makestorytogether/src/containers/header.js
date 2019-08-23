@@ -32,12 +32,12 @@ class HeaderLayout extends React.Component {
                         null : (
                         <div>
                             <Link to='/group'>
-                                <Button onClick={this.handleNewGroup} size='small'>
+                                <Button className='header-btn' onClick={this.handleNewGroup} size='small'>
                                     New Group
                                 </Button>
                             </Link>
                             <Link to='/story'>
-                                <Button onClick={this.handleNewStory} size='small'>
+                                <Button className='header-btn' onClick={this.handleNewStory} size='small' style={{ marginLeft: 0 }}>
                                     New Story
                                 </Button>
                             </Link>
@@ -49,8 +49,8 @@ class HeaderLayout extends React.Component {
                     <span style={{ margin: "2px" }}>{this.props.screenName}</span>
                     {
                         this.props.status === STATUS.ANONYMOUS ? 
-                        (<Button href='/profile' size='small'>Login</Button>) : (
-                        <Button href='/profile' size='small' onClick={this.handleLogOut}>Logout</Button>)
+                        (<Button className='header-btn' href='/profile' size='small'>Login</Button>) : (
+                        <Button className='header-btn' href='/profile' size='small' onClick={this.handleLogOut}>Logout</Button>)
                     }
                 </div>
                 

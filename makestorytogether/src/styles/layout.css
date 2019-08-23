@@ -7,6 +7,10 @@
   margin: 20px 0
 }
 
+.header-btn {
+  margin: auto 15px;
+}
+
 .mst-header.ant-layout-header {
   line-height: 40px;
   height: 40px;

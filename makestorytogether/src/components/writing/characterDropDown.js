@@ -12,17 +12,30 @@ class CharacterDropDown extends React.Component {
             characters: [],
             selectedCharacter: null
         }
-        this.fetch(this)
     }
 
     componentDidMount() {
         this.fetch(this);
     }
 
-    fetch = (that) => {
+    componentDidUpdate(prevProps) {
+        if (prevProps.selectedCharacter !== this.props.selectedCharacter){
+            this.fetch(this, true)
+        }
+    }
+
+    fetch = (that, updateSelected=false) => {
         fetchItemList('character', '', '', that.props.storyId, that.props.token)
         .then((characters) => {
-            that.setState({ characters });
+            that.setState({ characters }, () => {
+                if(that.state.selectedCharacter === null && characters !== []) {
+                    that.props.that.setState({ selectedCharacter: characters[0].id });
+                }
+            });
+            if (updateSelected) {
+                let selectedCharacter = characters.find((character) => character.id === that.props.selectedCharacter);
+                that.setState({ selectedCharacter })
+            }
         })
     }
 
@@ -37,8 +50,9 @@ class CharacterDropDown extends React.Component {
     }
 
     getDefaultCharacter = () => {
-        if (this.state.selectedCharacter !== null) 
+        if (this.state.selectedCharacter !== null) {
             return this.state.selectedCharacter.name;
+        }
         let character = this.state.characters.find((character) => character.default);
         if (character === undefined) {
             character = this.state.characters[0];

@@ -57,6 +57,7 @@ class Plot(models.Model):
     valid = models.BooleanField(default=False)
     content = models.TextField()
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='plots')
+    written_as = models.ForeignKey('stories.Character', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f'{self.written_by.screen_name}:{self.content}:{self.chapter.title}:{self.chapter.story.title}'

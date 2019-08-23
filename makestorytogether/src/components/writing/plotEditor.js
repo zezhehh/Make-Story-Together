@@ -121,7 +121,7 @@ class PlotEditor extends React.Component {
                         onChange={(e) => this.setState({value: e.target.value})} 
                         onPressEnter={this.handleNewPlot}
                         // onBlur={this.handleNewPlot}
-                        suffix={<CharacterDropDown storyId={this.props.that.state.storyId} that={this} />}
+                        suffix={<CharacterDropDown storyId={this.props.that.state.storyId} that={this} selectedCharacter={this.state.selectedCharacter} />}
                     />
                     )
                 }

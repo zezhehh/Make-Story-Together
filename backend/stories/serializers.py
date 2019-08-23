@@ -60,20 +60,6 @@ class StoryMoreDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'creator', 'maintainer', 'category', 'public', 'plots_count', 'chapters_count', 'rule', 'created_at', 'participators', 'description']
 
 
-class PlotSerializer(serializers.ModelSerializer):
-    chapter = serializers.IntegerField(source='chapter.id')
-    written_by = serializers.CharField(source='written_by.screen_name')
-    class Meta:
-        model = Plot
-        fields = ['id', 'written_by', 'created_at', 'valid', 'content', 'chapter', 'updated_at']
-
-
-class ChapterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Chapter
-        fields = ['id', 'title', 'created_at']
-
-
 class CharacterSerializer(serializers.ModelSerializer):
     player = serializers.CharField(source='player.screen_name')
     story = serializers.IntegerField(source='story.id')
@@ -94,3 +80,17 @@ class CharacterSerializer(serializers.ModelSerializer):
         character = Character.objects.create(player=player, name=validated_data['name'], story=story, description=validated_data['description'])
         return character
 
+
+class PlotSerializer(serializers.ModelSerializer):
+    chapter = serializers.IntegerField(source='chapter.id')
+    written_by = serializers.CharField(source='written_by.screen_name')
+    written_as = CharacterSerializer()
+    class Meta:
+        model = Plot
+        fields = ['id', 'written_by', 'created_at', 'valid', 'content', 'chapter', 'updated_at', 'written_as']
+
+
+class ChapterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chapter
+        fields = ['id', 'title', 'created_at']

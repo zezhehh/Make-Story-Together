@@ -5,13 +5,47 @@
     width: 100%;
 }
 
-.groupCard .anticon {
-    margin: 0 5px
+.groupList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 20px;
+    overflow: hidden;
 }
 
-.groupCard {
-    width: 50% !important;
-    margin: 10px auto !important
+.groupItem {
+    width: 860px !important;
+}
+
+.item-enter-done {
+    height: fit-content;
+    margin-top: 10px !important;
+}
+
+.item-enter {
+    opacity: 0;
+    height: 0;
+    margin-top: 0 !important;
+}
+
+.item-enter-active {
+    opacity: 1;
+    height: fit-content;
+    margin-top: 10px !important;
+    transition: all 500ms ease-in;
+}
+
+.item-exit {
+    opacity: 1;
+    height: fit-content;
+    margin-top: 10px !important;
+}
+
+.item-exit-active {
+    opacity: 0;
+    height: 0;
+    margin-top: 0 !important;
+    transition: all 500ms ease-in;
 }
 
 .popForm {

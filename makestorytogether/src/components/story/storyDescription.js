@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Descriptions, Popover, Tag } from 'antd';
+import Moment from 'react-moment';
 
 class StoryDescription extends React.Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class StoryDescription extends React.Component {
                 <Descriptions.Item label='Maintainer'>{this.state.storyDetail.mantainer}</Descriptions.Item>
                 <Descriptions.Item label='Public?'>{this.state.storyDetail.public}</Descriptions.Item>
                 <Descriptions.Item label='#Plots'>{this.state.storyDetail.plots_count}</Descriptions.Item>
-                <Descriptions.Item label='Created At'>{this.state.storyDetail.created_at}</Descriptions.Item>
+                <Descriptions.Item label='Created At'><Moment format="YYYY/MM/DD">{this.state.storyDetail.created_at}</Moment></Descriptions.Item>
                 <Descriptions.Item label='Category' span={3}>
                     {this.state.storyDetail.category.length === 0 ? null :
                         (

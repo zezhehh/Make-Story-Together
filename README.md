@@ -7,7 +7,8 @@
 
 ## TODO
 
-- 多点几次 plots 才被 fetch????
+- 创建表格无法关闭
+- 新建 story 调整 like group
 - 重构react post函数
 - Model Details TBD
   - group invitation
@@ -78,6 +79,8 @@
   - POST DATA: `{"title": }`
 - `/story/{pk}/new_plot/`
   - POST DATA: `{"content": , "chapter_id": }`
+- `/story/{pk}/clear_empty_content/`
+- `/story/{pk}/remove_invalid_plots/`
 
 TODO::
 
@@ -86,7 +89,6 @@ TODO::
 - `/story/unfollow/`
 - `/story/chapter/like/`
 - `/story/chapter/unlike/`
-- `/story/plot/edit/`
 - `/story/plot/like/`
 - `/story/plot/unlike/`
 

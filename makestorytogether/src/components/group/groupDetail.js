@@ -46,7 +46,7 @@ class GroupDetail extends React.Component {
     render() {
         return (
             <div>
-                <Card className='groupDetailCard'>
+                <Card bordered={false} className='groupDetailCard'>
                     {
                         this.state.groupDetail !== null && this.props.screen_name === this.state.groupDetail.owner ? 
                         this.manageIcon() : null

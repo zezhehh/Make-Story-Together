@@ -5,15 +5,47 @@
     width: 100%;
 }
 
-.storyCard .anticon {
-    margin: 0 5px
+.storyList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 20px;
 }
 
-.storyCard {
-    width: 50% !important;
-    margin: 10px auto !important
+.storyItem {
+    width: 860px !important;
 }
 
+.item-enter-done {
+    height: 141px;
+    margin-top: 10px !important;
+}
+
+.item-enter {
+    opacity: 0;
+    height: 0;
+    margin-top: 0 !important;
+}
+
+.item-enter-active {
+    opacity: 1;
+    height: 141px;
+    margin-top: 10px !important;
+    transition: all 500ms ease-in;
+}
+
+.item-exit {
+    opacity: 1;
+    height: 141px;
+    margin-top: 10px !important;
+}
+
+.item-exit-active {
+    opacity: 0;
+    height: 0;
+    margin-top: 0 !important;
+    transition: all 500ms ease-in;
+}
 
 .popForm {
     position: fixed;
@@ -34,5 +66,5 @@
     top: 25%;
     bottom: 25%;
     margin: auto;
-    background: white;
+    background-color: white;
 }

@@ -46,7 +46,7 @@ class StoryDetail extends React.Component {
     render() {
         return (
             <div>
-                <Card className='storyDetailCard'>
+                <Card bordered={false} className='storyDetailCard'>
                     {
                         this.state.storyDetail !== null && this.props.screen_name === this.state.storyDetail.creator ? 
                         this.manageIcon() : null

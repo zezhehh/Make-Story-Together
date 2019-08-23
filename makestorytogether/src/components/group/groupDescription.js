@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Descriptions, Popover } from 'antd';
+import Moment from 'react-moment';
+
 
 class GroupDescription extends React.Component {
     constructor(props) {
@@ -16,7 +18,7 @@ class GroupDescription extends React.Component {
             <Descriptions column={3} bordered>
                 <Descriptions.Item label='Name' span={2}>{this.state.groupDetail.name}</Descriptions.Item>
                 <Descriptions.Item label='Owner'>{this.state.groupDetail.owner}</Descriptions.Item>
-                <Descriptions.Item label='Created At' span={3}>{this.state.groupDetail.created_at}</Descriptions.Item>
+                <Descriptions.Item label='Created At' span={3}><Moment format="YYYY/MM/DD">{this.state.groupDetail.created_at}</Moment></Descriptions.Item>
                 <Descriptions.Item label='Descriptions' span={3}>{this.state.groupDetail.description}</Descriptions.Item>
                 <Descriptions.Item 
                     label={

@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import ScrollToTop from './containers/scrollToTop';
 import './styles/layout.css';
 import 'antd/dist/antd.css';
+import 'rc-texty/assets/index.css';
 const { Content } = Layout;
 
 class App extends React.Component {
@@ -50,7 +51,7 @@ class App extends React.Component {
             <SiderLayout />
             <Layout>
               <HeaderLayout />
-              <Content style={{ marginTop: '40px'}}>
+              <Content style={{ marginTop: '40px', background: '#f0f2f5'}}>
                 <Switch>
                   <Route exact path="/">
                     <Redirect to="/explore" />

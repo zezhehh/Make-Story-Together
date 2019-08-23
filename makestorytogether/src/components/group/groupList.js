@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems, deleteItem } from '../../api/items';
 import { joinGroup, quitGroup } from '../../api/groups';
-import { Card, Layout, Icon, Menu, Divider, Empty } from 'antd';
+import { Card, Layout, Icon, Menu, Popover, Empty } from 'antd';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { STATUS, createGroup, doneCreateGroup } from '../../actions/groups';
 import WrappedGroupForm from './groupCreationForm';
 import '../../styles/group.css';
@@ -16,7 +17,6 @@ class GroupList extends React.Component {
         this.state = {
             groups: [], // default collapsed
             detailID: null,
-            groupDetail: null,
             current: 'orderByDate'
         }
     }
@@ -26,6 +26,14 @@ class GroupList extends React.Component {
     }
 
     fetch(that, groupID=null) {
+        if (that.state.current === 'my') {
+            that.fetchOwned(that);
+            return;
+        }
+        else if (that.state.current === 'joined') {
+            that.fetchJoined(that);
+            return;
+        }
         console.log('fetch group list');
         let orderBy = that.state.current === 'orderByDate' ? 'date' : 'number';
         fetchItemList('group', orderBy).then((groups) => {
@@ -38,53 +46,29 @@ class GroupList extends React.Component {
         }
     }
 
-    fetchOwned = () => {
-        fetchOwnedItems(this.props.token).then((groups) => {
-            this.setState({groups});
+    fetchOwned = (that) => {
+        fetchOwnedItems(that.props.token).then((groups) => {
+            that.setState({groups});
         })
     }
 
-    fetchJoined = () => {
-        fetchJoinedItems(this.props.token).then((groups) => {
-            this.setState({groups});
+    fetchJoined = (that) => {
+        fetchJoinedItems(that.props.token).then((groups) => {
+            that.setState({groups});
         })
-    }
-
-    collaspedState = () => {
-        if (this.props.status === STATUS.CREATING_GROUP) {
-            return false
-        } else if (this.state.groupDetail !== null) {
-            return false
-        } else {
-            return true
-        }
-    }
-
-    handleMore = groupID => {
-        fetchItemDetail(groupID).then((groupDetail) => {
-            this.setState({groupDetail,
-                detailID: groupID
-            });
-            console.log(groupDetail);
-        });
     }
 
     handleJoin = groupID => {
-        joinGroup(this.props.token, groupID).then(() => this.fetchJoined());
+        joinGroup(this.props.token, groupID).then(() => this.fetchJoined(this));
         this.setState({current: 'joined'});
     }
 
     handleQuit = groupID => {
-        quitGroup(this.props.token, groupID).then(() => this.fetchJoined());
+        quitGroup(this.props.token, groupID).then(() => this.fetchJoined(this));
     }
 
     handleDelete = groupID => {
-        deleteItem(this.props.token, groupID).then(() => this.fetchOwned());
-    }
-
-    toggle = () => {
-        this.setState({groupDetail: null, detailID: null});
-        this.props.doneCreateGroup();
+        deleteItem(this.props.token, groupID).then(() => this.fetchOwned(this));
     }
 
     groupIcon = (groupID) => {
@@ -105,17 +89,53 @@ class GroupList extends React.Component {
         });
         switch (e.key) {
             case 'my':
-                this.fetchOwned();
+                this.fetchOwned(this);
                 break;
             case 'joined':
-                this.fetchJoined();
+                this.fetchJoined(this);
                 break;
             default:
                 this.fetch(this);
         }
     };
 
+    geGroupDetailById = (groupId) => {
+        let group = this.state.groups.find((group) => group.id = groupId);
+        return <p>{group.description}</p>
+    }
+
     render() {  
+        const groups = this.state.groups.map((group) => 
+            <CSSTransition
+                key={group.id}
+                timeout={500}
+                classNames="item"
+                className='groupItem'
+            >
+                <Card 
+                    bordered={false}
+                    className='groupCard'
+                    // key={group.id}
+                    title={
+                        <Popover placement="bottomLeft" content={this.geGroupDetailById(group.id)}>
+                            <Link to={`/group/${group.id}`} style={{ color: 'initial' }}>
+                                {group.name}
+                            </Link>
+                        </Popover>
+                    } 
+                    extra={
+                        <div>
+                            {
+                                this.props.token === null ? null :
+                                this.groupIcon(group.id)
+                            }
+                        </div>
+                    }
+                >
+                    <p>Owner {group.owner}</p>
+                </Card>
+            </CSSTransition>
+        );
         return (
             <Layout>
                 <Header className='groupHeader' style={{padding: 0, zIndex: 1 }}>
@@ -141,52 +161,23 @@ class GroupList extends React.Component {
                         
                     </Menu>
                 </Header>
-                <Layout style={{ marginTop: '40px' }}>
+                <Layout style={{ marginTop: '40px' }} className="groupList">
                     
                     <Content className="groupContent" >
                         <div style={{ height: '10px' }}></div>
                     {this.state.groups.length === 0 ? <Empty /> : null}
-                    {this.state.groups.map((group) => 
-                        <Card 
-                            className='groupCard'
-                            key={group.id}
-                            title={
-                                <Link to={`/group/${group.id}`} style={{ color: 'initial' }}>
-                                    {group.name}
-                                </Link>
-                            } 
-                            extra={
-                                <div>
-                                    {
-                                        this.props.token === null ? null :
-                                        this.groupIcon(group.id)
-                                    }
-                                    <Icon onClick={() => this.handleMore(group.id)} type="more" />
-                                </div>
-                            } 
-                            style={{ width: 300 }}
-                        >
-                            <p>Owner {group.owner}</p>
-                            <p>{group.description}</p>
-                            {
-                                this.state.detailID !== group.id || this.collaspedState() ? null :
-                                <div>
-                                    <Divider />
-                                    <p>More detail of {group.name}</p>
-                                    <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="up" />
-                                </div>
-                            }
-                        </Card>
-                        
-                    )}
+                    <TransitionGroup>
+                    {groups}
+                    </TransitionGroup>
+                    
                 </Content>
                 </Layout>
                 {
-                    this.props.status === STATUS.CREATING_GROUP && !this.collaspedState() ? 
+                    this.props.status === STATUS.CREATING_GROUP ? 
                     <div className='popForm'>
                         <div className='popInner'>
                             <WrappedGroupForm callback={this.fetch} that={this} />
-                            <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
+                            <Icon onClick={this.props.doneCreateGroup} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
                         </div>
                     </div>: null
                 }

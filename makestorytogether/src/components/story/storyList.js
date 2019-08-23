@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems } from '../../api/items';
-import { Card, Layout, Icon, Menu, Divider, Empty } from 'antd';
+import { Card, Layout, Icon, Menu, Empty, Popover } from 'antd';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { STATUS, createStory, doneCreateStory } from '../../actions/stories';
 import WrappedStoryForm from './storyCreationForm';
 import '../../styles/story.css';
@@ -16,7 +17,6 @@ class StoryList extends React.Component {
         this.state = {
             stories: [], // default collapsed
             storyDetail: null,
-            detailID: null,
             current: 'orderByDate'
         }
     }
@@ -26,6 +26,14 @@ class StoryList extends React.Component {
     }
 
     fetch(that, storyID=null) {
+        if (that.state.current === 'my') {
+            that.fetchOwned(that);
+            return;
+        }
+        if (that.state.current === 'owned') {
+            that.fetchJoined(that);
+            return
+        }
         let orderBy = that.state.current === 'orderByDate' ? 'date' : 'number';
         fetchItemList('story', orderBy).then((stories) => {
             that.setState({stories});
@@ -37,37 +45,16 @@ class StoryList extends React.Component {
         }
     }
 
-    fetchOwned = () => {
-        fetchOwnedItems(this.props.token, 'story').then((stories) => {
-            this.setState({stories});
+    fetchOwned = (that) => {
+        fetchOwnedItems(that.props.token, 'story').then((stories) => {
+            that.setState({stories});
         })
     }
 
-    fetchJoined = () => {
-        fetchJoinedItems(this.props.token, 'story').then((stories) => {
-            this.setState({stories});
+    fetchJoined = (that) => {
+        fetchJoinedItems(that.props.token, 'story').then((stories) => {
+            that.setState({stories});
         })
-    }
-
-    collaspedState = () => {
-        if (this.props.status === STATUS.CREATING_STORY) {
-            return false
-        } else if (this.state.storyDetail !== null) {
-            return false
-        } else {
-            return true
-        }
-    }
-
-    handleMore = storyID => {
-        fetchItemDetail(storyID, 'story').then((storyDetail) => {
-            this.setState({storyDetail, detailID: storyID});
-        });
-    }
-
-    toggle = () => {
-        this.setState({storyDetail: null, detailID: null});
-        this.props.doneCreateStory();
     }
 
     handleClick = e => {
@@ -76,17 +63,51 @@ class StoryList extends React.Component {
         });
         switch (e.key) {
             case 'my':
-                this.fetchOwned();
+                this.fetchOwned(this);
                 break;
             case 'joined':
-                this.fetchJoined();
+                this.fetchJoined(this);
                 break;
             default:
                 this.fetch(this);
         }
     };
 
-    render() {  
+    getStoryDetailById = (storyId) => {
+        let story = this.state.stories.find((story) => story.id === storyId);
+        return <p>{story.description}</p>
+    }
+
+    render() {
+        const stories = this.state.stories.map((story) => 
+        <CSSTransition
+            key={story.id}
+            timeout={500}
+            classNames="item"
+            className='storyItem    '
+        >
+            <Card 
+                className='storyCard'
+                // key={story.id}
+                bordered={false}
+                title={
+                    <Popover placement="bottomLeft" content={this.getStoryDetailById(story.id)}>
+                    <Link to={`/story/${story.id}`} style={{ color: 'initial' }}>
+                        {story.title}
+                    </Link>
+                    </Popover>
+                } 
+                extra={
+                    <div>
+                        <Link to={{ pathname: '/just-writing!', state: { storyId: story.id} }}><Icon style={{ color: 'initial' }} type="edit" /></Link>
+                    </div>
+                }
+            >
+                <p>Creator {story.creator}</p>
+            </Card>
+        </CSSTransition>
+        );
+
         return (
             <Layout>
                 <Header className='storyHeader' style={{padding: 0, zIndex: 1 }}>
@@ -111,47 +132,21 @@ class StoryList extends React.Component {
                             }
                     </Menu>
                 </Header>
-                <Layout style={{ marginTop: '40px' }}>
+                <Layout style={{ marginTop: '40px' }}  className='storyList'>
                 <Content style={{overflow: 'initial'}}>
                     <div style={{ height: '10px' }}></div>
                     {this.state.stories.length === 0 ? <Empty /> : null}
-                    {this.state.stories.map((story) => 
-                        <Card 
-                            className='storyCard'
-                            key={story.id}
-                            title={
-                                <Link to={`/story/${story.id}`} style={{ color: 'initial' }}>
-                                    {story.title}
-                                </Link>
-                            } 
-                            extra={
-                                <div>
-                                    <Link to={{ pathname: '/just-writing!', state: { storyId: story.id} }}><Icon style={{ color: 'initial' }} type="edit" /></Link>
-                                    <Icon onClick={() => this.handleMore(story.id)} type="more" />
-                                </div>
-                            } 
-                            style={{ width: 300 }}
-                        >
-                            <p>Creator {story.creator}</p>
-                            {
-                                this.state.detailID !== story.id || this.collaspedState() ? null :
-                                <div>
-                                    <Divider />
-                                    <p>{story.description}</p>
-                                    <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="up" />
-                                </div>
-                            }
-                        </Card>
-                        
-                    )}
+                    <TransitionGroup>
+                    {stories}
+                    </TransitionGroup>
                 </Content>
                 </Layout>
                 {
-                    this.props.status === STATUS.CREATING_STORY && !this.collaspedState() ? 
+                    this.props.status === STATUS.CREATING_STORY ? 
                     <div className='popForm'>
                         <div className='popInner'>
                             <WrappedStoryForm callback={this.fetch} that={this} />
-                            <Icon onClick={this.toggle} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
+                            <Icon onClick={this.props.doneCreateStory} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
                         </div>
                     </div>: null
                 }

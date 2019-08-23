@@ -2,6 +2,7 @@
 import React from 'react';
 import { Affix, Layout, Menu, Icon } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
+import Texty from 'rc-texty';
 const { Sider } = Layout;
 // const { SubMenu } = Menu;
 
@@ -57,7 +58,7 @@ class SiderLayout extends React.Component {
             onCollapse={this.onCollapse}
           >
             {!this.state.collapsed ? 
-            (<div className="logo"><span>Make Story Together</span></div>) :
+            (<div className="logo"><Texty>Make Story Together</Texty></div>) :
             (<div className="logo"><Icon type="smile" /></div>)
             }
             

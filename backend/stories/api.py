@@ -206,6 +206,8 @@ class StoryViewSet(viewsets.ModelViewSet):
         Plot.objects.filter(chapter__story=story, valid=False).delete()
         return Response(status=status.HTTP_200_OK)
     
+    # all characters of the story
+    # to fetch the characters of user (in some story), see CharacterViewSet
     @action(detail=True, permission_classes=[AllowAny, ], methods=['GET', ])
     def get_characters(self, request, pk=None):
         story = self.get_object()

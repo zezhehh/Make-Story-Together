@@ -132,7 +132,7 @@ class ChapterEditor extends React.Component {
                     affix={false} 
                     onClick={this.handleClick} 
                     ClassName='storyTOC'
-                    // getCurrentAnchor={() => 'defaultAnchor'}
+                    getCurrentAnchor={() => 'defaultAnchor'}
                     showInkInFixed={true}
                 >
                     {this.state.chapters.map((chapter, index) => 

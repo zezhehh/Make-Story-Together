@@ -4,6 +4,7 @@ import { Form, Input, Button, Divider, Select, Popover, Icon } from 'antd';
 import { removeDiscipline, removeMembers } from '../../api/stories';
 import { fetchItemDetail, patchItem } from '../../api/items';
 import '../../styles/disciplineForm.css';
+import '../../styles/storyManage.css';
 import DisciplineForm from '../common/disciplineForm';
 import CategorySearchSelect from './categorySearchSelect';
 
@@ -114,7 +115,7 @@ class NakedManage extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
-            <div>
+            <div className='story-manage'>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item label='Story Title'>
                         {getFieldDecorator('title')(

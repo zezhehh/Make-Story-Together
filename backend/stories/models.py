@@ -70,7 +70,7 @@ from django.contrib.postgres.fields import ArrayField
 
 class Character(models.Model):
     name = models.CharField(max_length=20, default='Narration')
-    player = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
+    player = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True, related_name='characters')
     participation = models.FloatField(default=0)
     appear_at = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='appear_characters')
     updated = models.ForeignKey(Plot, on_delete=models.SET_NULL, null=True, related_name='update_characters')

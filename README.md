@@ -7,8 +7,6 @@
 
 ## TODO
 
-- 创建表格无法关闭
-- 新建 story 调整 like group
 - 重构react post函数
 - Model Details TBD
   - group invitation
@@ -16,10 +14,6 @@
 - API
   - different user: different detail info
   - paginate
-  - group management
-    - discipline add/delete
-    - member add/delete/join/quit
-<!-- - Authentification -->
 - Feed - Celery
 - Cache to speed up / reselect
 

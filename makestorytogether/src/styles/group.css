@@ -13,8 +13,13 @@
     overflow: hidden;
 }
 
+.groupItem:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+}
+
 .groupItem {
     width: 860px !important;
+    transition: box-shadow .3s;
 }
 
 .groupItem.item-enter-done {

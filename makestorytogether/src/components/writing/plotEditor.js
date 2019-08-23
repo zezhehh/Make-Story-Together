@@ -2,6 +2,8 @@ import { Icon, Button, Input } from 'antd';
 import { newPlot } from '../../api/stories';
 import React from 'react';
 import { getPlots } from '../../api/stories';
+import Animate from 'rc-animate';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { patchItem } from '../../api/items';
 import { returnPlots } from './writingElement';
@@ -86,6 +88,12 @@ class PlotEditor extends React.Component {
 
     newPlot = () => {
         return (
+            <CSSTransition
+                key='newPlotBtn'
+                timeout={500}
+                classNames="item-btn"
+                className='plotItem'
+            >
             <div>
                 {!this.state.inputPlotVisible && 
                     <Button className='newPlotBnt' onClick={() => this.setState({inputPlotVisible: true}, () => this.input.focus())}>
@@ -104,6 +112,7 @@ class PlotEditor extends React.Component {
                     />
                 }
             </div>
+            </CSSTransition>
         )
     }
 
@@ -114,10 +123,12 @@ class PlotEditor extends React.Component {
         const newPlotButton = that.state.currentChapterId !== null && that.state.currentChapterId === that.state.lastChapterId;
         return (
             <div className='storyEditor'>
+            <TransitionGroup>
                 {returnPlots(this.state.plots, editMode, token, that, screen_name, this).map((plot) => plot)}
                 {newPlotButton ? 
                     this.newPlot() : null  
                 }
+            </TransitionGroup>
             </div>
         )
     }

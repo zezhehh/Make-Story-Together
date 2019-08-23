@@ -3,9 +3,10 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { Typography, Button } from 'antd';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { fetchItemDetail } from '../api/items';
 import { emptyStoryDetail } from '../api/emptyStructure';
-
+import Animate from 'rc-animate';
 import StoryToolBar from '../components/writing/storyToolBar';
 import { storyEditIcon } from '../components/writing/writingElement';
 import PlotEditor from '../components/writing/plotEditor';
@@ -52,7 +53,9 @@ class Writing extends React.Component {
             }
 
             <Title style={{ textAlign: "center", padding: '20px' }}>
-                <RouterLink to={`/story/${this.state.storyDetail.id}`} style={{ color: 'initial' }}>{this.state.storyDetail.title}</RouterLink>
+                <RouterLink to={`/story/${this.state.storyDetail.id}`} style={{ color: 'initial' }}>
+                        {this.state.storyDetail.title}
+                </RouterLink>
                 {storyEditIcon(this)}
                 <br />
                 <div style={{ fontSize: 'initial' }}>{this.state.storyDetail.creator}</div>
@@ -61,7 +64,11 @@ class Writing extends React.Component {
             {this.state.editMode ? 
             <StoryToolBar that={this} />
             : null}
-
+            {/* <Animate
+                transitionName="fade"
+                transitionAppear
+            > */}
+            {/* <CSSTransition timeout={200} classNames="writing-page-transition-node"> */}
             <div className='writingPage'>
                 <ChapterEditor 
                     that={this}
@@ -69,7 +76,6 @@ class Writing extends React.Component {
                     storyId={this.state.storyId}
                     storyChaptersCount={this.state.storyDetail.chapters_count}
                 />
-                
                 <PlotEditor 
                     that={this}
                     currentChapterId={this.state.currentChapterId}
@@ -77,6 +83,8 @@ class Writing extends React.Component {
                     storyPlotsCount={this.state.storyDetail.plots_count}
                 />
             </div>
+            {/* </CSSTransition> */}
+            {/* </Animate> */}
         </div>)
     }
 }

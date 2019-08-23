@@ -1,0 +1,59 @@
+
+.plotItem.item-enter-done {
+    height: 21px;
+    margin: 10px 5px;
+}
+
+.plotItem.item-enter {
+    opacity: 0;
+    height: 0;
+    margin: 0px 5px;
+}
+
+.plotItem.item-enter-active {
+    opacity: 1;
+    height: 21px;
+    margin: 10px 5px;
+    transition: all 300ms ease-in-out;
+}
+
+.plotItem.item-exit {
+    opacity: 1;
+    height: 21px;
+    margin: 10px 5px;
+}
+
+.plotItem.item-exit-active {
+    opacity: 0;
+    height: 0;
+    margin: 0px 5px;
+    transition: all 300ms ease-in-out;
+}
+
+/* ************************************* */
+
+.plotItem.item-btn-enter-done {
+    height: 32px;
+}
+
+.plotItem.item-btn-enter {
+    opacity: 0;
+    height: 0;
+}
+
+.plotItem.item-btn-enter-active {
+    opacity: 1;
+    height: 32px;
+    transition: all 300ms ease-in-out;
+}
+
+.plotItem.item-btn-exit {
+    opacity: 1;
+    height: 32px;
+}
+
+.plotItem.item-btn-exit-active {
+    opacity: 0;
+    height: 0;
+    transition: all 300ms ease-in-out;
+}

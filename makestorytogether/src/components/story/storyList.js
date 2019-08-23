@@ -84,7 +84,7 @@ class StoryList extends React.Component {
             key={story.id}
             timeout={500}
             classNames="item"
-            className='storyItem    '
+            className='storyItem'
         >
             <Card 
                 className='storyCard'

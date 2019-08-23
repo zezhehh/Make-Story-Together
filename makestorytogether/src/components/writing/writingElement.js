@@ -2,6 +2,8 @@ import Moment from 'react-moment';
 import { Popover, Icon, Input } from 'antd';
 import React from 'react';
 import { deleteItem, patchItem } from '../../api/items';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import '../../styles/writingElement.css';
 
 export const getPlotDetail = (plot) => {
     return (
@@ -46,7 +48,13 @@ export const returnPlots = (plots, editMode, token, that, screen_name, editor) =
     plots.map((plot) => {
         if(editor.state.currentPlotId === plot.id && editor.state.editPlotVisible) {
             plotsElements.push(
-                <div className='plot' key={plot.id}>
+                <CSSTransition
+                    key={plot.id}
+                    timeout={500}
+                    classNames="item"
+                    className='plotItem'
+                >
+                <div className='plot'>
                     <Input
                         ref={editor.saveInputRef}
                         placeholder={plot.content}
@@ -56,10 +64,17 @@ export const returnPlots = (plots, editMode, token, that, screen_name, editor) =
                         onBlur={editor.handleEditPlot} 
                     />
                 </div>
+                </CSSTransition>
             )
         } else {
             plotsElements.push(
-                <div className='plot' key={plot.id}>
+                <CSSTransition
+                    key={plot.id}
+                    timeout={500}
+                    classNames="item"
+                    className='plotItem'
+                >
+                <div className='plot'>
                     {plot.valid ? <Icon 
                         type="check-circle" 
                         onClick={() => invalidPlot(plot.id, editMode, token, editor)} 
@@ -74,6 +89,7 @@ export const returnPlots = (plots, editMode, token, that, screen_name, editor) =
                     </Popover>
                     {screen_name === plot.written_by ? <Icon style={{ marginLeft: "1em" }} type='edit' onClick={() => editor.handleEdit(plot)} /> : null}
                 </div>
+                </CSSTransition>
             )
         }
         return null

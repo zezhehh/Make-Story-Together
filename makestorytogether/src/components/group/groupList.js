@@ -89,20 +89,22 @@ class GroupList extends React.Component {
         if (e.key !== 'search') {
             this.setState({
               current: e.key,
+            }, () => {
+                switch (e.key) {
+                case 'my':
+                    this.fetchOwned(this);
+                    break;
+                case 'joined':
+                    this.fetchJoined(this);
+                    break;
+                case 'search':
+                    break;
+                default:
+                    this.fetch(this);
+            }
             });
         }
-        switch (e.key) {
-            case 'my':
-                this.fetchOwned(this);
-                break;
-            case 'joined':
-                this.fetchJoined(this);
-                break;
-            case 'search':
-                break;
-            default:
-                this.fetch(this);
-        }
+        
     };
 
     geGroupDetailById = (groupId) => {

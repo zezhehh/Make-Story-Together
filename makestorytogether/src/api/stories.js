@@ -16,7 +16,7 @@ export function searchTagByName(name) {
 }
 
 export function searchByTitle(title) {
-    return axios.get(`${STORY_API}/?name=${title}`)
+    return axios.get(`${STORY_API}/?title=${title}`)
     .then((res) => {
         return res.data
     })

@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems } from '../../api/items';
-import { Card, Layout, Icon, Menu, Empty, Popover } from 'antd';
+import { Card, Layout, Icon, Menu, Empty, Popover, Select } from 'antd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { STATUS, createStory, doneCreateStory } from '../../actions/stories';
 import WrappedStoryForm from './storyCreationForm';
+import { searchByTitle } from '../../api/stories';
 import '../../styles/story.css';
 const { Content, Header } = Layout;
 const { SubMenu } = Menu;
@@ -17,7 +18,9 @@ class StoryList extends React.Component {
         this.state = {
             stories: [], // default collapsed
             storyDetail: null,
-            current: 'orderByDate'
+            current: 'orderByDate',
+            searchValue: '',
+            filteredStories: []
         }
     }
 
@@ -58,15 +61,19 @@ class StoryList extends React.Component {
     }
 
     handleClick = e => {
-        this.setState({
-          current: e.key,
-        });
+        if (e.key != 'search') {
+            this.setState({
+              current: e.key,
+            });
+        }
         switch (e.key) {
             case 'my':
                 this.fetchOwned(this);
                 break;
             case 'joined':
                 this.fetchJoined(this);
+                break;
+            case 'search':
                 break;
             default:
                 this.fetch(this);
@@ -78,36 +85,42 @@ class StoryList extends React.Component {
         return <p>{story.description}</p>
     }
 
-    render() {
-        const stories = this.state.stories.map((story) => 
-        <CSSTransition
-            key={story.id}
-            timeout={500}
-            classNames="item"
-            className='storyItem'
-        >
-            <Card 
-                className='storyCard'
-                // key={story.id}
-                bordered={false}
-                title={
-                    <Popover placement="bottomLeft" content={this.getStoryDetailById(story.id)}>
-                    <Link to={`/story/${story.id}`} style={{ color: 'initial' }}>
-                        {story.title}
-                    </Link>
-                    </Popover>
-                } 
-                extra={
-                    <div>
-                        <Link to={{ pathname: '/just-writing!', state: { storyId: story.id} }}><Icon style={{ color: 'initial' }} type="edit" /></Link>
-                    </div>
-                }
-            >
-                <p>Creator {story.creator}</p>
-            </Card>
-        </CSSTransition>
-        );
+    handleSearch = (title) => {
+        this.setState({ searchValue: title });
+        let filteredStories = this.state.stories.filter((story) => story.title.includes(title));
+        this.setState({ filteredStories })
+    }
 
+    render() {
+        let stories = this.state.searchValue === '' ? this.state.stories : this.state.filteredStories;
+        let options = stories.map((story) => 
+            <CSSTransition
+                key={story.id}
+                timeout={500}
+                classNames="item"
+                className='storyItem'
+            >
+                <Card 
+                    className='storyCard'
+                    // key={story.id}
+                    bordered={false}
+                    title={
+                        <Popover placement="bottomLeft" content={this.getStoryDetailById(story.id)}>
+                        <Link to={`/story/${story.id}`} style={{ color: 'initial' }}>
+                            {story.title}
+                        </Link>
+                        </Popover>
+                    } 
+                    extra={
+                        <div>
+                            <Link to={{ pathname: '/just-writing!', state: { storyId: story.id} }}><Icon style={{ color: 'initial' }} type="edit" /></Link>
+                        </div>
+                    }
+                >
+                    <p>Creator {story.creator}</p>
+                </Card>
+            </CSSTransition>
+        )
         return (
             <Layout>
                 <Header className='storyHeader' style={{padding: 0, zIndex: 1 }}>
@@ -120,16 +133,28 @@ class StoryList extends React.Component {
                         </SubMenu>
                         {
                             this.props.token === null ? null :
-                                (<Menu.Item key="my">
-                                    Owned Stories
-                                </Menu.Item>)
-                            }
-                            {
-                                this.props.token === null ? null :
-                                (<Menu.Item key="joined">
-                                    Joined Stories
-                                </Menu.Item>)
-                            }
+                            (<Menu.Item key="my">
+                                Owned Stories
+                            </Menu.Item>)
+                        }
+                        {
+                            this.props.token === null ? null :
+                            (<Menu.Item key="joined">
+                                Joined Stories
+                            </Menu.Item>)
+                        }
+                        <Menu.Item key="search">
+                        <Select
+                            className='storySearch'
+                            showSearch
+                            placeholder="Search by the story title"
+                            defaultActiveFirstOption={false}
+                            showArrow={false}
+                            filterOption={false}
+                            onSearch={this.handleSearch}
+                            notFoundContent={null}
+                        />
+                        </Menu.Item>
                     </Menu>
                 </Header>
                 <Layout style={{ marginTop: '40px' }}  className='storyList'>
@@ -137,7 +162,7 @@ class StoryList extends React.Component {
                     <div style={{ height: '10px' }}></div>
                     {this.state.stories.length === 0 ? <Empty /> : null}
                     <TransitionGroup>
-                    {stories}
+                    {options}
                     </TransitionGroup>
                 </Content>
                 </Layout>

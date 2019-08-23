@@ -7,6 +7,7 @@
 
 ## TODO
 
+- like character/plot/story
 - 重构react post函数
 - Model Details TBD
   - group invitation

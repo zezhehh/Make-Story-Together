@@ -5,6 +5,10 @@
     width: 100%;
 }
 
+.storySearch {
+    width: 200px;
+}
+
 .storyItem:hover {
     box-shadow: 0 0 11px rgba(33,33,33,.2); 
 }

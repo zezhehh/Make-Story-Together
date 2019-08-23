@@ -168,7 +168,7 @@ class StoryViewSet(viewsets.ModelViewSet):
         story = self.get_object()
         content = request.data['content']
         chapter_id = request.data['chapter_id']
-        character_id = request.data['character_id']
+        # character_id = request.data['character_id']
         chapter = Chapter.objects.get(id=chapter_id)
         plot = Plot.objects.create(written_by=request.user.account, chapter=chapter, content=content)
         if not Character.objects.filter(player=request.user.account, story=story).exists():

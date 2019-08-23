@@ -6,7 +6,6 @@ import { Card, Layout, Icon, Menu, Empty, Popover, Select } from 'antd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { STATUS, createStory, doneCreateStory } from '../../actions/stories';
 import WrappedStoryForm from './storyCreationForm';
-import { searchByTitle } from '../../api/stories';
 import '../../styles/story.css';
 const { Content, Header } = Layout;
 const { SubMenu } = Menu;
@@ -61,7 +60,7 @@ class StoryList extends React.Component {
     }
 
     handleClick = e => {
-        if (e.key != 'search') {
+        if (e.key !== 'search') {
             this.setState({
               current: e.key,
             });

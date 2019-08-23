@@ -2,11 +2,13 @@ import { Icon, Button, Input } from 'antd';
 import { newPlot } from '../../api/stories';
 import React from 'react';
 import { getPlots } from '../../api/stories';
-import Animate from 'rc-animate';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { patchItem } from '../../api/items';
 import { returnPlots } from './writingElement';
+import { createCharacter, WRITING_STATUS, doneCreateCharacter } from '../../actions/stories';
+import WrappedCharacterForm from './characterCreationForm';
+import CharacterDropDown from './characterDropDown';
 import '../../styles/plotEditor.css'
 
 
@@ -19,7 +21,8 @@ class PlotEditor extends React.Component {
             value: '',
             editPlotVisible: false,
             plotContent: '',
-            currentPlotId: null
+            currentPlotId: null,
+            selectedCharacter: null
         }
     }
 
@@ -109,19 +112,26 @@ class PlotEditor extends React.Component {
                 }
 
                 {this.state.inputPlotVisible && 
+                    (
                     <Input
                         ref={this.saveInputRef}
                         placeholder="Input nothing to quit"
                         value={this.state.value} 
                         onChange={(e) => this.setState({value: e.target.value})} 
-                        onPressEnter={this.handleNewPlot} 
+                        onPressEnter={this.handleNewPlot}
                         // onBlur={this.handleNewPlot}
-                        suffix={<Button className='new-character-btn'>New Character</Button>}
+                        suffix={<CharacterDropDown selectedCharacter={this.state.selectedCharacter} storyId={this.props.that.state.storyId} that={this} />}
                     />
+                    )
                 }
+                
             </div>
             </CSSTransition>
         )
+    }
+
+    componentDidUpdate(prevProps) {
+        console.log(prevProps.writing_status, this.props.writing_status)
     }
 
     render() {
@@ -137,6 +147,15 @@ class PlotEditor extends React.Component {
                     this.newPlot() : null  
                 }
             </TransitionGroup>
+            {
+                this.props.writing_status === WRITING_STATUS.CREATING_CHARACTER ? 
+                <div className='popForm'>
+                    <div className='popInner'>
+                        <WrappedCharacterForm that={this} storyId={this.props.that.state.storyId} />
+                        <Icon onClick={this.props.doneCreateCharacter} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
+                    </div>
+                </div>: null
+            }
             </div>
         )
     }
@@ -146,8 +165,9 @@ class PlotEditor extends React.Component {
 const mapStateToProps = (state) => {
     return {
         token: state.writers.token,
-        screen_name: state.writers.screen_name
+        screen_name: state.writers.screen_name,
+        writing_status: state.stories.writing_status
     }
 }
 
-export default connect(mapStateToProps)(PlotEditor);
+export default connect(mapStateToProps, {createCharacter, doneCreateCharacter})(PlotEditor);

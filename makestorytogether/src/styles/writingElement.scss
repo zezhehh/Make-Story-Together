@@ -1,6 +1,7 @@
+$plotHeight: fit-content;
 
 .plotItem.item-enter-done {
-    height: 21px;
+    height: $plotHeight;
     margin: 10px 5px;
 }
 
@@ -12,14 +13,14 @@
 
 .plotItem.item-enter-active {
     opacity: 1;
-    height: 21px;
+    height: $plotHeight;
     margin: 10px 5px;
     transition: all 300ms ease-in-out;
 }
 
 .plotItem.item-exit {
     opacity: 1;
-    height: 21px;
+    height: $plotHeight;
     margin: 10px 5px;
 }
 

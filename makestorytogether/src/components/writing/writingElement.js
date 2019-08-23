@@ -2,8 +2,8 @@ import Moment from 'react-moment';
 import { Popover, Icon, Input } from 'antd';
 import React from 'react';
 import { deleteItem, patchItem } from '../../api/items';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import '../../styles/writingElement.css';
+import { CSSTransition } from 'react-transition-group';
+import '../../styles/writingElement.scss';
 
 export const getPlotDetail = (plot) => {
     return (

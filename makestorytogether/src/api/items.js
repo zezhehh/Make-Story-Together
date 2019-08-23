@@ -8,6 +8,7 @@ const DISCIPLINE_API = `${API_HOST}/discipline`;
 const TAG_API = `${API_HOST}/tag`;
 const CHAPTER_API = `${API_HOST}/chapter`;
 const PLOT_API = `${API_HOST}/plot`;
+const CHARACTER_API = `${API_HOST}/character`;
 
 
 function getURL(itemType) {
@@ -31,25 +32,46 @@ function getURL(itemType) {
         case 'plot':
             API_URL = PLOT_API;
             break;
+        case 'character':
+            API_URL = CHARACTER_API;
+            break;
         default:
             API_URL = GROUP_API;
     }
     return API_URL;
 }
 
-export function fetchItemList(itemType='group', orderBy='date', groupID='') {
+export function fetchItemList(itemType='group', orderBy='date', groupID='', storyID='', token=null) {
     const API_URL = getURL(itemType);
-    return axios.get(`${API_URL}/?order=${orderBy}&group=${groupID}`)
-        .then((res) => {
-            return res.data
-        })
-        .catch((error) => {
-            console.log(error);
-            return {
-                message: error.response.data,
-                success: false
+    if (token === null) {
+        return axios.get(`${API_URL}/?order=${orderBy}&group=${groupID}&story_id=${storyID}`)
+            .then((res) => {
+                return res.data
+            })
+            .catch((error) => {
+                console.log(error);
+                return {
+                    message: error.response.data,
+                    success: false
+                }
+            });
+    } else {
+        return axios.get(`${API_URL}/?order=${orderBy}&group=${groupID}&story_id=${storyID}`, {
+            'headers': {
+                Authorization: `JWT ${token}`
             }
-        });
+        })
+            .then((res) => {
+                return res.data
+            })
+            .catch((error) => {
+                console.log(error);
+                return {
+                    message: error.response.data,
+                    success: false
+                }
+            });
+    }
 };
 
 export function fetchOwnedItems(token, itemType='group') {

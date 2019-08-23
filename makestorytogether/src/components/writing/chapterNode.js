@@ -2,7 +2,6 @@ import React from 'react';
 import { Icon } from 'antd';
 import { deleteItem } from '../../api/items';
 import { connect } from 'react-redux';
-import Texty from 'rc-texty';
 import Animate from 'rc-animate';
 class ChapterNode extends React.Component {
     // constructor(props) {}

@@ -30,10 +30,6 @@ class Writing extends React.Component {
             () => this.fetch(this))
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        console.log(prevState.currentChapterId, this.state.currentChapterId)
-    }
-
     fetch = (that) => {
         fetchItemDetail(that.state.storyId, 'story', that.props.token)
         .then((storyDetail) => {

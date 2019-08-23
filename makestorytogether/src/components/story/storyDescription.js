@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 import { Descriptions, Popover, Tag } from 'antd';
 import Moment from 'react-moment';
 
+const getDistinctScreenName = (arr) => {
+    return [...new Set(arr.map(item => item.screen_name))]
+}
+
 class StoryDescription extends React.Component {
     constructor(props) {
         super(props);
@@ -58,8 +62,8 @@ class StoryDescription extends React.Component {
                 <Descriptions.Item label='Participators' span={3}>
                     {this.state.storyDetail.participators.length === 0 ? null :
                         (
-                            this.state.storyDetail.participators.map((participator) => 
-                                <div key={participator.username}>{participator.screen_name}</div>
+                            getDistinctScreenName(this.state.storyDetail.participators).map((participator) => 
+                                <div key={participator}>{participator}</div>
                             )
                         )
                     }

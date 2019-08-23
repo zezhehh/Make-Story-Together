@@ -107,8 +107,8 @@ class GroupList extends React.Component {
         
     };
 
-    geGroupDetailById = (groupId) => {
-        let group = this.state.groups.find((group) => group.id = groupId);
+    getGroupDetailById = (groupId) => {
+        let group = this.state.groups.find((group) => group.id === groupId);
         return <p>{group.description}</p>
     }
 
@@ -132,7 +132,7 @@ class GroupList extends React.Component {
                     className='groupCard'
                     // key={group.id}
                     title={
-                        <Popover placement="bottomLeft" content={this.geGroupDetailById(group.id)}>
+                        <Popover placement="bottomLeft" content={this.getGroupDetailById(group.id)}>
                             <Link to={`/group/${group.id}`} style={{ color: 'initial' }}>
                                 {group.name}
                             </Link>

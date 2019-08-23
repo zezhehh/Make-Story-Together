@@ -61,7 +61,7 @@ class ChapterEditor extends React.Component {
         const { that } = this.props;
         e.preventDefault();
         let title = link.href;
-        let chapter = this.state.chapters.find(obj => {return obj.title===title});
+        let chapter = title === 'defaultAnchor' ? this.state.chapters[0] : this.state.chapters.find(obj => {return obj.title===title});
         if (that.state.editMode) setTimeout(function(){}, 500);
         if (chapter === undefined) return
         that.setState({ 
@@ -128,11 +128,17 @@ class ChapterEditor extends React.Component {
     render() {
         const { that } = this.props;
         return (
-                <Anchor affix={false} onClick={this.handleClick} className='storyTOC'>
-                    {this.state.chapters.map((chapter) => 
+                <Anchor 
+                    affix={false} 
+                    onClick={this.handleClick} 
+                    ClassName='storyTOC'
+                    getCurrentAnchor={() => 'defaultAnchor'}
+                    showInkInFixed={true}
+                >
+                    {this.state.chapters.map((chapter, index) => 
                         <Link 
                             key={chapter.id}
-                            href={chapter.title}
+                            href={index === 0 ? 'defaultAnchor' : chapter.title}
                             title={
                                 <ChapterNode chapter={chapter} callback={this.fetchChapters} that={this} editMode={that.state.editMode} />
                             }

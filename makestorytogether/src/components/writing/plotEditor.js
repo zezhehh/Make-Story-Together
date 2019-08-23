@@ -22,7 +22,7 @@ class PlotEditor extends React.Component {
             editPlotVisible: false,
             plotContent: '',
             currentPlotId: null,
-            selectedCharacter: null
+            selectedCharacter: null //id
         }
     }
 
@@ -121,7 +121,7 @@ class PlotEditor extends React.Component {
                         onChange={(e) => this.setState({value: e.target.value})} 
                         onPressEnter={this.handleNewPlot}
                         // onBlur={this.handleNewPlot}
-                        suffix={<CharacterDropDown selectedCharacter={this.state.selectedCharacter} storyId={this.props.that.state.storyId} that={this} />}
+                        suffix={<CharacterDropDown storyId={this.props.that.state.storyId} that={this} />}
                     />
                     )
                 }

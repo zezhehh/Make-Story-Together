@@ -170,7 +170,7 @@ class StoryViewSet(viewsets.ModelViewSet):
         chapter_id = request.data['chapter_id']
         character_id = request.data['character_id']
         if character_id != 'null':
-            character = Character.objects.filter(player=request.user.account, story=story, id=character_id)
+            character = Character.objects.get(player=request.user.account, story=story, id=character_id)
         else:
             character = None
         chapter = Chapter.objects.get(id=chapter_id)

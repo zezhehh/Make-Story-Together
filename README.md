@@ -9,6 +9,7 @@
 
 - websocket to inform update
 - like character/plot/story
+- Dockerfile
 - 重构react post函数
 - Model Details TBD
   - group invitation

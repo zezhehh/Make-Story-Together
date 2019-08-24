@@ -16,3 +16,7 @@ class Like(models.Model):
     @property
     def model_name(self):
         return self.content_type.model
+    
+    @property
+    def app_label(self):
+        return self.content_type.app_label

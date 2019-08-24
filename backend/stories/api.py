@@ -28,7 +28,7 @@ class StoryViewSet(viewsets.ModelViewSet):
     permission_classes = [StoryPermission, ]
 
     def get_serializer_class(self):
-        if self.action != 'retrieve' or self.request.method == 'post':
+        if self.action != 'retrieve' or self.request.method == 'POST':
             return StorySerializer
 
         # if self.request.user.is_anonymous:

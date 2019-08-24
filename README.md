@@ -29,7 +29,6 @@
 - `/register/`
 - `/signin/`
 - `/logout/`
-- `/follow/` TODO
 
 ### Group
 
@@ -94,15 +93,15 @@
 }
 ```
 
-TODO::
+### Like
 
+- `/like/`
 
-- `/story/follow/`
-- `/story/unfollow/`
-- `/story/chapter/like/`
-- `/story/chapter/unlike/`
-- `/story/plot/like/`
-- `/story/plot/unlike/`
+```
+{
+   "liked_object": {"id":9,"model_name":"story","app_label":"stories"}
+}
+```
 
 
 

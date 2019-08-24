@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Icon } from 'antd';
+import { Card, Icon, Spin } from 'antd';
+import Animate from 'rc-animate';
 import { connect } from "react-redux";
 import { fetchItemDetail } from '../../api/items';
 import GroupDescription from './groupDescription';
@@ -12,7 +13,8 @@ class GroupDetail extends React.Component {
         this.state = {
             groupId: this.props.match.params.groupID,
             groupDetail: null,
-            manage: false
+            manage: false,
+            loading: true
         }
     }
 
@@ -24,7 +26,8 @@ class GroupDetail extends React.Component {
         fetchItemDetail(that.state.groupId, 'group', that.props.token)
         .then((groupDetail) => {
             that.setState({
-                groupDetail
+                groupDetail,
+                loading: false
             });
         });
     }
@@ -46,6 +49,11 @@ class GroupDetail extends React.Component {
     render() {
         return (
             <div>
+                {this.state.loading ? <Spin /> :
+                <Animate
+                    transitionName="fade"
+                    transitionAppear
+                >
                 <Card bordered={false} className='groupDetailCard'>
                     {
                         this.state.groupDetail !== null && this.props.screen_name === this.state.groupDetail.owner ? 
@@ -55,6 +63,7 @@ class GroupDetail extends React.Component {
                         this.state.groupDetail === null || this.state.manage ? null : 
                         <GroupDescription match={this.props.match} groupDetail={this.state.groupDetail} />
                     }
+                    
                     {
                         !this.state.manage ? null : 
                         <GroupManage 
@@ -65,6 +74,8 @@ class GroupDetail extends React.Component {
                         />
                     }
                 </Card>
+                </Animate>
+                }
             </div>
         )
     }

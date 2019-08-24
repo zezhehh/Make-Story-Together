@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Icon } from 'antd';
+import { Card, Icon, Spin } from 'antd';
+import Animate from 'rc-animate';
 import { connect } from "react-redux";
 import { fetchItemDetail } from '../../api/items';
 import StoryDescription from './storyDescription';
@@ -12,7 +13,8 @@ class StoryDetail extends React.Component {
         this.state = {
             storyId: this.props.match.params.storyID,
             storyDetail: null,
-            manage: false
+            manage: false,
+            loading: true
         }
     }
 
@@ -24,7 +26,8 @@ class StoryDetail extends React.Component {
         fetchItemDetail(that.state.storyId, 'story', that.props.token)
         .then((storyDetail) => {
             that.setState({
-                storyDetail
+                storyDetail,
+                loading: false
             });
         });
     }
@@ -46,6 +49,11 @@ class StoryDetail extends React.Component {
     render() {
         return (
             <div>
+                {this.state.loading ? <Spin /> :
+                <Animate
+                    transitionName="fade"
+                    transitionAppear
+                >
                 <Card bordered={false} className='storyDetailCard'>
                     {
                         this.state.storyDetail !== null && this.props.screen_name === this.state.storyDetail.creator ? 
@@ -65,6 +73,8 @@ class StoryDetail extends React.Component {
                         />
                     }
                 </Card>
+                </Animate>
+                }
             </div>
         )
     }

@@ -9,6 +9,7 @@ const TAG_API = `${API_HOST}/tag`;
 const CHAPTER_API = `${API_HOST}/chapter`;
 const PLOT_API = `${API_HOST}/plot`;
 const CHARACTER_API = `${API_HOST}/character`;
+const LIKE_API = `${API_HOST}/like`;
 
 
 function getURL(itemType) {
@@ -35,6 +36,8 @@ function getURL(itemType) {
         case 'character':
             API_URL = CHARACTER_API;
             break;
+        case 'like':
+            API_URL = LIKE_API;
         default:
             API_URL = GROUP_API;
     }

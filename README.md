@@ -8,6 +8,7 @@
 ## TODO
 
 - 新增交互接口
+- 适应移动端
 - websocket to inform update
 - like character/plot/story
 - Dockerfile

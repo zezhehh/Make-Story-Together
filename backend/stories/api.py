@@ -269,7 +269,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
             return []
         qs = Character.objects.filter(player=self.request.user.account)
         params = self.request.query_params
-        if 'story_id' in params:
+        if 'story_id' in params and params['story_id'] != '':
             story_id = int(params['story_id'])
             qs = qs.filter(story__id=story_id)
         return qs

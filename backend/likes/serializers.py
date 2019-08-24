@@ -1,4 +1,5 @@
 from django.apps import apps
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from generic_relations.relations import GenericRelatedField
 from stories.models import Story, Character, Plot
@@ -75,6 +76,14 @@ class LikeCreationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = ['liked_object', ]
+
+    def validate_liked_object(self, liked_object_info):
+        from_user =  self.context['request'].user.account
+        Model = apps.get_model(app_label=liked_object_info['app_label'], model_name=liked_object_info['model_name'])
+        content_type = ContentType.objects.get_for_model(Model)
+        if Like.objects.filter(content_type=content_type, object_id=liked_object_info['id'], from_user=from_user).exists():
+            raise serializers.ValidationError(f"Like exists.")
+        return liked_object_info
 
     def create(self, validated_data):
         from_user =  self.context['request'].user.account

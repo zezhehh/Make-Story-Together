@@ -4,6 +4,8 @@ from django.contrib.postgres.fields import ArrayField
 from groups.models import Group
 from stories.constants import *
 from writers.models import Writer
+from django.contrib.contenttypes.fields import GenericRelation
+from likes.models import Like
 
 # Create your models here.
 class Tag(models.Model):
@@ -23,6 +25,7 @@ class Story(models.Model):
     participators = models.ManyToManyField(Writer, related_name='stories', through='Character', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     description = models.TextField(blank=True, default='Describe the story now!')
+    likes = GenericRelation(Like, related_query_name='story')
 
     def __str__(self):
         return f'{self.id}:{self.title}:{self.plots_count}'
@@ -58,6 +61,7 @@ class Plot(models.Model):
     content = models.TextField()
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='plots')
     written_as = models.ForeignKey('stories.Character', on_delete=models.SET_NULL, null=True)
+    likes = GenericRelation(Like, related_query_name='plot')
 
     def __str__(self):
         return f'{self.id}:{self.written_by.screen_name}:{self.content}:{self.chapter.title}:{self.chapter.story.title}'
@@ -80,6 +84,7 @@ class Character(models.Model):
         models.CharField(max_length=20), default=list, blank=True
     )
     default = models.BooleanField(default=False)
+    likes = GenericRelation(Like, related_query_name='character')
 
     def __str__(self):
         return f'{self.name}:{self.story.title}:{self.player.screen_name}'

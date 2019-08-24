@@ -41,12 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'generic_relations',
     'corsheaders',
     'writers',
     'disciplines',
     'feeds',
     'groups',
     'stories',
+    'likes',
 ]
 
 MIDDLEWARE = [

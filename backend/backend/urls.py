@@ -22,6 +22,7 @@ from disciplines.api import DisciplineViewSet
 from groups.api import GroupViewSet
 from stories.api import StoryViewSet, TagViewSet, ChapterViewSet, PlotViewSet, CharacterViewSet
 from writers.api import WriterViewSet
+from likes.api import LikeViewSet
 
 router = routers.SimpleRouter()
 router.register(r'^$', WriterViewSet, 'Writer')
@@ -32,6 +33,7 @@ router.register(r'tag', TagViewSet, 'Tag')
 router.register(r'chapter', ChapterViewSet, 'Chapter')
 router.register(r'plot', PlotViewSet, 'Plot')
 router.register(r'character', CharacterViewSet, 'Character')
+router.register(r'like', LikeViewSet, 'Like')
 router.register(r'', WriterViewSet, 'Writer')
 
 urlpatterns = [

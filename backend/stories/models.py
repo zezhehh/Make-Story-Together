@@ -25,7 +25,7 @@ class Story(models.Model):
     description = models.TextField(blank=True, default='Describe the story now!')
 
     def __str__(self):
-        return f'{self.title}:{self.plots_count}'
+        return f'{self.id}:{self.title}:{self.plots_count}'
     
     @property
     def plots_count(self):
@@ -60,7 +60,7 @@ class Plot(models.Model):
     written_as = models.ForeignKey('stories.Character', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f'{self.written_by.screen_name}:{self.content}:{self.chapter.title}:{self.chapter.story.title}'
+        return f'{self.id}:{self.written_by.screen_name}:{self.content}:{self.chapter.title}:{self.chapter.story.title}'
 
     def save(self, *args, **kwargs):
         self.content = self.content.strip()

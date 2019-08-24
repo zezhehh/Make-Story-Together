@@ -38,6 +38,7 @@ function getURL(itemType) {
             break;
         case 'like':
             API_URL = LIKE_API;
+            break;
         default:
             API_URL = GROUP_API;
     }

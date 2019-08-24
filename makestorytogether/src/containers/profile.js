@@ -4,6 +4,7 @@ import { STATUS } from '../actions/writers';
 import Login from '../components/account/login';
 import { Tabs } from 'antd';
 import Characters from '../components/account/characters';
+import Like from '../components/account/like';
 import '../styles/profile.css';
 
 const { TabPane } = Tabs;
@@ -27,7 +28,7 @@ class Profile extends React.Component {
                                 <Characters />
                             </TabPane>
                             <TabPane tab="Liked" key="liked">
-                            Content of Tab Pane 3
+                                <Like />
                             </TabPane>
                         </Tabs>
                     )

@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchItemList } from '../../api/items';
+import { fetchItemList, deleteItem } from '../../api/items';
 import { List } from 'antd';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -14,11 +14,20 @@ class Likes extends React.Component {
     }
 
     componentDidMount() {
+        this.fetch()
+    }
+
+    fetch = () => {
         fetchItemList('like', '', '', '', this.props.token)
         .then((likes) => {
             this.setState({ likes });
             console.log('likes', likes)
         });
+    }
+
+    handleUnlike = (likeId) => {
+        deleteItem(this.props.token, likeId, 'like')
+        .then(() => this.fetch())
     }
 
     getItemByModel = (like) => {
@@ -30,7 +39,8 @@ class Likes extends React.Component {
                         <Link 
                             to={{ pathname: '/just-writing!', state: { storyId: liked_object.id} }}>
                             go to the story
-                        </Link>
+                        </Link>,
+                        <span onClick={() => this.handleUnlike(like.id)}>Unlike it</span>
                     ]}>
                         <List.Item.Meta
                             title={liked_object.title}

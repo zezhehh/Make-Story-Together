@@ -15,6 +15,8 @@ import PlotEditor from '../components/writing/plotEditor';
 import '../styles/writing.css';
 import '../styles/characterList.css'
 import ChapterEditor from '../components/writing/chapterEditor';
+import { WS_URL } from '../constants';
+
 const { Title } = Typography;
 
 
@@ -33,7 +35,26 @@ class Writing extends React.Component {
 
     componentDidMount() {
         this.setState({storyId: this.props.location.state.storyId},
-            () => this.fetch(this))
+            () => {
+                this.fetch(this);
+                this.initWs();
+            })
+    }
+
+    initWs = () => {
+        this.ws = new WebSocket(`${WS_URL}/${this.state.storyId}/`);
+        this.ws.onopen = () => {
+            console.log('connected')
+        }
+    
+        this.ws.onmessage = evt => {
+            const message = JSON.parse(evt.data)
+            console.log(message)
+        }
+    
+        this.ws.onclose = () => {
+            console.log('disconnected')
+        }
     }
 
     fetch = (that) => {
@@ -45,6 +66,7 @@ class Writing extends React.Component {
     }
 
     handleLikeIt = () => {
+        this.ws.send(JSON.stringify({ like: 'new like' }))
         createItem(this.props.token, {
             liked_object: {
                 model_name: 'story',

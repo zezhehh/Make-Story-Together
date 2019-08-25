@@ -10,7 +10,7 @@ const CHAPTER_API = `${API_HOST}/chapter`;
 const PLOT_API = `${API_HOST}/plot`;
 const CHARACTER_API = `${API_HOST}/character`;
 const LIKE_API = `${API_HOST}/like`;
-
+const FEED_API = `${API_HOST}/feed`;
 
 function getURL(itemType) {
     let API_URL;
@@ -41,6 +41,9 @@ function getURL(itemType) {
             break;
         case 'like':
             API_URL = LIKE_API;
+            break;
+        case 'feed':
+            API_URL = FEED_API;
             break;
         default:
             API_URL = GROUP_API;

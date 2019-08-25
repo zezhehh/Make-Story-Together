@@ -18,7 +18,7 @@
 - API
   - different user: different detail info
   - paginate
-- Feed - Celery
+- Celery
 - Cache to speed up / reselect
 
 ## APIs Memo

@@ -11,10 +11,11 @@ from .models import Feed
 class FeedViewSet(viewsets.ModelViewSet):
     serializer_class = FeedSerializer
     authentication_classes = [SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication]
+    permission_classes = [AllowAny, ]
 
     def get_queryset(self):
-        if self.request.user.is_anonymous:
-            return []
+        # if self.request.user.is_anonymous:
+        #     return []
         return Feed.objects.all()
 
     # def get_serializer_class(self):

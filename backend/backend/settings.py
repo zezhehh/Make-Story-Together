@@ -29,7 +29,7 @@ SECRET_KEY = 'f_0#$7!cc8sai60-h@=qenkfbzdjz3)=ro+dyko1v0o4=k&n$d'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+ASGI_APPLICATION = "backend.routing.application"
 
 # Application definition
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'generic_relations',
+    'channels',
     'corsheaders',
     'writers',
     'disciplines',

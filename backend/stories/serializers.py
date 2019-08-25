@@ -61,6 +61,8 @@ class StoryMoreDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'creator', 'maintainer', 'category', 'public', 'plots_count', 'chapters_count', 'rule', 'created_at', 'participators', 'description', 'liked']
 
     def get_liked(self, obj):
+        if 'request' not in self.context:
+            return False
         writer =  self.context['request'].user
         if writer.is_anonymous:
             return False
@@ -88,6 +90,8 @@ class CharacterSerializer(serializers.ModelSerializer):
         raise serializers.ValidationError(f"Invalid operation.")
 
     def get_liked(self, obj):
+        if 'request' not in self.context:
+            return False
         writer =  self.context['request'].user.account
         return obj.likes.filter(from_user=writer).exists()
 
@@ -110,6 +114,8 @@ class PlotSerializer(serializers.ModelSerializer):
         fields = ['id', 'written_by', 'story_id', 'created_at', 'valid', 'content', 'chapter', 'updated_at', 'written_as', 'liked']
         
     def get_liked(self, obj):
+        if 'request' not in self.context:
+            return False
         writer =  self.context['request'].user.account
         return obj.likes.filter(from_user=writer).exists()
 

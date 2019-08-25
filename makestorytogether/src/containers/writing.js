@@ -2,13 +2,18 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { Typography } from 'antd';
-import { fetchItemDetail } from '../api/items';
+import { Typography, message, Button } from 'antd';
+import CharacterList from '../components/writing/characterList';
+import Animate from 'rc-animate';
+import { fetchItemDetail, createItem } from '../api/items';
 import { emptyStoryDetail } from '../api/emptyStructure';
 import StoryToolBar from '../components/writing/storyToolBar';
+import AnimateHeight from 'react-animate-height';
 import { storyEditIcon } from '../components/writing/writingElement';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PlotEditor from '../components/writing/plotEditor';
 import '../styles/writing.css';
+import '../styles/characterList.css'
 import ChapterEditor from '../components/writing/chapterEditor';
 const { Title } = Typography;
 
@@ -22,6 +27,7 @@ class Writing extends React.Component {
             currentChapterId: null,
             lastChapterId: null,
             editMode: false,
+            showCharacterList: false
         }
     }
 
@@ -35,6 +41,23 @@ class Writing extends React.Component {
         .then((storyDetail) => {
             that.setState({ storyDetail });
             console.log('storyDetail', storyDetail)
+        })
+    }
+
+    handleLikeIt = () => {
+        createItem(this.props.token, {
+            liked_object: {
+                model_name: 'story',
+                app_label: 'stories',
+                id: this.state.storyId
+            }
+        }, 'like')
+        .then((res) => {
+            if (!res.success) {
+                message.info('You already liked it!');
+            } else {
+                message.info('Go to profile to see your like list~');
+            }
         })
     }
 
@@ -58,6 +81,25 @@ class Writing extends React.Component {
                 <br />
                 <div style={{ fontSize: 'initial' }}>{this.state.storyDetail.creator}</div>
             </Title>
+            <div 
+                style={{ textAlign: 'center', marginTop: '-20px' }} 
+            >
+                <span style={{ color: '#1890ff' }} onClick={this.handleLikeIt}>like it!</span>
+                <Button 
+                    onClick={() => this.setState({ showCharacterList: !this.state.showCharacterList })}
+                    style={{ marginLeft: '15px', width: '135px' }}
+                    >
+                    {!this.state.showCharacterList ?
+                    'Show Characters' : 'Hide Characters'}
+                </Button>
+            </div>
+
+            <AnimateHeight
+                duration={ 500 }
+                height={ this.state.showCharacterList ? 'auto' : 0 }
+            >
+            <CharacterList storyId={this.state.storyId} />
+            </AnimateHeight>
 
             {this.state.editMode ? 
             <StoryToolBar that={this} />

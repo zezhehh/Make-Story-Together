@@ -1,0 +1,101 @@
+.character-list {
+    transition: all 3s !important;
+}
+
+.clt-enter-done {
+    height: 300px !important;
+}
+
+.clt-enter {
+    opacity: 0 !important;;
+    height: 0 !important;;
+}
+
+.clt-appear {
+    opacity: 0 !important;;
+    height: 0 !important;;
+}
+
+.clt-appear-active {
+    opacity: 1 !important;;
+    height: 300px !important;;
+    transition: all 3s ease-in-out !important;;
+}
+
+.clt-enter-active {
+    opacity: 1 !important;;
+    height: 300px !important;;
+    transition: all 3s ease-in-out !important;;
+}
+
+.clt-exit {
+    opacity: 1 !important;;
+    height: 300px !important;;
+}
+
+.clt-exit-active {
+    opacity: 0 !important;;
+    height: 0 !important;;
+    transition: all 3s ease-in-out;
+}
+
+
+/* **************************/
+
+.fade-enter {
+    opacity: 0;
+    height: 0;
+    animation-duration: 5s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+    animation-play-state: paused;
+  }
+  
+  .fade-appear {
+    opacity: 0;
+    height: 0;
+    animation-duration: 5s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+    animation-play-state: paused;
+  }
+  
+  .fade-leave {
+    animation-duration: 5s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+    animation-play-state: paused;
+  }
+  
+  .fade-enter.fade-enter-active {
+    animation-name: fadeIn;
+    animation-play-state: running;
+  }
+  
+  .fade-appear.fade-appear-active {
+    animation-name: fadeIn;
+    animation-play-state: running;
+  }
+  
+  .fade-leave.fade-leave-active {
+    animation-name: fadeOut;
+    animation-play-state: running;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }

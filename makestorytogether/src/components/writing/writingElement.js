@@ -1,16 +1,32 @@
 import Moment from 'react-moment';
-import { Popover, Icon, Input } from 'antd';
+import { Popover, Icon, Input, message } from 'antd';
 import React from 'react';
-import { deleteItem, patchItem } from '../../api/items';
+import { deleteItem, patchItem, createItem } from '../../api/items';
 import { CSSTransition } from 'react-transition-group';
 import '../../styles/writingElement.scss';
 
-export const getPlotDetail = (plot) => {
+const handleLike = (plot, token) => {
+    createItem(token, {
+        liked_object: {
+            id: plot.id,
+            app_label: 'stories',
+            model_name: 'plot'
+        }
+    }, 'like')
+    .then((res) => {
+        res.success ? message.info('Go to profile to see your like list~') :
+        message.info('You already liked it!');
+    })
+}
+
+export const getPlotDetail = (plot, token) => {
     return (
         <div>
             <span>BY {plot.written_by} AS {plot.written_as.name}</span>
             <br />
             <span>Updated at <Moment format="HH:mm YYYY-MM-DD">{plot.updated_at}</Moment></span>
+            <br />
+            <div style={{ color: '#1890ff' }} onClick={() => handleLike(plot, token)}>Like it!</div>
         </div>
     )
 }
@@ -84,7 +100,7 @@ export const returnPlots = (plots, editMode, token, that, screen_name, editor) =
                         onClick={() => validPlot(plot.id, editMode, token, editor)} 
                     />}
                     {editMode ? <Icon type='delete' style={{ marginLeft: "1em" }} onClick={() => handleDelete(plot.id, token, editor)} /> : null}
-                    <Popover placement="topLeft" content={getPlotDetail(plot)}>
+                    <Popover placement="topLeft" content={getPlotDetail(plot, token)}>
                         <span style={{ marginLeft: "1em" }}>{plot.content}</span>
                     </Popover>
                     {screen_name === plot.written_by ? <Icon style={{ marginLeft: "1em" }} type='edit' onClick={() => editor.handleEdit(plot)} /> : null}

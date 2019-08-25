@@ -8960,6 +8960,14 @@ react-addons-css-transition-group@^15.6.2:
   dependencies:
     react-transition-group "^1.2.0"
 
+react-animate-height@^2.0.15:
+  version "2.0.15"
+  resolved "https://registry.npm.taobao.org/react-animate-height/download/react-animate-height-2.0.15.tgz#155f42e1ab0befe785b36b3e76233230172c1857"
+  integrity sha1-FV9C4asL7+eFs2s+diMyMBcsGFc=
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+
 react-app-polyfill@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/react-app-polyfill/download/react-app-polyfill-1.0.1.tgz#809a858e44f9564c7f4205e173076f90048274f1"

@@ -50,16 +50,28 @@ class Likes extends React.Component {
                 )
             case 'plot':
                 return (
-                    <List.Item>
+                    <List.Item actions={[
+                        <Link 
+                            to={{ pathname: '/just-writing!', state: { storyId: liked_object.story_id} }}>
+                            go to the story
+                        </Link>,
+                        <span onClick={() => this.handleUnlike(like.id)}>Unlike it</span>
+                    ]}>
                         <List.Item.Meta
-                            title={liked_object.content}
-                            // description={liked_object.content}
+                            title={`BY ${liked_object.written_by} AS ${liked_object.written_as.name}`}
+                            description={liked_object.content}
                         />
                     </List.Item>
                 )
             case 'character':
                 return (
-                    <List.Item>
+                    <List.Item actions={[
+                        <Link 
+                            to={{ pathname: '/just-writing!', state: { storyId: liked_object.story} }}>
+                            go to the story
+                        </Link>,
+                        <span onClick={() => this.handleUnlike(like.id)}>Unlike it</span>
+                    ]}>
                         <List.Item.Meta
                             title={liked_object.name}
                             description={liked_object.description}
@@ -75,6 +87,8 @@ class Likes extends React.Component {
                         />
                     </List.Item>
                 )
+            default:
+                return null
         }
     }
 

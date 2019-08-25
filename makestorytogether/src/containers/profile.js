@@ -20,7 +20,10 @@ class Profile extends React.Component {
                 {
                     this.props.status === STATUS.ANONYMOUS ? 
                     <Login /> : (
-                        <Tabs defaultActiveKey="info" onChange={this.onChange}>
+                        <Tabs 
+                            defaultActiveKey="info" 
+                            onChange={this.onChange}
+                        >
                             <TabPane tab="Info" key="info">
                             Content of Tab Pane 1
                             </TabPane>

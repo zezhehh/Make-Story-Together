@@ -56,7 +56,7 @@ class GroupList extends React.Component {
 
     fetchJoined = (that) => {
         fetchJoinedItems(that.props.token).then((groups) => {
-            that.setState({groups});
+            that.setState({groups}, console.log(groups));
         })
     }
 

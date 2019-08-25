@@ -199,6 +199,10 @@ export function getPlots(token, storyID, chapterID) {
     return getURL(token, `${STORY_API}/${storyID}/plots/?chapter_id=${chapterID}`)
 }
 
+export function getCharacters(token, storyID) {
+    return getURL(token, `${STORY_API}/${storyID}/get_characters/`)
+}
+
 export function removeInvalidPlots(token, storyID) {
     return postURLWithContent(
         token,

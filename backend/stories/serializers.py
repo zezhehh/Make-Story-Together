@@ -76,7 +76,7 @@ class MiniPlotSerializer(serializers.ModelSerializer):
 class CharacterSerializer(serializers.ModelSerializer):
     player = serializers.CharField(source='player.screen_name')
     story = serializers.IntegerField(source='story.id')
-    appear_at = MiniPlotSerializer()
+    appear_at = MiniPlotSerializer(required=False)
     liked = serializers.SerializerMethodField()
 
     class Meta:

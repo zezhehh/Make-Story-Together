@@ -29,6 +29,8 @@ class SigninSerializer(serializers.Serializer):
     password = serializers.CharField()
 
 from .timeline_constant import *
+from collections import OrderedDict
+
 class InfoSerializer(serializers.ModelSerializer):
     update_cycle = serializers.SerializerMethodField()
     likes_number = serializers.SerializerMethodField()
@@ -62,7 +64,11 @@ class InfoSerializer(serializers.ModelSerializer):
             timeline[TIMELINE_LABEL[FIRST_LIKE]] = Like.objects.filter(from_user=obj).order_by('created_at')[0].created_at
         if GroupMember.objects.filter(member=obj).exists():
             timeline[TIMELINE_LABEL[FIRST_JOIN]] = GroupMember.objects.filter(member=obj).order_by('joined_at')[0].joined_at
+        timeline_sorted = sorted(timeline.items(), key=lambda kv: kv[1], reverse=False)
+        ordered_timeline = OrderedDict()
+        for key, value in timeline_sorted:
+            ordered_timeline[key] = value
         # - 第10个创作的故事
         # - 第100个plot
         # - 第100次like
-        return timeline
+        return ordered_timeline

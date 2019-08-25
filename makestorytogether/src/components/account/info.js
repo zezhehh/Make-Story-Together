@@ -43,7 +43,7 @@ class Info extends React.Component {
             <Timeline>
                 {Object.keys(timeline).map((key) => 
                     <Timeline.Item key={key}>
-                        {key}  <Moment format="YYYY-MM-DD">{timeline[key]}</Moment>
+                        {key}  <Moment format="YYYY-MM-DD HH:mm">{timeline[key]}</Moment>
                     </Timeline.Item>
                 )}
             </Timeline>

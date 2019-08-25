@@ -48,15 +48,7 @@ class InfoSerializer(serializers.ModelSerializer):
         return Like.objects.filter(from_user=obj).count()
     
     def get_timeline(self, obj):
-        timeline = {
-            TIMELINE_LABEL[REGISTRATION]: '',
-            TIMELINE_LABEL[FIRST_STORY]: '',
-            TIMELINE_LABEL[FIRST_GROUP]: '',
-            TIMELINE_LABEL[FIRST_PLOT]: '',
-            TIMELINE_LABEL[FIRST_CHARACTER]: '',
-            TIMELINE_LABEL[FIRST_LIKE]: '',
-            TIMELINE_LABEL[FIRST_JOIN]: '',
-        }
+        timeline = {}
         timeline[TIMELINE_LABEL[REGISTRATION]] = obj.created_at
         if Story.objects.filter(creator=obj).exists():
             timeline[TIMELINE_LABEL[FIRST_STORY]] = Story.objects.filter(creator=obj).order_by('created_at')[0].created_at

@@ -41,14 +41,11 @@ class Info extends React.Component {
             </Card>
             <Card>
             <Timeline>
-                {Object.keys(timeline).map((key) => {
-                    if (timeline[key] === '') return null
-                    return (
-                        <Timeline.Item key={key}>
-                            {key}  <Moment format="YYYY-MM-DD">{timeline[key]}</Moment>
-                        </Timeline.Item>
-                    )
-                })}
+                {Object.keys(timeline).map((key) => 
+                    <Timeline.Item key={key}>
+                        {key}  <Moment format="YYYY-MM-DD">{timeline[key]}</Moment>
+                    </Timeline.Item>
+                )}
             </Timeline>
             </Card>
         </div>

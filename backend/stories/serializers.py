@@ -59,14 +59,19 @@ class StoryMoreDetailSerializer(serializers.ModelSerializer):
         model = Story
         fields = ['id', 'title', 'creator', 'maintainer', 'category', 'public', 'plots_count', 'chapters_count', 'rule', 'created_at', 'participators', 'description']
 
+class MiniPlotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plot
+        fields = ['id', 'created_at']
 
 class CharacterSerializer(serializers.ModelSerializer):
     player = serializers.CharField(source='player.screen_name')
     story = serializers.IntegerField(source='story.id')
+    appear_at = MiniPlotSerializer()
 
     class Meta:
         model = Character
-        fields = ['id', 'description', 'name', 'player', 'story']
+        fields = ['id', 'description', 'name', 'player', 'story', 'appear_at']
 
     def validate_player(self, value):
         user =  self.context['request'].user

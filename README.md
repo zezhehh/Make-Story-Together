@@ -7,10 +7,24 @@
 
 ## TODO
 
+- 新增数据统计
+    - 更新频率
+    - 注册时长
+    - like数量
+    - Timeline
+        - 注册
+        - 第一次创建故事
+        - 第一个plot
+        - 第一个角色
+        - 第一次like
+        - 加入群组
+        - 第一次创建群组
+        - 第10个创作的故事
+        - 第100个plot
+        - 第100次like
 - 新增交互接口
 - 适应移动端
 - websocket to inform update
-- like character/plot/story
 - Dockerfile
 - 重构react post函数
 - Model Details TBD

@@ -186,6 +186,10 @@ class StoryViewSet(viewsets.ModelViewSet):
                 character.save()
             else:
                 character = Character.objects.create(player=request.user.account, story=story, appear_at=plot, updated=plot, default=True)
+        elif not character.appear_at:
+            character.appear_at = plot
+            character.updated = plot
+            character.save()
         else:
             character.updated = plot
             character.save()

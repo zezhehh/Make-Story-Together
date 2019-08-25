@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_HOST } from './constants';
 
-
+const WRITER_API = `${API_HOST}`;
 const STORY_API = `${API_HOST}/story`;
 const GROUP_API = `${API_HOST}/group`;
 const DISCIPLINE_API = `${API_HOST}/discipline`;
@@ -15,6 +15,9 @@ const LIKE_API = `${API_HOST}/like`;
 function getURL(itemType) {
     let API_URL;
     switch (itemType) {
+        case 'writer':
+            API_URL = WRITER_API;
+            break;
         case 'group':
             API_URL = GROUP_API;
             break;

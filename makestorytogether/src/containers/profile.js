@@ -5,6 +5,7 @@ import Login from '../components/account/login';
 import { Tabs } from 'antd';
 import Characters from '../components/account/characters';
 import Like from '../components/account/like';
+import Info from '../components/account/info';
 import '../styles/profile.css';
 
 const { TabPane } = Tabs;
@@ -25,7 +26,7 @@ class Profile extends React.Component {
                             onChange={this.onChange}
                         >
                             <TabPane tab="Info" key="info">
-                            Content of Tab Pane 1
+                                <Info />
                             </TabPane>
                             <TabPane tab="Characters" key="characters">
                                 <Characters />

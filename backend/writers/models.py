@@ -11,7 +11,7 @@ class Writer(models.Model):
     likes = GenericRelation(Like, related_query_name='writer')
 
     def __str__(self):
-        return self.screen_name
+        return f'{self.screen_name}:{self.id}'
 
     @property
     def username(self):

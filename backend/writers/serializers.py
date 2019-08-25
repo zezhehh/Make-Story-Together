@@ -35,10 +35,19 @@ class InfoSerializer(serializers.ModelSerializer):
     update_cycle = serializers.SerializerMethodField()
     likes_number = serializers.SerializerMethodField()
     timeline = serializers.SerializerMethodField()
+    liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Writer
-        fields = ['screen_name', 'username', 'created_at', 'update_cycle', 'likes_number', 'timeline']
+        fields = ['id', 'screen_name', 'username', 'created_at', 'update_cycle', 'likes_number', 'timeline', 'liked']
+
+    def get_liked(self, obj):
+        if 'request' not in self.context:
+            return False
+        writer =  self.context['request'].user
+        if writer.is_anonymous:
+            return False
+        return obj.likes.filter(from_user=writer.account).exists()
 
     # #plot / day in recent week
     def get_update_cycle(self, obj):

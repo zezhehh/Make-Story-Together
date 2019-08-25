@@ -7,7 +7,7 @@ POPULAR_CHARACTER = 'POPULAR_CHARACTER'
 POPULAR_STORY = 'POPULAR_STORY'
 
 
-CONTENT_TYPE_CHOICES = [
+FEED_TYPE_CHOICES = [
     (NEW_STORY, 'New Story'),
     # (NEW_CHARACTER, 'New Character'),
     # (NEW_CHAPTER, 'New Chapter'),
@@ -16,3 +16,19 @@ CONTENT_TYPE_CHOICES = [
     (POPULAR_CHARACTER, 'Popular Character'),
     (POPULAR_STORY, 'Popular Story')
 ]
+
+
+def format_new_story(story):
+    return f'Story {story.id} was created!'
+
+def format_new_group(group):
+    return f'Group {group.name} was created!'
+
+def format_popular_plot(plot):
+    return f'Plot written by {plot.written_by.screen_name} becomes trendy!:\n\t{plot.content}'
+
+def format_popular_character(character):
+    return f'Character {character.name} in story {character.story.title} becomes trendy!'
+
+def format_popular_story(story):
+    return f'Story {story.title} becomes trendy!'

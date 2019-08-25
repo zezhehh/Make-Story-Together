@@ -21,6 +21,8 @@ class WriterViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny, ]
 
     def get_queryset(self):
+        if self.action == 'retrieve':
+            return Writer.objects.all()
         if 'screen_name' not in self.request.query_params:
             if self.request.user.is_anonymous:
                 return []

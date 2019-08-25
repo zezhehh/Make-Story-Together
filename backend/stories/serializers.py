@@ -26,7 +26,7 @@ class StorySerializer(serializers.ModelSerializer):
         raise serializers.ValidationError(f"Invalid operation.")
     
     def validate_maintainer(self, value):
-        user =  self.context['request'].user
+        user =  self.context['request'].user.account
         qs = Group.objects.filter(name=value)
         if not qs.exist():
             raise serializers.ValidationError(f"Wrong group name.")
@@ -54,10 +54,17 @@ class StoryMoreDetailSerializer(serializers.ModelSerializer):
     creator = serializers.CharField(source='creator.screen_name')
     rule = DisciplineSerializer(many=True)
     category = TagSerializer(many=True)
+    liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Story
-        fields = ['id', 'title', 'creator', 'maintainer', 'category', 'public', 'plots_count', 'chapters_count', 'rule', 'created_at', 'participators', 'description']
+        fields = ['id', 'title', 'creator', 'maintainer', 'category', 'public', 'plots_count', 'chapters_count', 'rule', 'created_at', 'participators', 'description', 'liked']
+
+    def get_liked(self, obj):
+        writer =  self.context['request'].user
+        if writer.is_anonymous:
+            return False
+        return obj.likes.filter(from_user=writer.account).exists()
 
 class MiniPlotSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,16 +75,21 @@ class CharacterSerializer(serializers.ModelSerializer):
     player = serializers.CharField(source='player.screen_name')
     story = serializers.IntegerField(source='story.id')
     appear_at = MiniPlotSerializer()
+    liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Character
-        fields = ['id', 'description', 'name', 'player', 'story', 'appear_at']
+        fields = ['id', 'description', 'name', 'player', 'story', 'appear_at', 'liked']
 
     def validate_player(self, value):
         user =  self.context['request'].user
         if user.account.screen_name == value:
             return value
         raise serializers.ValidationError(f"Invalid operation.")
+
+    def get_liked(self, obj):
+        writer =  self.context['request'].user.account
+        return obj.likes.filter(from_user=writer).exists()
 
     def create(self, validated_data):
         player = Writer.objects.get(screen_name=validated_data['player']['screen_name'])
@@ -90,11 +102,16 @@ class PlotSerializer(serializers.ModelSerializer):
     chapter = serializers.IntegerField(source='chapter.id')
     written_by = serializers.CharField(source='written_by.screen_name')
     story_id = serializers.IntegerField(source='chapter.story.id')
-
+    liked = serializers.SerializerMethodField()
     written_as = CharacterSerializer()
+
     class Meta:
         model = Plot
-        fields = ['id', 'written_by', 'story_id', 'created_at', 'valid', 'content', 'chapter', 'updated_at', 'written_as']
+        fields = ['id', 'written_by', 'story_id', 'created_at', 'valid', 'content', 'chapter', 'updated_at', 'written_as', 'liked']
+        
+    def get_liked(self, obj):
+        writer =  self.context['request'].user.account
+        return obj.likes.filter(from_user=writer).exists()
 
 
 class ChapterSerializer(serializers.ModelSerializer):

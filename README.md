@@ -1,3 +1,8 @@
+The devolopment version could be visited at http://207.148.115.171:3000
+- Encounter something wrong? Refresh it...
+
+---
+
 - Requirements: `node.js` `yarn` `python3` `postgresql` `redis`
 - In directory `/backend`, run `python3 manage.py runserver 0.0.0.0:8000` to start backend
     - `requirements.txt` contains modules used in my virtual environment
@@ -5,14 +10,29 @@
 - In directory `makestorytogether`, `yarn start` to start development mode of frontend
     - For first use, run `yarn` to add dependencies
 
+
 ## Features
 
-- Account / Group / Story Creation
-- Group / Story Management
+- Authentication based on Json Web Token
+- RESTful API for almost all models used
+    - LIST / CREATE(POST) / DELETE / RETRIEVE / PATCH
+    - filter query by url params
+    - statistic for personal info (like registration time, number of plots created or timeline of some achievements)
+- Signal of model creation to generate feeds
+    - only listen to creation of Group/Story yet
+- Group/Story management page
+    - Ugly creation form yet
+- Like or Unlike Story/Plot/Character
+    - something like follow
+- (What this project finally aims to do) Write story with connecting to websocket specified by story_id
+    - Update the writing page immediately when here come new plots or chapters
 
 
 ## TODO - I DON'T WANT TO DO THEM YET
 
+- Handle Error HTTP Response
+- Personal info page
+  - for now, only the own page is visited
 - Discipline Functionality
 - More interation UI interface
 - Fit mobile user
@@ -23,9 +43,11 @@
   - group invitation
   - email verification
 - Beautiful UI Design
+  - Current ui are all based on Ant.design
 - API Pagination
 - Celery
 - Cache to speed up / reselect in redux
+
 
 ## APIs Memo
 
@@ -36,6 +58,7 @@
 - `/register/`
 - `/signin/`
 - `/logout/`
+
 
 ### Group
 
@@ -60,7 +83,6 @@
 - `/group/apply_discipline/`
   - `{"discipline_id": }`
   - add discipline to rule
-
 
 
 ### Story
@@ -90,6 +112,7 @@
 ### Character
 
 - `/character/?story_id=`
+    - POST format: 
 
 ```
 {
@@ -103,6 +126,7 @@
 ### Like
 
 - `/like/`
+    - POST format: 
 
 ```
 {

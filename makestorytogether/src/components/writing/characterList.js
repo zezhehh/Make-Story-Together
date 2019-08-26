@@ -1,10 +1,8 @@
 import React from 'react';
-import { List, message, Spin } from 'antd';
+import { List, message } from 'antd';
 import { connect } from 'react-redux'
 import { getCharacters } from '../../api/stories';
 import { createItem } from '../../api/items';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import Animate from 'rc-animate';
 import '../../styles/characterList.css'
 
 class CharacterList extends React.Component {

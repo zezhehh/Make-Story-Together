@@ -4,13 +4,11 @@ import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { Typography, message, Button } from 'antd';
 import CharacterList from '../components/writing/characterList';
-import Animate from 'rc-animate';
 import { fetchItemDetail, createItem } from '../api/items';
 import { emptyStoryDetail } from '../api/emptyStructure';
 import StoryToolBar from '../components/writing/storyToolBar';
 import AnimateHeight from 'react-animate-height';
 import { storyEditIcon } from '../components/writing/writingElement';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PlotEditor from '../components/writing/plotEditor';
 import '../styles/writing.css';
 import '../styles/characterList.css'

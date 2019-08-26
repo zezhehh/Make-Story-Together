@@ -1,7 +1,6 @@
 import React from 'react';
 import { fetchItemList } from '../../api/items';
 import { Statistic, Icon, Card, Timeline, Spin } from 'antd';
-import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import moment from 'moment';
 import { connect } from 'react-redux';

@@ -13,6 +13,10 @@
     overflow: hidden;
 }
 
+.groupContent {
+    width: 100%;
+}
+
 .groupList .ant-empty {
     margin-top: 50px
 }
@@ -26,8 +30,10 @@
 }
 
 .groupItem {
-    width: 860px !important;
+    max-width: 860px !important;
+    width: 70% !important;
     transition: box-shadow .3s;
+    margin: auto auto !important;
 }
 
 .groupItem.item-enter-done {

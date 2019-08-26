@@ -24,9 +24,15 @@
     padding-bottom: 20px;
 }
 
+.story-list-content {
+    width: 100%;
+}
+
 .storyItem {
-    width: 860px !important;
+    max-width: 860px !important;
+    width: 70% !important;
     transition: box-shadow .3s;
+    margin: auto auto !important;
 }
 
 .storyItem.item-enter-done {

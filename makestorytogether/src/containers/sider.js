@@ -56,6 +56,7 @@ class SiderLayout extends React.Component {
             collapsible 
             collapsed={this.state.collapsed} 
             onCollapse={this.onCollapse}
+            style={{ overflow: 'auto' }}
           >
             {!this.state.collapsed ? 
             (<div className="logo"><Texty>Make Story Together</Texty></div>) :

@@ -1,10 +1,12 @@
 import React from 'react';
 import { fetchItemList } from '../../api/items';
-import { Statistic, Icon, Card, Timeline, Spin } from 'antd';
+import { Statistic, Icon, Card, Timeline, Spin, Row, Col } from 'antd';
 import Moment from 'react-moment';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import '../../styles/characters.css'
+import '../../styles/characters.css';
+import '../../styles/info.css';
+
 
 class Info extends React.Component {
     constructor(props) {
@@ -32,14 +34,22 @@ class Info extends React.Component {
         const { timeline } = this.state.info;
         if (this.state.loading) return <Spin />
         return (
-        <div>
-            <Card>
-            <Statistic title="#Like" value={this.state.info.likes_number} prefix={<Icon type="like" />} />
-            <Statistic title="Registration Time" value={parseInt(this.state.duration)} suffix="hours" />
-            <Statistic title="Update Cycle in Recent One Week" value={this.state.info.update_cycle} suffix="plots / day" />
+        <div style={{ paddingTop: '10px' }}>
+            <Card className='info-card' style={{ textAlign: 'center' }}>
+            <Row gutter={48}>
+                <Col span={8}>
+                    <Statistic title="#Like" value={this.state.info.likes_number} prefix={<Icon type="like" />} />
+                </Col>
+                <Col span={8}>
+                    <Statistic title="Registration Time" value={parseInt(this.state.duration)} suffix="hours" />
+                </Col>
+                <Col span={8}>
+                    <Statistic title="Update Cycle in Recent One Week" value={this.state.info.update_cycle} suffix="plots / day" />
+                </Col>
+            </Row>
             </Card>
-            <Card>
-            <Timeline>
+            <Card className='info-card'>
+            <Timeline className='timeline'>
                 {Object.keys(timeline).map((key) => 
                     <Timeline.Item key={key}>
                         {key}  <Moment format="YYYY-MM-DD HH:mm">{timeline[key]}</Moment>

@@ -129,7 +129,7 @@ class StoryList extends React.Component {
             </CSSTransition>
         )
         return (
-            <Layout>
+            <Layout style={{ minWidth: '550px', overflow: 'auto' }}>
                 <Header className='storyHeader' style={{padding: 0, zIndex: 1 }}>
                     <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
                         <SubMenu
@@ -165,7 +165,7 @@ class StoryList extends React.Component {
                     </Menu>
                 </Header>
                 <Layout style={{ marginTop: '40px' }}  className='storyList'>
-                <Content style={{overflow: 'initial'}}>
+                <Content style={{overflow: 'initial'}} className='story-list-content'>
                     <div style={{ height: '10px' }}></div>
                     {this.state.stories.length === 0 ? <Empty /> : null}
                     <TransitionGroup>

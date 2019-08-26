@@ -152,7 +152,7 @@ class GroupList extends React.Component {
             </CSSTransition>
         );
         return (
-            <Layout>
+            <Layout style={{ minWidth: '550px', overflow: 'auto' }}>
                 <Header className='groupHeader' style={{padding: 0, zIndex: 1 }}>
                     <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
                         <SubMenu

@@ -120,7 +120,6 @@ class GroupList extends React.Component {
     }
 
     render() {
-        if (this.state.loading) return <Spin />
         let groups = this.state.searchValue === '' ? this.state.groups : this.state.filteredGroups;
         let options = groups.map((group) => 
             <CSSTransition
@@ -193,7 +192,8 @@ class GroupList extends React.Component {
                     
                     <Content className="groupContent" >
                         <div style={{ height: '10px' }}></div>
-                    {this.state.groups.length === 0 ? <Empty /> : null}
+                    {this.state.loading ? <Spin /> : null}
+                    {this.state.groups.length === 0 && !this.state.loading ? <Empty /> : null}
                     <TransitionGroup>
                     {options}
                     </TransitionGroup>

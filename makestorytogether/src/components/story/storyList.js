@@ -99,7 +99,6 @@ class StoryList extends React.Component {
     }
 
     render() {
-        if (this.state.loading) return <Spin />
         let stories = this.state.searchValue === '' ? this.state.stories : this.state.filteredStories;
         let options = stories.map((story) => 
             <CSSTransition
@@ -169,7 +168,8 @@ class StoryList extends React.Component {
                 <Layout style={{ marginTop: '40px' }}  className='storyList'>
                 <Content style={{overflow: 'initial'}} className='story-list-content'>
                     <div style={{ height: '10px' }}></div>
-                    {this.state.stories.length === 0 ? <Empty /> : null}
+                    {this.state.loading ? <Spin /> : null}
+                    {this.state.stories.length === 0 && !this.state.loading ? <Empty /> : null}
                     <TransitionGroup>
                     {options}
                     </TransitionGroup>

@@ -22,7 +22,10 @@ const handleLike = (plot, token) => {
 export const getPlotDetail = (plot, token) => {
     return (
         <div>
+            {plot.written_as === null ?
+            <span>BY {plot.written_by}</span> :
             <span>BY {plot.written_by} AS {plot.written_as.name}</span>
+            }
             <br />
             <span>Updated at <Moment format="HH:mm YYYY-MM-DD">{plot.updated_at}</Moment></span>
             <br />

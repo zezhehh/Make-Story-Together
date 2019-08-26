@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Anchor, Button, Icon, Input, Tooltip } from 'antd';
+import { Anchor, Button, Icon, Input, Tooltip, message } from 'antd';
 import { getChapters, newChapter } from '../../api/stories';
 import ChapterNode from './chapterNode';
 
@@ -17,6 +17,8 @@ class ChapterEditor extends React.Component {
             chapterTitle: '',
             chapters: [],
         }
+
+        this.anchor = React.createRef()
     }
 
     componentDidMount() {
@@ -32,6 +34,10 @@ class ChapterEditor extends React.Component {
         if (prevProps.storyId !== this.props.storyId) {
             this.fetchChapters(this)
         }
+        if (prevProps.currentChapterId !== this.props.currentChapterId) {
+            this.anchor.current.handleScroll();
+            console.log('force handle scroll')
+        }
     }
 
     fetchChapters = (me) => {
@@ -43,15 +49,19 @@ class ChapterEditor extends React.Component {
                 chapters,
             });
             console.log('chapters', chapters)
-            if (chapters.length !== 0) {
+            if (chapters.length !== 0 && this.props.currentChapterId === null) {
                 that.setState({
                     currentChapterId: chapters[0].id,
                     lastChapterId: chapters[chapters.length - 1].id
                 })
-            } else {
+            } else if (chapters.length === 0) {
                 that.setState({
                     currentChapterId: null,
                     lastChapterId: null
+                })
+            } else {
+                that.setState({
+                    lastChapterId: chapters[chapters.length - 1].id
                 })
             }
         })
@@ -60,8 +70,8 @@ class ChapterEditor extends React.Component {
     handleClick = (e, link) => {
         const { that } = this.props;
         e.preventDefault();
-        let title = link.href;
-        let chapter = title === 'defaultAnchor' ? this.state.chapters[0] : this.state.chapters.find(obj => {return obj.title===title});
+        let id = link.href;
+        let chapter = id === 'defaultAnchor' ? this.state.chapters[0] : this.state.chapters.find(obj => {return obj.id===id});
         if (that.state.editMode) setTimeout(function(){}, 500);
         if (chapter === undefined) return
         that.setState({ 
@@ -82,6 +92,10 @@ class ChapterEditor extends React.Component {
             title: this.state.chapterTitle
         })
         .then((chapter) => {
+            if (chapter.success !== undefined && !chapter.success) {
+                message.warning(`Chapter with title ${this.state.chapterTitle} existed!`);
+                return;
+            }
             this.setState({
                 chapters: [...this.state.chapters, chapter],
                 inputChapterVisible: false, 
@@ -91,6 +105,7 @@ class ChapterEditor extends React.Component {
                 currentChapterId: chapter.id,
                 lastChapterId: chapter.id
             });
+            this.props.wsSend(this.props.that, 'new chapter')
         })
     }
 
@@ -129,16 +144,18 @@ class ChapterEditor extends React.Component {
         const { that } = this.props;
         return (
                 <Anchor 
+                    ref={this.anchor}
                     affix={false} 
-                    onClick={this.handleClick} 
+                    onClick={this.handleClick}
                     ClassName='storyTOC'
-                    getCurrentAnchor={() => 'defaultAnchor'}
+                    getCurrentAnchor={() => {console.log('inanchor', this.props.currentChapterId); return this.props.currentChapterId; }}
                     showInkInFixed={true}
+                    currentChapterId={this.props.currentChapterId}
                 >
                     {this.state.chapters.map((chapter, index) => 
                         <Link 
                             key={chapter.id}
-                            href={index === 0 ? 'defaultAnchor' : chapter.title}
+                            href={chapter.id}
                             title={
                                 <ChapterNode chapter={chapter} callback={this.fetchChapters} that={this} editMode={that.state.editMode} />
                             }

@@ -39,19 +39,26 @@ class Writing extends React.Component {
             })
     }
 
+    componentDidUpdate(prevProps, prevStates) {
+        if (prevStates.currentChapterId !== this.state.prevStates) {
+            console.log('currentChapterId', prevStates.currentChapterId, this.state.currentChapterId)
+        }
+    }
+
     initWs = () => {
         this.ws = new WebSocket(`${WS_URL}/${this.state.storyId}/`);
         this.ws.onopen = () => {
-            console.log('connected')
+            console.log('connected');
         }
     
         this.ws.onmessage = evt => {
-            const message = JSON.parse(evt.data)
-            console.log(message)
+            const message = JSON.parse(evt.data);
+            this.fetch(this);
+            console.log(message);
         }
     
         this.ws.onclose = () => {
-            console.log('disconnected')
+            console.log('disconnected');
         }
     }
 
@@ -63,8 +70,11 @@ class Writing extends React.Component {
         })
     }
 
+    sendJSON = (that, message) => {
+        that.ws.send(JSON.stringify({ message }))
+    }
+
     handleLikeIt = () => {
-        this.ws.send(JSON.stringify({ like: 'new like' }))
         createItem(this.props.token, {
             liked_object: {
                 model_name: 'story',
@@ -127,15 +137,19 @@ class Writing extends React.Component {
             <div className='writingPage'>
                 <ChapterEditor 
                     that={this}
+                    currentChapterId={this.state.currentChapterId}
                     editMode={this.state.editMode}
                     storyId={this.state.storyId}
                     storyChaptersCount={this.state.storyDetail.chapters_count}
+                    wsSend={this.sendJSON}
                 />
                 <PlotEditor 
                     that={this}
                     currentChapterId={this.state.currentChapterId}
+                    lastChapterId={this.state.lastChapterId}
                     editMode={this.state.editMode}
                     storyPlotsCount={this.state.storyDetail.plots_count}
+                    wsSend={this.sendJSON}
                 />
             </div>
         </div>)

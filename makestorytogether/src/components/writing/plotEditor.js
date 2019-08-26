@@ -88,6 +88,7 @@ class PlotEditor extends React.Component {
                 inputPlotVisible: false, 
                 value: ''
             });
+            this.props.wsSend(this.props.that, 'new plot')
         })
     }
 

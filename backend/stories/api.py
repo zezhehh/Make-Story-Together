@@ -151,7 +151,7 @@ class StoryViewSet(viewsets.ModelViewSet):
     @action(detail=True)
     def chapters(self, request, pk=None):
         story = self.get_object()
-        chapters = ChapterSerializer(story.chapters, many=True)
+        chapters = ChapterSerializer(story.chapters.order_by('created_at'), many=True)
         return Response(chapters.data, status=status.HTTP_200_OK)
 
     @action(detail=True, permission_classes=[IsAuthenticated, ], methods=['POST', ])

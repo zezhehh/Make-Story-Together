@@ -21,6 +21,18 @@ export function postURLWithContent(token, url, postContent={}) {
 }
 
 export function getURL(token, url) {
+    if (token === null) {
+        return axios.get(url)
+            .then((res) => {
+                return res.data
+            })
+            .catch((error) => {
+                console.log(error)
+                return {
+                    success: false
+                }
+            })
+    }
     return axios.get(url,
     {
         'headers': {

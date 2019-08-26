@@ -32,6 +32,7 @@ class Writing extends React.Component {
     }
 
     componentDidMount() {
+        if (this.props.location.state === undefined) return;
         this.setState({storyId: this.props.location.state.storyId},
             () => {
                 this.fetch(this);
@@ -63,6 +64,9 @@ class Writing extends React.Component {
     }
 
     fetch = (that) => {
+        if (that.props.token === null) {
+            message.info('Register / Log in to join the creation~')
+        }
         fetchItemDetail(that.state.storyId, 'story', that.props.token)
         .then((storyDetail) => {
             that.setState({ storyDetail });
@@ -92,17 +96,19 @@ class Writing extends React.Component {
     }
 
     render() {
+        if (this.props.location.state === undefined) {
+            return (
+                <Redirect
+                    to={{
+                    pathname: "/story",
+                    state: { message: 'from writing'}
+                    }}
+                />
+            )
+        }
         
         return (
         <div className='writing'>
-            {this.props.token === null ?
-                <Redirect
-                    to={{
-                    pathname: "/profile"
-                    }}
-                /> : null
-            }
-
             <Title style={{ textAlign: "center", padding: '20px' }}>
                 <RouterLink to={`/story/${this.state.storyDetail.id}`} style={{ color: 'initial' }}>
                         {this.state.storyDetail.title}
@@ -114,7 +120,7 @@ class Writing extends React.Component {
             <div 
                 style={{ textAlign: 'center', marginTop: '-20px' }} 
             >
-                <span style={{ color: '#1890ff' }} onClick={this.handleLikeIt}>like it!</span>
+                { this.props.token !== null ? <span style={{ color: '#1890ff' }} onClick={this.handleLikeIt}>like it!</span> : null }
                 <Button 
                     onClick={() => this.setState({ showCharacterList: !this.state.showCharacterList })}
                     style={{ marginLeft: '15px', width: '135px' }}

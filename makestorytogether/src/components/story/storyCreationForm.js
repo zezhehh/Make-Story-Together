@@ -47,7 +47,7 @@ class StoryCreationForm extends React.Component {
           )}
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
             Create
           </Button>
         </Form.Item>

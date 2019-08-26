@@ -42,7 +42,7 @@ class ChapterEditor extends React.Component {
 
     fetchChapters = (me) => {
         const { that } = me.props;
-        if (me.props.token === null) return
+        // if (me.props.token === null) return
         getChapters(me.props.token, that.state.storyId)
         .then((chapters) => {
             me.setState({ 
@@ -161,7 +161,7 @@ class ChapterEditor extends React.Component {
                             }
                         />
                     )}
-                    {this.newChapter()}
+                    {this.props.token !== null && this.newChapter()}
                 </Anchor>
             )
     }

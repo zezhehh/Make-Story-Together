@@ -136,7 +136,7 @@ class StoryViewSet(viewsets.ModelViewSet):
             story.category.add(instance)
         return Response(status=status.HTTP_200_OK)
     
-    @action(detail=True)
+    @action(detail=True, permission_classes=[AllowAny, ])
     def plots(self, request, pk=None):
         story = self.get_object()
         if 'chapter_id' not in request.query_params:
@@ -148,7 +148,7 @@ class StoryViewSet(viewsets.ModelViewSet):
         plots = PlotSerializer(chapter.plots.order_by('created_at'), many=True)
         return Response(plots.data, status=status.HTTP_200_OK)
     
-    @action(detail=True)
+    @action(detail=True, permission_classes=[AllowAny, ])
     def chapters(self, request, pk=None):
         story = self.get_object()
         chapters = ChapterSerializer(story.chapters.order_by('created_at'), many=True)

@@ -81,6 +81,7 @@
 }
 
 .popInner {
+    padding: 20px;
     position: absolute;
     left: 25%;
     right: 25%;

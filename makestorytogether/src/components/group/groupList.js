@@ -205,7 +205,7 @@ class GroupList extends React.Component {
                     <div className='popForm'>
                         <div className='popInner'>
                             <WrappedGroupForm callback={this.fetch} that={this} />
-                            <Icon onClick={this.props.doneCreateGroup} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
+                            <Icon onClick={this.props.doneCreateGroup} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right', fontSize: '25px' }}  type="close-circle" />
                         </div>
                     </div>: null
                 }

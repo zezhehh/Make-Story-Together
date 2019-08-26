@@ -52,16 +52,28 @@ class CharacterList extends React.Component {
                 className='character-list'
                 itemLayout="horizontal"
                 dataSource={this.state.characters}
-                renderItem={character => (
-                <List.Item actions={[
-                    <div onClick={() => this.handleLike(character.id)}>Like it!</div>
-                ]}>
-                    <List.Item.Meta
-                        title={`${character.name} BY ${character.player}`}
-                        description={character.description}
-                    />
-                </List.Item>
-                )}
+                renderItem={character => {
+                   if (this.props.token === null) {
+                       return (
+                            <List.Item>
+                                <List.Item.Meta
+                                    title={`${character.name} BY ${character.player}`}
+                                    description={character.description}
+                                />
+                            </List.Item>
+                       )
+                   }
+                   return (
+                        <List.Item actions={[
+                            <div onClick={() => this.handleLike(character.id)}>Like it!</div>
+                        ]}>
+                            <List.Item.Meta
+                                title={`${character.name} BY ${character.player}`}
+                                description={character.description}
+                            />
+                        </List.Item>
+                    )
+                }}
             />
         )}
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems, deleteItem } from '../../api/items';
-import { Card, Layout, Icon, Menu, Empty, Popover, Select, Spin } from 'antd';
+import { Card, Layout, Icon, Menu, Empty, Popover, Select, Spin, message } from 'antd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { STATUS, createStory, doneCreateStory } from '../../actions/stories';
 import WrappedStoryForm from './storyCreationForm';
@@ -20,12 +20,21 @@ class StoryList extends React.Component {
             current: 'orderByDate',
             searchValue: '',
             filteredStories: [],
-            loading: true
+            loading: true,
+            message: null
         }
     }
 
     componentDidMount() {
-        this.fetch(this)
+        this.fetch(this);
+        if (this.props.location.state !== undefined) {
+            message.info(
+                <div>
+                    <p>Select a story to join creation.</p>
+                    <p>Click <Icon type='edit' /> in the top-right of each story card</p>
+                </div>
+            );
+        }
     }
 
     fetch(that, storyID=null) {
@@ -180,7 +189,7 @@ class StoryList extends React.Component {
                     <div className='popForm'>
                         <div className='popInner'>
                             <WrappedStoryForm callback={this.fetch} that={this} />
-                            <Icon onClick={this.props.doneCreateStory} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
+                            <Icon onClick={this.props.doneCreateStory} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right', fontSize: '25px' }}  type="close-circle" />
                         </div>
                     </div>: null
                 }

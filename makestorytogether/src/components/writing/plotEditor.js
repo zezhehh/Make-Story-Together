@@ -144,7 +144,7 @@ class PlotEditor extends React.Component {
             <div className='storyEditor'>
             <TransitionGroup>
                 {returnPlots(this.state.plots, editMode, token, that, screen_name, this).map((plot) => plot)}
-                {newPlotButton ? 
+                {newPlotButton && this.props.token !== null ? 
                     this.newPlot() : null  
                 }
             </TransitionGroup>
@@ -153,7 +153,7 @@ class PlotEditor extends React.Component {
                 <div className='popForm'>
                     <div className='popInner'>
                         <WrappedCharacterForm that={this} storyId={this.props.that.state.storyId} />
-                        <Icon onClick={this.props.doneCreateCharacter} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right' }}  type="close-circle" />
+                        <Icon onClick={this.props.doneCreateCharacter} style={{ color: 'rgba(0, 0, 0, 0.7)', float: 'right', fontSize: '25px' }}  type="close-circle" />
                     </div>
                 </div>: null
             }

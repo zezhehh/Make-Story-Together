@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems, deleteItem } from '../../api/items';
 import { joinGroup, quitGroup } from '../../api/groups';
-import { Card, Layout, Icon, Menu, Popover, Empty, Select } from 'antd';
+import { Card, Layout, Icon, Menu, Popover, Empty, Select, Spin } from 'antd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { STATUS, createGroup, doneCreateGroup } from '../../actions/groups';
 import WrappedGroupForm from './groupCreationForm';
@@ -19,7 +19,8 @@ class GroupList extends React.Component {
             detailID: null,
             current: 'orderByDate',
             searchValue: '',
-            filteredGroups: []
+            filteredGroups: [],
+            loading: true
         }
     }
 
@@ -39,7 +40,7 @@ class GroupList extends React.Component {
         console.log('fetch group list');
         let orderBy = that.state.current === 'orderByDate' ? 'date' : 'number';
         fetchItemList('group', orderBy).then((groups) => {
-            that.setState({groups});
+            that.setState({groups, loading: false});
         })
         if (groupID != null) {
             fetchItemDetail(groupID).then((groupDetail) => {
@@ -119,6 +120,7 @@ class GroupList extends React.Component {
     }
 
     render() {
+        if (this.state.loading) return <Spin />
         let groups = this.state.searchValue === '' ? this.state.groups : this.state.filteredGroups;
         let options = groups.map((group) => 
             <CSSTransition

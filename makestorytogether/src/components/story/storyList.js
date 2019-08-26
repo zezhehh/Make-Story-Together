@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import { fetchItemList, fetchItemDetail, fetchJoinedItems, fetchOwnedItems, deleteItem } from '../../api/items';
-import { Card, Layout, Icon, Menu, Empty, Popover, Select } from 'antd';
+import { Card, Layout, Icon, Menu, Empty, Popover, Select, Spin } from 'antd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { STATUS, createStory, doneCreateStory } from '../../actions/stories';
 import WrappedStoryForm from './storyCreationForm';
@@ -19,7 +19,8 @@ class StoryList extends React.Component {
             storyDetail: null,
             current: 'orderByDate',
             searchValue: '',
-            filteredStories: []
+            filteredStories: [],
+            loading: true
         }
     }
 
@@ -38,7 +39,7 @@ class StoryList extends React.Component {
         }
         let orderBy = that.state.current === 'orderByDate' ? 'date' : 'number';
         fetchItemList('story', orderBy).then((stories) => {
-            that.setState({stories});
+            that.setState({stories, loading: false});
         })
         if (storyID != null) {
             fetchItemDetail(storyID, 'story').then((storyDetail) => {
@@ -98,6 +99,7 @@ class StoryList extends React.Component {
     }
 
     render() {
+        if (this.state.loading) return <Spin />
         let stories = this.state.searchValue === '' ? this.state.stories : this.state.filteredStories;
         let options = stories.map((story) => 
             <CSSTransition

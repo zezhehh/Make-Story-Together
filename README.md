@@ -5,23 +5,27 @@
 - In directory `makestorytogether`, `yarn start` to start development mode of frontend
     - For first use, run `yarn` to add dependencies
 
+## Features
 
-## TODO
+- Account / Group / Story Creation
+- Group / Story Management
 
-- 新增交互接口
-- 适应移动端
-- websocket to inform update
-  - 冲突控制
+
+## TODO - I DON'T WANT TO DO THEM YET
+
+- Discipline Functionality
+- More interation UI interface
+- Fit mobile user
+- Control conflicts of simultaneously plot creation 
 - Dockerfile
-- 重构react post函数
+- Refactory / reuser axio functions
 - Model Details TBD
   - group invitation
-- UI
-- API
-  - different user: different detail info
-  - paginate
+  - email verification
+- Beautiful UI Design
+- API Pagination
 - Celery
-- Cache to speed up / reselect
+- Cache to speed up / reselect in redux
 
 ## APIs Memo
 

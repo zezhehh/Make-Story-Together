@@ -57,7 +57,7 @@ class CharacterList extends React.Component {
                     <div onClick={() => this.handleLike(character.id)}>Like it!</div>
                 ]}>
                     <List.Item.Meta
-                        title={character.name}
+                        title={`${character.name} BY ${character.player}`}
                         description={character.description}
                     />
                 </List.Item>

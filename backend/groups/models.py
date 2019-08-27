@@ -4,7 +4,7 @@ from writers.models import Writer
 
 # Create your models here.
 class Group(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=100)
     owner = models.ForeignKey(Writer, on_delete=models.SET_NULL, related_name='owned_groups', null=True)
     description = models.TextField(blank=True, default='Describe your group now!')
     rule = models.ManyToManyField(Discipline)

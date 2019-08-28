@@ -29,7 +29,9 @@ export const getPlotDetail = (plot, token) => {
             <br />
             <span>Updated at <Moment format="HH:mm YYYY-MM-DD">{plot.updated_at}</Moment></span>
             <br />
+            {token !== null ?
             <div style={{ color: '#1890ff' }} onClick={() => handleLike(plot, token)}>Like it!</div>
+            : null}
         </div>
     )
 }

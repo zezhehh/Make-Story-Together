@@ -4,6 +4,7 @@ The devolopment version could be visited at http://207.148.115.171:3000
 ---
 
 - Requirements: `node.js` `yarn` `python3` `postgresql` `redis`
+    - Don't forget to start services `postgresql` and `redis-server`
 - In directory `/backend`, run `python3 manage.py runserver 0.0.0.0:8000` to start backend
     - `requirements.txt` contains modules used in my virtual environment
     - `pip install git+https://github.com/Ian-Foote/rest-framework-generic-relations.git`

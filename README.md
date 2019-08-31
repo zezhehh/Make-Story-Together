@@ -1,7 +1,4 @@
-The devolopment version could be visited at http://207.148.115.171:3000
-- Encounter something wrong? Refresh it...
 
----
 
 - Requirements: `node.js` `yarn` `python3` `postgresql` `redis`
     - Don't forget to start services `postgresql` and `redis-server`

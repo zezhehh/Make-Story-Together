@@ -7,6 +7,7 @@ services:
     image: "redis"
 
   backend:
+    container_name: 'backend'
     build: 
       context: ./backend
       dockerfile: Dockerfile
@@ -22,6 +23,7 @@ services:
       - redis
 
   frontend:
+    container_name: 'frontend'
     build: 
       context: ./makestorytogether
       dockerfile: Dockerfile

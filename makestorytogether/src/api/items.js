@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_HOST } from './constants';
+import { API_HOST } from '../constants';
 
 const WRITER_API = `${API_HOST}`;
 const STORY_API = `${API_HOST}/story`;

@@ -1,0 +1,35 @@
+version: '3'
+services:
+  postgres:
+    image: "postgres"
+  
+  redis:
+    image: "redis"
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        location: China
+    # command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/backend
+    ports:
+      - "8000:8000"
+    links:
+      - postgres
+      - redis
+
+  frontend:
+    build: 
+      context: ./makestorytogether
+      dockerfile: Dockerfile
+      args:
+        location: China
+    command: yarn start
+    volumes:
+      - ./makestorytogether:/makestorytogether
+    ports:
+      - "3000:3000"
+    

@@ -1,0 +1,12 @@
+asgiref==3.2.1
+channels==2.2.0
+channels-redis==2.4.0
+Django==2.2.4
+django-cors-headers==3.0.2
+django-filter==2.2.0
+djangorestframework==3.10.2
+djangorestframework-jwt==1.11.0
+Markdown==3.1.1
+psycopg2==2.8.3
+redis==2.10.6
+rest-framework-generic-relations==1.2.1

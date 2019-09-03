@@ -13,7 +13,7 @@ services:
       dockerfile: Dockerfile
       args:
         location: China
-    # command: python manage.py runserver 0.0.0.0:8000
+    command: /bin/bash docker-entrypoint.sh
     volumes:
       - ./backend:/backend
     ports:

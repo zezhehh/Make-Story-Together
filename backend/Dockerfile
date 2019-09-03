@@ -7,4 +7,3 @@ RUN if [ "$location" = "China" ] ; \
     else pip install -r requirements_mini.txt ; \
     fi
 EXPOSE 8000
-ENTRYPOINT ["docker-entrypoint.sh"]

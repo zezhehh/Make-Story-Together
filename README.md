@@ -7,7 +7,7 @@
   
 ### Outside Docker
 
-- DO NOT forget to set congifiration of outside docker in `/backend/backend/settings.py:DATABASES`
+- DO NOT forget to set congifiration of outside docker in [`/backend/backend/settings.py:DATABASES`](https://github.com/kiki0805/Make-Story-Together/blob/master/backend/backend/settings.py#L107)
 - Requirements: `node.js` `yarn` `python3` `postgresql` `redis`
     - Don't forget to start services `postgresql` and `redis-server`
 - In directory `/backend`, run `python3 manage.py runserver 0.0.0.0:8000` to start backend
@@ -19,7 +19,8 @@
 ### Configuration File
 
 - Backend HOST: default is `localhost`. If there is need of remote testing, edit `/makestorytogether/src/constans.js`.
-- 
+- Redis Configure: https://github.com/kiki0805/Make-Story-Together/blob/master/backend/backend/settings.py#L107
+- PostgreSql Configure: https://github.com/kiki0805/Make-Story-Together/blob/master/backend/backend/settings.py#L107
 
 ## Features
 

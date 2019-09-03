@@ -8,27 +8,27 @@ services:
 
   backend:
     container_name: 'backend'
-    build: 
-      context: ./backend
-      dockerfile: Dockerfile
-      args:
-        location: China
-    command: /bin/bash docker-entrypoint.sh
+    build: ./backend
+      # context: ./backend
+      # dockerfile: Dockerfile
+      # args:
+      #   location: China
+    command: bash ./docker-entrypoint.sh
     volumes:
       - ./backend:/backend
     ports:
       - "8000:8000"
-    links:
+    depends_on:
       - postgres
       - redis
 
   frontend:
     container_name: 'frontend'
-    build: 
-      context: ./makestorytogether
-      dockerfile: Dockerfile
-      args:
-        location: China
+    build: ./makestorytogether
+      # context: ./makestorytogether
+      # dockerfile: Dockerfile
+      # args:
+      #   location: China
     command: yarn start
     volumes:
       - ./makestorytogether:/makestorytogether

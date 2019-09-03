@@ -2,8 +2,7 @@ FROM node
 WORKDIR /makestorytogether
 ARG location=China  
 
-COPY ./package.json /makestorytogether
-COPY ./yarn.lock /makestorytogether
+COPY . /makestorytogether
 
 RUN if [ "$location" = "China" ] ; \
     then npm config set registry https://registry.npm.taobao.org --global && \
@@ -14,8 +13,6 @@ RUN if [ "$location" = "China" ] ; \
         yarn ; \
     else npm install yarn -g && yarn ; \
     fi
-
-COPY . /makestorytogether
 
 EXPOSE 3000
 

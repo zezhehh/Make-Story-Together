@@ -1,13 +1,25 @@
 
 
+## Usage
+### With Docker
+
+- `docker-compose up`
+  
+### Outside Docker
+
+- DO NOT forget to set congifiration of outside docker in `/backend/backend/settings.py:DATABASES`
 - Requirements: `node.js` `yarn` `python3` `postgresql` `redis`
     - Don't forget to start services `postgresql` and `redis-server`
 - In directory `/backend`, run `python3 manage.py runserver 0.0.0.0:8000` to start backend
-    - `requirements.txt` contains modules used in my virtual environment
+    - `pip install -r requirements-mini.txt`
     - `pip install git+https://github.com/Ian-Foote/rest-framework-generic-relations.git`
 - In directory `makestorytogether`, `yarn start` to start development mode of frontend
     - For first use, run `yarn` to add dependencies
 
+### Configuration File
+
+- Backend HOST: default is `localhost`. If there is need of remote testing, edit `/makestorytogether/src/constans.js`.
+- 
 
 ## Features
 
@@ -35,7 +47,6 @@
 - More interation UI interface
 - Fit mobile user
 - Control conflicts of simultaneously plot creation 
-- Dockerfile
 - Refactory / reuser axio functions
 - Model Details TBD
   - group invitation

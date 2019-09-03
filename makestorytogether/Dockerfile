@@ -17,3 +17,4 @@ RUN if [ "$location" = "China" ] ; \
 EXPOSE 3000
 
 CMD yarn start
+

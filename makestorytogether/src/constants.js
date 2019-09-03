@@ -1,2 +1,4 @@
-export const WS_URL = 'ws://localhost:8000/ws/story';
-export const API_HOST = 'http://localhost:8000';
+const BACKEND_HOST = 'localhost';
+export const WS_URL = `ws://${BACKEND_HOST}:8000/ws/story`;
+export const API_HOST = `http://${BACKEND_HOST}:8000`;
+

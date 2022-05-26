@@ -39,7 +39,7 @@ redis==2.10.6
 rest-framework-generic-relations==1.2.1
 six==1.12.0
 sqlparse==0.3.0
-Twisted==19.7.0
+Twisted==22.4.0
 txaio==18.8.1
 typed-ast==1.4.0
 wrapt==1.11.2
